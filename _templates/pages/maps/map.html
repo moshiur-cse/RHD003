@@ -5,14 +5,234 @@
 
 {% extends layout %}
 
-{% load i18n %}
+{% comment %} {% load i18n %}
     
-{% block title %}{% translate "Dashboard" %}{% endblock %}
+{% block title %}{% translate "Dashboard" %}{% endblock %} {% endcomment %}
+
+
+<style>
+
+        .table > thead > tr > th {
+            width: 15vw !important;
+        }
+
+        .leaflet-draw-toolbar-top {
+            margin-top: 90px !important
+        }
+
+        .leaflet-bottom .leaflet-left {
+            z-index: 950 !important;
+        }
+
+        .mapLabel {
+            height: auto !important;
+            width: auto !important;
+            /*font-weight: bold;
+                                        color: #025 line-height: 1;*/
+            padding: 0.2rem 0.3rem;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.7rem;
+            color: #123;
+            text-shadow: 0 0 1px #aaa;
+            /*background: rgba(250,250,250,0.45);*/
+            border-radius: 0.25rem;
+        }
+
+        .legend_info {
+            padding: 1px;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            /*font-size: 1vw;*/
+            font: 400 14px/1.0 Roboto, Helvetica, Arial, sans-serif;
+            overflow: auto;
+            /* min-height: 100px;*/
+            max-height: 400px;
+            max-width: 300px;
+            resize: both;
+        }
+
+        .leaflet-popup-content{
+
+            /*font-size: 1vw;*/
+            font: 400 14px/1.0 Roboto, Helvetica, Arial, sans-serif;
+            overflow: auto!important;
+            /* min-height: 100px;*/
+            max-height: 300px!important;
+            max-width: 300px!important;
+        }
+
+            .legend_info i {
+                /* width: 1.5vw;
+                                                            height: 1.5vw;*/
+                width: 20px;
+                height: 15px;
+                float: left;
+                /*margin-right: 1vw;*/
+                margin-right: 10px;
+                opacity: 0.7;
+                /*font-size: 1vw;*/
+                font: 400 14px/1.0 Roboto, Helvetica, Arial, sans-serif;
+            }
+
+            .legend_info p {
+                padding: 0.2vw;
+            }
+
+        .legendTitle {
+            background: rgb(16 80 12);
+            color: white;
+            text-align: center
+        }
+
+        .map_btns_content {
+            z-index: 1000;
+            position: absolute;
+            /*top: 150px;*/
+            left: auto;
+            right: 1%;
+            width: 50px;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            text-align: right;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .map_left_content {
+            z-index: 1000;
+            position: absolute;
+            /*top: 240px;*/
+            border: 0 none;
+            padding: 5px 6px;
+            cursor: pointer;
+            background: #ffffff00 none repeat scroll 0 0;
+            box-shadow: 0 1px 3px 4px rgb(0 0 0 / 25%);
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            -ms-border-radius: 3px;
+            border-radius: 3px;
+            transition-property: left, right;
+            transition-duration: 0.15s, 0.15s;
+            transition-delay: 0.15s, 0.15s;
+        }
+
+        .map_left_content_img {
+            background: transparent url('../images/bottom_arrow.png') no-repeat center left/100% auto !important;
+        }
+
+        .map_btns {
+            display: inline-block;
+            /*border: 2px solid rgba(255, 255, 255, 0.01);*/
+            border: 2px solid rgba(0, 0, 0, 0.25);
+            width: 40px;
+            height: 38px;
+            margin: 0 3px;
+            padding: 6px;
+            font: 400 14px/1.0 Roboto, Helvetica, Arial, sans-serif;
+            color: #777;
+            text-align: center;
+            background-color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            background-clip: padding-box;
+            /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);*/
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            transition: background-size 0.15s;
+        }
+
+        .map_opt_content {
+            padding: 5px;
+            margin-top: 120px;
+            margin-left: 100px;
+            z-index: 1000;
+            position: absolute;
+            border: 1px solid #e5e7e8;
+            width: auto;
+            background: rgba(255, 255, 255, 0.85) none repeat scroll 0 0;
+            border-radius: 3px border-radius: 5px;
+            font-size: 1vw;
+        }
+
+        #AttributeDiv {
+            display: none;
+            padding: 5px;
+            margin-top: 100px;
+            margin-left: 45px;
+            z-index: 1000;
+            position: absolute;
+            padding: 1px;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            /*font-size: 1vw;*/
+            font: 400 14px/1.0 Roboto, Helvetica, Arial, sans-serif;
+            overflow: auto;
+            /*min-width: 100px;*/
+            max-width: 50vw;
+            /*min-height: 100px;*/
+            max-height: 300px;
+            resize: both;
+        }
+
+        .map_legend {
+            height: 450px;
+            overflow-y: scroll;
+        }
+
+        .map_bg_layers {
+            color: black;
+            background: #fff;
+        }
+
+        .my-div-icon {
+            color: black;
+            outline-color: black;
+        }
+    </style>
     
 {% block content %}
 
-<h1>This is a heading</h1>
-<p>This is a paragraph.</p>
+<div>
+
+
+    <div id="map_btns_content" class="map_btns_content">
+        <div id="filter_option" class="map_btns btn_map_layers" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable" title="Add Map Layer"></div>
+        <div id="map_layer" class="map_btns right-bar-toggle waves-effect" title="Map Filtering"> </div>
+        <div id="map_bg_layers" class="map_btns btn_map_bglayers" title="Select the Map Background Layer"></div>
+        <div id="map_reset" class="map_btns map_reset" onclick="map_reset()" title="Reset Map"> </div>
+        <div id="map_center" class="map_btns btn_full_extent" title="Full extent the map"> </div>
+        <div class="map_btns" title="Show or Hide Map Label"><input type="checkbox" id="map_label"></div>
+
+
+        <div class="map_btns" title="Show or Hide Map Legend"><input type="checkbox" id="map_legend" checked></div>
+
+
+
+
+        <div id="map_download" class="map_btns btn_map_download" title="Download" onclick="downloadMap('');"> </div>
+
+    </div>
+
+    <div id="map_left_content" class="map_left_content">
+        @*<div id="filter_option" class="map_btns btn_map_layers" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable" title="Add Map Layer"></div>*@
+        <div id="map_layer_draw" class="map_draw_arrow_img" title="Draw Map" style="float:left"> </div>
+        <div id="map_layer_data" class="map_draw_arrow_img" title="Attribute Information" style="float:right"> </div>
+    </div>
+
+    <div id="AttributeDiv">
+        <h3>Attribute Table Information</h3>
+    </div>
+
+    <div id="basic-map" class="leaflet-map page-content"></div>
+</div>
 {% endblock content %}
 
 <!-- </body>

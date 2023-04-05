@@ -22,6 +22,11 @@
         {% getVendors 'css' as vendors_css %}
         {% for file in vendors_css %}
         <link href="{{ file }}" rel="stylesheet" type="text/css" />
+        
+        <script>
+            console.log("my_variable: {{ file }}");
+        </script>
+        
         {% endfor %}
         <!--end::Vendor Stylesheets-->
 
@@ -57,7 +62,9 @@
         <!--begin::Global Javascript(mandatory)-->
         {% getGlobalAssets 'js' as assets_js %}
         {% for file in assets_js %}
+        
             <script src="{% static file %}"></script>
+           
         {% endfor %}
         <!--end::Global Javascript-->
 

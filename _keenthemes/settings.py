@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-blehs+vjho@s4qug%9ferf0-tucvbr9#_1k2!#ebs4u68@)ss+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,7 +43,13 @@ INSTALLED_APPS = [
     # Keenthemes Apps
     'dashboards.apps.DashboardsConfig',
     'auth.apps.AuthConfig',
+    #RMO Install
+    'django_admin_logs',
+    'crispy_forms',
+    "debug_toolbar",  # debug_toolbar
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,7 +59,28 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",  # debug_toolbar
 ]
+
+# INTERNAL_IPS = ['127.0.0.1'] # debug_toolbar
+
+
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+    # Add any additional panels you want to display
+]
+
 
 ROOT_URLCONF = '_keenthemes.urls'
 
@@ -377,6 +404,7 @@ KT_THEME_VENDORS = {
         ]
     }
 }
+
 JAZZMIN_SETTINGS = {
     "site_title": "RHD Admin",
     "site_header": "RHD Admin",
