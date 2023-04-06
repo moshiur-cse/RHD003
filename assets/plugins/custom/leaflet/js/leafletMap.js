@@ -38,6 +38,7 @@ function mapInit() {
 
 
     mymap.setView([23.837777, 90.347777], 7.0);
+
     var baseMaps = {
         "Open Street": openstreet,
         "Google Hybrid": googleHy,
@@ -53,6 +54,8 @@ function mapInit() {
 
     //mymap.createPane("admin-layer").style.zIndex = 405;
     //mymap.createPane("label-layer").style.zIndex = 601;
+
+
     L.tileLayer("", { attribution: mapAttrib }).addTo(mymap);
     L.control.scale().addTo(mymap);
     //L.control.zoom().addTo(mymap);
@@ -60,11 +63,11 @@ function mapInit() {
     L.control.zoom({
         position: 'bottomleft'
     }).addTo(mymap);
-    
+
 
     var drawnItems = L.featureGroup().addTo(mymap);
 
-     mymap.addControl(new L.Control.Draw({
+    mymap.addControl(new L.Control.Draw({
         edit: {
             featureGroup: drawnItems,
             poly: {
@@ -88,6 +91,12 @@ function mapInit() {
 
 
 
+    //mymap.on("mousemove",
+    //    function (evt) {
+    //        $("#map_cord_info").html(evt.latlng.lat.toFixed(8) + ", " + evt.latlng.lng.toFixed(8));
+    //    });
+
+
     $("#map_center").on("click",
         function(e) {
             mymap.setView([23.737777, 90.537777], 7.0);
@@ -101,14 +110,73 @@ function mapInit() {
     });
 
     var bgLayersContent = $(bgLayers.getContainer());
-    bgLayersContent.find("a.leaflet-control-layers-toggle").remove();
+    //bgLayersContent.find("a.leaflet-control-layers-toggle").remove();
     bgLayersContent.find("form.leaflet-control-layers-list").css("display", "block");
-    $("#map_bg_layers").append(bgLayersContent);
+    //$("#map_bg_layers").append(bgLayersContent);
 
 
 }
-function showHideLayer(){
-  $.getJSON("{% static '/geofiles/division/division.json' %}", function(data) {
-    L.geoJSON(data).addTo(mymap);
-  });
+
+
+
+
+function overlap(rect1, rect2) {
+    return (!(rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom));
+}
+
+function hideOverlappingTooltips() {
+    var rects = [];
+    var tooltips = document.getElementsByClassName('mapLabel');
+    for (var i = 0; i < tooltips.length; i++) {
+        tooltips[i].style.visibility = '';
+        rects[i] = tooltips[i].getBoundingClientRect();
+    }
+    for (var i = 0; i < tooltips.length; i++) {
+        if (tooltips[i].style.visibility != 'hidden') {
+            for (var j = i + 1; j < tooltips.length; j++) {
+                if (overlap(rects[i], rects[j])) tooltips[j].style.visibility = 'hidden';
+            }
+        }
+    }
+}
+
+function map_reset() {
+    location.reload(true);
+}
+
+function afterRender(result) {
+    return result;
+}
+
+function afterExport(result) {
+    return result;
+}
+
+function downloadMap(caption) {
+    jQuery("#busy-indicator").fadeIn(150);
+
+    var downloadOptions = {
+        container: mymap._container,
+        caption: {
+            text: caption,
+            font: '30px Arial',
+            fillStyle: 'black',
+            position: [100, 200]
+        },
+        exclude: ['.leaflet-control-zoom', '.leaflet-control-attribution'],
+        include: ['.map_btns_content'],
+        format: 'image/png',
+        fileName: 'Map.png',
+        afterRender: afterRender,
+        afterExport: afterExport
+    };
+    var promise = mymap.downloadExport(downloadOptions);
+    var data = promise.then(function(result) {
+        return result;
+    });
+    jQuery("#busy-indicator").fadeOut(150);
+
 }

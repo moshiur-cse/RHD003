@@ -1,22 +1,25 @@
 {% extends layout %}
 {% block content %}
-    <!-- {% load leaflet_tags %}
-    {% leaflet_css %} -->
+
     {% getVendorWithType 'leaflet' 'css' as vendors_css %}
     {% for file in vendors_css %}
     <link href="{{ file }}" rel="stylesheet" type="text/css" />
+    <script> console.log("{{ file }}")</script>
     {% endfor %}
-    <style>
 
+    <style>
         .table > thead > tr > th {
             width: 15vw !important;
         }
+    
         .leaflet-draw-toolbar-top {
             margin-top: 90px !important
         }
+    
         .leaflet-bottom .leaflet-left {
             z-index: 950 !important;
         }
+    
         .mapLabel {
             height: auto !important;
             width: auto !important;
@@ -31,7 +34,7 @@
             /*background: rgba(250,250,250,0.45);*/
             border-radius: 0.25rem;
         }
-
+    
         .legend_info {
             padding: 1px;
             background: rgba(255,255,255,0.8);
@@ -45,9 +48,9 @@
             max-width: 300px;
             resize: both;
         }
-
+    
         .leaflet-popup-content{
-
+    
             /*font-size: 1vw;*/
             font: 400 14px/1.0 Roboto, Helvetica, Arial, sans-serif;
             overflow: auto!important;
@@ -55,7 +58,7 @@
             max-height: 300px!important;
             max-width: 300px!important;
         }
-
+    
             .legend_info i {
                 /* width: 1.5vw;
                                                             height: 1.5vw;*/
@@ -68,23 +71,23 @@
                 /*font-size: 1vw;*/
                 font: 400 14px/1.0 Roboto, Helvetica, Arial, sans-serif;
             }
-
+    
             .legend_info p {
                 padding: 0.2vw;
             }
-
+    
         .legendTitle {
             background: rgb(16 80 12);
             color: white;
             text-align: center
         }
-
+    
         .map_btns_content {
             z-index: 1000;
             position: absolute;
             /*top: 150px;*/
             left: auto;
-            right: 1.5%;
+            right: 1%;
             width: 50px;
             height: auto;
             margin: 0;
@@ -95,7 +98,7 @@
             -ms-user-select: none;
             user-select: none;
         }
-
+    
         .map_left_content {
             z-index: 1000;
             position: absolute;
@@ -113,11 +116,11 @@
             transition-duration: 0.15s, 0.15s;
             transition-delay: 0.15s, 0.15s;
         }
-
+    
         .map_left_content_img {
             background: transparent url('../images/bottom_arrow.png') no-repeat center left/100% auto !important;
         }
-
+    
         .map_btns {
             display: inline-block;
             /*border: 2px solid rgba(255, 255, 255, 0.01);*/
@@ -140,7 +143,7 @@
             user-select: none;
             transition: background-size 0.15s;
         }
-
+    
         .map_opt_content {
             padding: 5px;
             margin-top: 120px;
@@ -150,11 +153,11 @@
             border: 1px solid #e5e7e8;
             width: auto;
             background: rgba(255, 255, 255, 0.85) none repeat scroll 0 0;
-            border-radius: 3px;
+            border-radius: 3px; 
             border-radius: 5px;
             font-size: 1vw;
         }
-
+    
         #AttributeDiv {
             display: none;
             padding: 5px;
@@ -175,48 +178,44 @@
             max-height: 300px;
             resize: both;
         }
-
+    
         .map_legend {
             height: 450px;
             overflow-y: scroll;
         }
-
+    
         .map_bg_layers {
             color: black;
             background: #fff;
         }
-
+    
         .my-div-icon {
             color: black;
             outline-color: black;
         }
     </style>
-    <!-- {% getVendorWithType 'leaflet' 'css' as vendors_js %}
-    {% for file in vendors_js %}
-    <script src="{{ file }}"></script>
-    <script> console.log("{{ file }}")</script>
-    {% endfor %} -->
-    <div id="map_btns_content" class="map_btns_content">
-        <div id="filter_option" class="map_btns btn_map_layers" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable" title="Add Map Layer"></div>
-        <div id="map_layer" class="map_btns right-bar-toggle waves-effect" title="Map Filtering"> </div>
-        <div id="map_bg_layers" class="map_btns btn_map_bglayers" title="Select the Map Background Layer"></div>
-        <div id="map_reset" class="map_btns map_reset" onclick="map_reset()" title="Reset Map"> </div>
-        <div id="map_center" class="map_btns btn_full_extent" title="Full extent the map"> </div>
-        <div class="map_btns" title="Show or Hide Map Label"><input type="checkbox" id="map_label"></div>
+    <div>
+        <div id="map_btns_content" class="map_btns_content">
+            <div id="filter_option" class="map_btns btn_map_layers" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable" title="Add Map Layer"></div>
+            <div id="map_layer" class="map_btns right-bar-toggle waves-effect" title="Map Filtering"> </div>
+            <div id="map_bg_layers" class="map_btns btn_map_bglayers" title="Select the Map Background Layer"></div>
+            <div id="map_reset" class="map_btns map_reset" onclick="map_reset()" title="Reset Map"> </div>
+            <div id="map_center" class="map_btns btn_full_extent" title="Full extent the map"> </div>
+            <div class="map_btns" title="Show or Hide Map Label"><input type="checkbox" id="map_label"></div>
+            <div class="map_btns" title="Show or Hide Map Legend"><input type="checkbox" id="map_legend" checked></div>
+            <div id="map_download" class="map_btns btn_map_download" title="Download" onclick="downloadMap('');"> </div>
 
-        <div class="map_btns" title="Show or Hide Map Legend"><input type="checkbox" id="map_legend" checked></div>
-        <div id="map_download" class="map_btns btn_map_download" title="Download" onclick="downloadMap('');"> </div>
+        </div>
 
+        <div id="map_left_content" class="map_left_content">
+            <div id="map_layer_draw" class="map_draw_arrow_img" title="Draw Map" style="float:left"> </div>
+            <div id="map_layer_data" class="map_draw_arrow_img" title="Attribute Information" style="float:right"> </div>
+        </div>
+
+
+        <div id="basic-map" class="leaflet-map page-content" style="height: 700px;"></div>
     </div>
 
-    <div id="map_left_content" class="map_left_content">
-        <div id="map_layer_draw" class="map_draw_arrow_img" title="Draw Map" style="float:left"> </div>
-        <div id="map_layer_data" class="map_draw_arrow_img" title="Attribute Information" style="float:right"> </div>
-    </div>
-    <div id="basic-map" style="height: 700px;"></div>
-    <!-- {{ map }} -->
-    <!-- {% leaflet_map "map" %} -->
-    <!-- {% leaflet_js %} -->
 
     {% getVendorWithType 'leaflet' 'js' as vendors_js %}
     {% for file in vendors_js %}
@@ -226,6 +225,12 @@
 <script>
     mapInit();
     showHideLayer();
+    function showHideLayer(){
+        $.getJSON("{% static '/geofiles/division/division.json' %}", function(data) {
+          L.geoJSON(data).addTo(mymap);
+        });
+      }
+    
     
 </script>
 
