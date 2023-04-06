@@ -12,6 +12,8 @@ from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import Point
 #from django.contrib.gis.maps.google import GoogleMap
 
+
+
 """
 This file is a view controller for multiple pages as a module.
 Here you can override the page view layout.
@@ -49,14 +51,12 @@ class DashboardsView(TemplateView):
         return context
     
     def map(request):
-        data_source = DataSource('/path/to/geotiff.tiff')
-
+        data_source = DataSource('geofiles/division/division.json')
     # Get the first layer from the file
         layer = data_source[0]
-
         # Create a GeoJSON object from the layer
-        geojson = layer.geojson
-
+        geojson = layer.geojson        
+        #print(geojson)
         # Get the bounding box of the layer
         bbox = layer.extent
 
@@ -64,11 +64,14 @@ class DashboardsView(TemplateView):
         center = Point((bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2)
 
         # Create a GoogleMap object with the center and zoom level
-        map = GoogleMap(center=center, zoom=10)
+        #map = GoogleMap(center=center, zoom=10)
 
         # Add the GeoJSON data to the map
-        map.add_layer(geojson)
+        #map.add_layer(geojson)
 
         # Render the map using a template
-        #return render(request, 'map.html', {'map': map})
-        return render(request, 'map.html')
+        return render(request, 'map.html', {'geojson': geojson})
+        #return render(request, 'map.html')
+        
+
+  

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_admin_logs',
     'crispy_forms',
     'leaflet',
+    'django.contrib.gis',
     "debug_toolbar",  # debug_toolbar
 ]
 
@@ -249,6 +250,11 @@ KT_THEME_VENDORS = {
             "plugins/custom/formrepeater/formrepeater.bundle.js"
         ]
     },
+    # "jquery": {
+    #     "js": [
+    #         "plugins/custom/leaflet/jquery.js"
+    #     ]
+    # },
     "fullcalendar": {
         "css": [
             "plugins/custom/fullcalendar/fullcalendar.bundle.css"
@@ -362,10 +368,57 @@ KT_THEME_VENDORS = {
     },
     "leaflet": {
         "css": [
-            "plugins/custom/leaflet/leaflet.bundle.css"
+            "plugins/custom/leaflet/css/leaflet.css",
+            "plugins/custom/leaflet/css/leaflet.draw.css",
+            "plugins/custom/leaflet/css/mapstyle.draw.css",
         ],
         "js": [
-            "plugins/custom/leaflet/leaflet.bundle.js"
+            "plugins/custom/leaflet/js/leaflet.js",
+            "plugins/custom/jquery/jquery.js",  
+            "plugins/custom/leaflet/js/leafletMap.js",
+            
+                               
+            "plugins/custom/leaflet/js/leaflet_export.js",
+            
+            "plugins/custom/leaflet/js/html2canvas.js",
+
+
+            "plugins/custom/leaflet/js/Leaflet.draw.js",
+            "plugins/custom/leaflet/js/Leaflet.Draw.Event.js",
+
+            "plugins/custom/leaflet/js/Toolbar.js",
+            "plugins/custom/leaflet/js/Tooltip.js",
+
+            "plugins/custom/leaflet/js/GeometryUtil.js",
+            "plugins/custom/leaflet/js/LatLngUtil.js",
+            "plugins/custom/leaflet/js/LineUtil.Intersect.js",
+            "plugins/custom/leaflet/js/Polygon.Intersect.js",
+            "plugins/custom/leaflet/js/Polyline.Intersect.js",
+            "plugins/custom/leaflet/js/TouchEvents.js",
+
+            "plugins/custom/leaflet/js/DrawToolbar.js",
+            "plugins/custom/leaflet/js/Draw.Feature.js",
+            "plugins/custom/leaflet/js/Draw.SimpleShape.js",
+            "plugins/custom/leaflet/js/Draw.Polyline.js",
+            "plugins/custom/leaflet/js/Draw.Marker.js",
+            "plugins/custom/leaflet/js/Draw.Circle.js",
+            "plugins/custom/leaflet/js/Draw.CircleMarker.js",
+            "plugins/custom/leaflet/js/Draw.Polygon.js",
+            "plugins/custom/leaflet/js/Draw.Rectangle.js",
+
+            "plugins/custom/leaflet/js/EditToolbar.js",
+            "plugins/custom/leaflet/js/EditToolbar.Edit.js",
+            "plugins/custom/leaflet/js/EditToolbar.Delete.js",
+
+            "plugins/custom/leaflet/js/Control.Draw.js",
+
+            "plugins/custom/leaflet/js/Edit.Poly.js",
+            "plugins/custom/leaflet/js/Edit.SimpleShape.js",
+            "plugins/custom/leaflet/js/Edit.Rectangle.js",
+            "plugins/custom/leaflet/js/Edit.Marker.js",
+            "plugins/custom/leaflet/js/Edit.CircleMarker.js",
+            "plugins/custom/leaflet/js/Edit.Circle.js",             
+            
         ]
     },
     "amcharts": {

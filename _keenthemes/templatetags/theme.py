@@ -45,6 +45,10 @@ def getVendors(type):
     return KTTheme.getVendors(type)
 
 @register.simple_tag
+def getVendorWithType(vendor,type):
+    return KTTheme.getVendorWithType(vendor,type)
+
+@register.simple_tag
 def isRtlDirection():
     return KTTheme.isRtlDirection()
 
@@ -78,3 +82,9 @@ def getHtmlAttribute(scope, attribute):
 @register.simple_tag
 def getIcon(name, class_name='', type=''):
     return mark_safe(KTTheme.getIcon(name, class_name, type))
+
+
+@register.simple_tag
+def get_geojson(geojsonName):
+    return KTTheme.get_geojson(geojsonName)
+

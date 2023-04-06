@@ -6,6 +6,10 @@ from importlib import import_module, util
 import json
 from django.core.cache import cache
 
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from osgeo import ogr
+
 
 # Core theme class
 class KTTheme:
@@ -210,6 +214,18 @@ class KTTheme:
                         files.append(KTTheme.addStatic(path))
 
         return files
+    
+    def getVendorWithType(vendor,type):
+        files = []
+        # Check if vendor exist in the settings
+        if type in settings.KT_THEME_VENDORS[vendor]:
+            # Skip duplicate entry
+            if settings.KT_THEME_VENDORS[vendor][type] not in files:
+                for path in settings.KT_THEME_VENDORS[vendor][type]:
+                    # add static url to local file paths, skip for external urls
+                    files.append(KTTheme.addStatic(path))
+
+        return files
 
 
     # Set the current page layout and init the layout bootstrap file
@@ -272,3 +288,17 @@ class KTTheme:
             output = f'<{tag} class="ki-{type} ki-{name}{" " + class_name if class_name else ""}"></{tag}>'
 
         return output
+    
+    def get_geojson(geojsonName):
+        filename = '/assets/geofiles/division/division.json'
+        driver = ogr.GetDriverByName('GeoJSON')
+        dataSource = driver.Open(filename, 0)
+        layer = dataSource.GetLayer()
+        featureCollection = {'type': 'FeatureCollection', 'features': []}
+        for feature in layer:
+            geometry = feature.GetGeometryRef()
+            properties = feature.items()
+            featureJson = {'type': 'Feature', 'geometry': geometry.ExportToJson(), 'properties': properties}
+            featureCollection['features'].append(featureJson)
+        print(featureCollection)    
+        return JsonResponse(featureCollection, safe=False)  
