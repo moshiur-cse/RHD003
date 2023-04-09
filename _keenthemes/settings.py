@@ -245,6 +245,15 @@ KT_THEME_VENDORS = {
             "plugins/custom/datatables/datatables.bundle.js"
         ]
     },
+    "gisdata": {
+        "geojson": [
+            "geofiles/division/division.json"
+        ],
+        "shape": [
+            "geofiles/division/division.shp"
+        ]
+    },
+      
     "formrepeater": {
         "js": [
             "plugins/custom/formrepeater/formrepeater.bundle.js"

@@ -10,6 +10,8 @@ from django.shortcuts import redirect, render
 from django.shortcuts import render
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import Point
+import geopandas as gpd
+import json
 #from django.contrib.gis.maps.google import GoogleMap
 
 
@@ -19,6 +21,7 @@ This file is a view controller for multiple pages as a module.
 Here you can override the page view layout.
 Refer to dashboards/urls.py file for more pages.
 """
+
 
 class DashboardsView(TemplateView):
     # Default template file
@@ -50,28 +53,22 @@ class DashboardsView(TemplateView):
 
         return context
     
-    def map(request):
-        data_source = DataSource('geofiles/division/division.json')
-    # Get the first layer from the file
-        layer = data_source[0]
-        # Create a GeoJSON object from the layer
-        geojson = layer.geojson        
-        #print(geojson)
-        # Get the bounding box of the layer
-        bbox = layer.extent
 
-        # Create a Point object from the center of the bounding box
-        center = Point((bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2)
-
-        # Create a GoogleMap object with the center and zoom level
-        #map = GoogleMap(center=center, zoom=10)
-
-        # Add the GeoJSON data to the map
-        #map.add_layer(geojson)
-
-        # Render the map using a template
-        return render(request, 'map.html', {'geojson': geojson})
         #return render(request, 'map.html')
+def map(request):
+    layout = 'layout/master.html'  # set a default value 
+    template_name = 'pages/maps/map.html'
+    shapefile = gpd.read_file('assets/geofiles/division/division.shp')
+    my_geojson_str = shapefile.to_crs(epsg=4326).to_json()  
+
+    print('Test');        
+    #my_geojson_str = json.dumps(my_geojson_str)      
+                #return render(request, 'my_template.html', {'my_geojson': my_geojson_str})     
+    print(my_geojson_str)
         
+
+    context = {'layout':layout,'geojson':my_geojson_str,'my_data': ''}
+    return render(request, template_name, context)
+        #return render(request, 'map.html', {'geojson': geojson,'my_variable':'Moshiur Rahman'})    
 
   

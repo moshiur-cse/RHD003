@@ -88,3 +88,8 @@ def getIcon(name, class_name='', type=''):
 def get_geojson(geojsonName):
     return KTTheme.get_geojson(geojsonName)
 
+@register.simple_tag
+def getShapeFile():
+    return KTTheme.getShapeFile()
+
+
