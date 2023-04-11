@@ -9,6 +9,7 @@ urlpatterns = [
     #path('map/', DashboardsView.as_view(template_name = 'pages/maps/map.html'), name='map'),
     #path('map/', DashboardsView.as_view(template_name = 'pages/maps/map.html'), name='map'),
     path('map/', views.map, name='map'),
+    path('get_geojson_data/', views.get_geojson_data, name='get_geojson_data'),
     
     
 ]

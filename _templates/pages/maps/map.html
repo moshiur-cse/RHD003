@@ -223,6 +223,7 @@
 
 
         <div id="basic-map" class="leaflet-map page-content" style="height: 700px;"></div>
+        {{ geojson }}
     </div>
 
 
@@ -230,20 +231,47 @@
     {% for file in vendors_js %}
     <script src="{{ file }}"></script>
     {% endfor %}
+
+
+   
     <script>
         //console.log('{{geojson}}')
         mapInit();
         showHideLayer();
         function showHideLayer(){
 
+            
 
-            var myGeojson = JSON.stringify('{{ geojson }}');
-            console.log(myGeojson);
+// Parse the JSON string into a JavaScript object
+            //var data ="{{ geojson }}" 
+            //console.log(data)
+            //var myGeojson = JSON.parse(data);
+            //console.log(data)
+            //var myGeoJSONObject = JSON.parse(myGeojson);
+
+// Use the JavaScript GeoJSON object as desired
+            //console.log(myGeoJSONObject);
             //L.geoJSON(myGeojson).addTo(mymap);
 
-            $.getJSON("{% static '/geofiles/division/division.json' %}", function(data) {
-            L.geoJSON(data).addTo(mymap);
+            $.ajax({
+                type: "GET",
+                url: "/get_geojson_data/",
+                success: function(response) {
+                    data=JSON.parse(response)
+                    console.log(data);
+                   
+                    L.geoJSON(data).addTo(mymap);
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
             });
+
+
+
+            //$.getJSON("{% static '/geofiles/division/division.json' %}", function(data) {
+            //L.geoJSON(data).addTo(mymap);
+            //});
         }
         
         

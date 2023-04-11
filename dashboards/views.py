@@ -12,6 +12,9 @@ from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import Point
 import geopandas as gpd
 import json
+from django.http import JsonResponse
+from django.core.serializers import serialize
+import os
 #from django.contrib.gis.maps.google import GoogleMap
 
 
@@ -60,15 +63,55 @@ def map(request):
     template_name = 'pages/maps/map.html'
     shapefile = gpd.read_file('assets/geofiles/division/division.shp')
     my_geojson_str = shapefile.to_crs(epsg=4326).to_json()  
+    
+    
+    
+    
+    #my_geojson_data = MyModel.objects.get(pk=1).geojson_field
+    # Define the folder path and file name
+    # folder_path = 'assets/geofiles/division'
+    # file_name = 'moshiur.json'
+    
+    # filepath = os.path.join(folder_path, file_name)
+    # with open(filepath, 'w') as f:
+    #     f.write(my_geojson_str)
 
-    print('Test');        
+    # Save the GeoJSON data to the folder
+    #save_geojson_to_folder(my_geojson_str, folder_path, file_name)
+    
+    
+
+    #print('Test');        
     #my_geojson_str = json.dumps(my_geojson_str)      
-                #return render(request, 'my_template.html', {'my_geojson': my_geojson_str})     
-    print(my_geojson_str)
+    #return render(request, 'my_template.html', {'my_geojson': my_geojson_str})  
+                
+    #my_geojson_str=  gpd.read_file('assets/geofiles/division/division.json')    
+          
+    #print(my_geojson_str)
         
 
-    context = {'layout':layout,'geojson':my_geojson_str,'my_data': ''}
+    context = {'layout':layout,'geojson':JsonResponse(my_geojson_str, safe=False),'my_data': ''}
+    
+    #context = {'layout':layout,'geojson':json(my_geojson_str),'my_data': ''}
     return render(request, template_name, context)
         #return render(request, 'map.html', {'geojson': geojson,'my_variable':'Moshiur Rahman'})    
 
-  
+def save_geojson_to_folder(geojson_data, folder_path, file_name):
+    # Convert the GeoJSON data to a GeoDataFrame
+    gdf = gpd.GeoDataFrame.from_features(geojson_data['features'])
+
+    # Create the folder if it doesn't exist
+    os.makedirs(folder_path, exist_ok=True)
+
+    # Save the GeoDataFrame to a GeoJSON file in the folder
+    gdf.to_file(os.path.join(folder_path, file_name), driver='GeoJSON')  
+
+def get_geojson_data(request):
+        # get the data you need, for example:
+        shapefile1 = gpd.read_file('assets/geofiles/division/division.shp')
+        shapefile = shapefile1.loc[shapefile1['GeoCode'] == '20']
+        #console(shapefile.head())
+        my_geojson_str = shapefile.to_crs(epsg=4326).to_json()     
+        column_names = list(shapefile.columns)
+        print(column_names)
+        return JsonResponse(my_geojson_str,safe=False)
