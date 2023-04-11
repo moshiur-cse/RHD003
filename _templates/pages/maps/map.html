@@ -256,11 +256,26 @@
             $.ajax({
                 type: "GET",
                 url: "/get_geojson_data/",
+                dataType: 'json',
                 success: function(response) {
                     data=JSON.parse(response)
-                    console.log(data);
-                   
-                    L.geoJSON(data).addTo(mymap);
+                    console.log(data);   
+                    
+                    //const featureProperties = data.features.map(feature => feature.properties);
+                    //const propertyNames = Object.keys(featureProperties[0]);
+                    //console.log(propertyNames.length);
+
+                    //L.geoJSON(data).addTo(mymap).bindTooltip('Hello, world!', {sticky: true}).openTooltip();
+
+                    const myLayer = L.geoJSON(data, {
+                        onEachFeature: function(feature, layer) {
+                          layer.bindPopup(Object.keys(feature.properties).map(function(k) {
+                            return k + ": " + feature.properties[k];
+                          }).join("<br>"));
+                        }
+                      }).addTo(mymap);
+
+                    
                 },
                 error: function(xhr, errmsg, err) {
                     console.log(xhr.status + ": " + xhr.responseText);

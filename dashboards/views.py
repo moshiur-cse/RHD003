@@ -15,7 +15,8 @@ import json
 from django.http import JsonResponse
 from django.core.serializers import serialize
 import os
-#from django.contrib.gis.maps.google import GoogleMap
+
+
 
 
 
@@ -108,8 +109,8 @@ def save_geojson_to_folder(geojson_data, folder_path, file_name):
 
 def get_geojson_data(request):
         # get the data you need, for example:
-        shapefile1 = gpd.read_file('assets/geofiles/division/division.shp')
-        shapefile = shapefile1.loc[shapefile1['GeoCode'] == '20']
+        shapefile = gpd.read_file('assets/geofiles/division/division.shp')
+        #shapefile = shapefile1.loc[shapefile1['GeoCode'] == '20']
         #console(shapefile.head())
         my_geojson_str = shapefile.to_crs(epsg=4326).to_json()     
         column_names = list(shapefile.columns)
