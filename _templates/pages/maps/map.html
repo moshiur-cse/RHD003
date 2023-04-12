@@ -8,7 +8,6 @@
     {% getVendorWithType 'leaflet' 'css' as vendors_css %}
     {% for file in vendors_css %}
     <link href="{{ file }}" rel="stylesheet" type="text/css" />
-    <!-- <script> console.log("{{ file }}")</script> -->
     {% endfor %}
 
     <style>
@@ -202,7 +201,11 @@
  
     <div>
 
-        <h1>{{ my_data }}</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload</button>
+        </form>
 
         <div id="map_btns_content" class="map_btns_content">
             <div id="filter_option" class="map_btns btn_map_layers" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable" title="Add Map Layer"></div>
@@ -223,7 +226,6 @@
 
 
         <div id="basic-map" class="leaflet-map page-content" style="height: 700px;"></div>
-        {{ geojson }}
     </div>
 
 
@@ -235,7 +237,6 @@
 
    
     <script>
-        //console.log('{{geojson}}')
         mapInit();
         showHideLayer();
         function showHideLayer(){
