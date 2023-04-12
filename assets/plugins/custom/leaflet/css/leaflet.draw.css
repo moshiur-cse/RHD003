@@ -2,9 +2,20 @@
 /* Toolbars
 /* ================================================================== */
 
-.leaflet-draw-section {
-	position: relative;
+.leaflet-bar a, .leaflet-bar a:hover {
+	height: 35px !important;
+	width: 30px !important;
 }
+
+.leaflet-draw {
+	display: none;
+}
+
+/*.leaflet-draw-section {
+	position: relative;
+	background: white;
+	padding: 5px;
+}*/
 
 .leaflet-draw-toolbar {
 	margin-top: 12px;
@@ -24,7 +35,7 @@
 
 .leaflet-draw-toolbar a {
 	background-image: url('images/spritesheet.png');
-	background-image: linear-gradient(transparent, transparent), url('../images/spritesheet.svg');
+	background-image: linear-gradient(transparent, transparent), url('/assets/map_images/spritesheet.svg');
 	background-repeat: no-repeat;
 	background-size: 300px 30px;
 	background-clip: padding-box;
@@ -40,7 +51,7 @@
 }*/
 .leaflet-retina .leaflet-draw-toolbar a {
 	background-image: url('images/map_reset.png');
-	background-image: linear-gradient(transparent, transparent), url('../images/map_reset.png');
+	background-image: linear-gradient(transparent, transparent), url('/assets/map_images/map_reset.png');
 
 
 }
@@ -160,11 +171,21 @@
 /* ================================================================== */
 .leaflet-draw-draw-polyline {
 	/*background-image: #ffff url("../images/map_reset.png") no-repeat center center/80% auto;*/
-	background: transparent url("../images/map_reset.png") no-repeat center left/100% auto;
+	background: transparent url("/assets/map_images/polyline_icon.png") no-repeat center left/100% auto !important;
 	/*background-image: url('file:///F:\BBS004\EcdsApp\wwwroot\assets\images\map_reset.png');*/
 }
-	.leaflet-draw-toolbar .leaflet-draw-draw-polyline {
+
+.leaflet-draw-draw-rectangle {
+	background: transparent url("/assets/map_images/rectangler_icon.png") no-repeat center left/100% auto !important;
+	background-size: 100% 100%;
+}
+.leaflet-draw-draw-polygon {
+	background: transparent url("/assets/map_images/polygon_icon.png") no-repeat center left/100% auto !important;
+	background-size: 100% 100%;
+}
+.leaflet-draw-toolbar .leaflet-draw-draw-polyline {
 	background-position: -2px -2px;
+
 }
 
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-polyline {
@@ -190,6 +211,10 @@
 .leaflet-draw-toolbar .leaflet-draw-draw-circle {
 	background-position: -92px -2px;
 }
+.leaflet-draw-draw-circle {
+	background: transparent url("/assets/map_images/circle_icion.png") no-repeat center left/100% auto !important;
+	background-size: 100% 100%;
+}
 
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-circle {
 	background-position: -90px -1px;
@@ -199,6 +224,12 @@
 	background-position: -122px -2px;
 }
 
+.leaflet-draw-draw-marker {
+	background: transparent url("/assets/map_images/marker_icon.png") no-repeat center left/100% auto !important;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center right;
+}
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-marker {
 	background-position: -120px -1px;
 }
@@ -210,12 +241,18 @@
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-circlemarker {
 	background-position: -271px -1px;
 }
+.leaflet-draw-draw-circlemarker {
+	background: transparent url("/assets/map_images/circle_marker_icon.png") no-repeat center left/100% auto !important;
+}
 
 /* ================================================================== */
 /* Edit toolbar
 /* ================================================================== */
 
-.leaflet-draw-toolbar .leaflet-draw-edit-edit {
+.leaflet-draw-edit-edit {
+	background: transparent url("/assets/map_images/edit_icon.png") no-repeat center left/100% auto !important;
+}
+	.leaflet-draw-toolbar .leaflet-draw-edit-edit {
 	background-position: -152px -2px;
 }
 
@@ -225,6 +262,9 @@
 
 .leaflet-draw-toolbar .leaflet-draw-edit-remove {
 	background-position: -182px -2px;
+}
+.leaflet-draw-edit-remove {
+	background: transparent url("/assets/map_images/delete_icon.png") no-repeat center left/100% auto !important;
 }
 
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-edit-remove {

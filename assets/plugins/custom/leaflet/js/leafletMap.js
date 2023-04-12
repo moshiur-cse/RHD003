@@ -110,9 +110,9 @@ function mapInit() {
     });
 
     var bgLayersContent = $(bgLayers.getContainer());
-    //bgLayersContent.find("a.leaflet-control-layers-toggle").remove();
+    bgLayersContent.find("a.leaflet-control-layers-toggle").remove();
     bgLayersContent.find("form.leaflet-control-layers-list").css("display", "block");
-    //$("#map_bg_layers").append(bgLayersContent);
+    $("#map_bg_layers").append(bgLayersContent);
 
 
 }
@@ -139,6 +139,8 @@ function hideOverlappingTooltips() {
         }
     }
 }
+
+
 
 function map_reset() {
     location.reload(true);
@@ -176,4 +178,50 @@ function downloadMap(caption) {
     });
     jQuery("#busy-indicator").fadeOut(150);
 
+}
+
+function style(feature) {
+    return {
+        //fillColor: isLegendColor == 0 ? '#ffffff00' : userDefinedColorList[feature.properties[legendcolorField]], //colorList[feature.properties[attCode]],
+        //fillColor: isLegendColor == 0 ? '#ffffff00' : userDefinedColorList[layerId][mapBindData[layerId][feature.properties[attCode]]],
+        //fillColor: isLegendColor == 0 ? '#ffffff00' : getColor(layerId, mapBindData[layerId][feature.properties[attCode]]),
+        //fillColor: '#0000ffff',
+        weight: 1,
+        opacity: 1,
+        //color: tDataColor,
+        /*dashArray: '1',*/
+        fillOpacity: 1
+    };
+}
+
+function onEachFeature(feature, layer) {
+
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        //click: mapOnClickAction
+    });
+
+    // if (cLat != null || cLong != null) {
+    //     mapLabelShowHide(feature, layer, layerId, mainAtt, cLat, cLong);
+    // }
+}
+function highlightFeature(e) {
+    var layer = e.target;
+
+    var popupContent = "";
+        var mainContent = '';
+        for (var i = 0; i < Object.getOwnPropertyNames(layer.feature.properties).length; i++) {
+            // if (Object.getOwnPropertyNames(layer.feature.properties)[i] == "CntLat" || Object.getOwnPropertyNames(layer.feature.properties)[i] == "CntLong" || Object.getOwnPropertyNames(layer.feature.properties)[i] == "LegendId" || Object.getOwnPropertyNames(layer.feature.properties)[i] == "GeoCode" || Object.getOwnPropertyNames(layer.feature.properties)[i] == "Geocode") {
+            //     continue;
+            // }
+            mainContent += '<tr><th>' + Object.getOwnPropertyNames(layer.feature.properties)[i] + '</th><td>' + layer.feature.properties[Object.getOwnPropertyNames(layer.feature.properties)[i]] + '</td></tr>';
+        }
+        popupContent = '<table class="table table-border">' + mainContent + '</table>';
+    
+    layer.bindPopup(popupContent).openPopup(e.latlng);
+}
+
+function resetHighlight(e) {
+    mymap.closePopup();
 }

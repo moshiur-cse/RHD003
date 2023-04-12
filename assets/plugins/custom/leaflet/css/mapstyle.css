@@ -239,26 +239,26 @@ h4 {
 
 
 .btn_map_bglayers {
-    background: #fff url("../images/layer_bg.png") no-repeat center center/80% auto;
+    background: #fff url("/assets/map_images/layer_bg.png") no-repeat center center/80% auto;
     /*overflow: hidden;*/
 }
 
 .btn_map_layers {
-    background: #fff url("../images/map_filter.png") no-repeat center center/80% auto;
+    background: #fff url("/assets/map_images/map_filter.png") no-repeat center center/80% auto;
     /*background: #fff url("../images/search.png") no-repeat center center/80% auto;*/
 }
 
 .btn_full_extent {
-    background: #fff url("../images/map_full_extent.svg") no-repeat center center/80% auto;
+    background: #fff url("/assets/map_images/map_full_extent.svg") no-repeat center center/80% auto;
 }
 
 #map_layer {
-    background: #fff url("../images/layerList_icon.png") no-repeat center center/80% auto;
+    background: #fff url("/assets/map_images/layerList_icon.png") no-repeat center center/80% auto;
 }
 
 
 .map_reset {
-    background: #fff url("../images/map_reset.png") no-repeat center center/80% auto;
+    background: #fff url("/assets/map_images/map_reset.png") no-repeat center center/80% auto;
 }
 
 .map_draw_arrow_img {
@@ -266,16 +266,16 @@ h4 {
     height: 30px;
     margin-left: 4px;
     text-align: right;
-    background: #fff url("../images/bottom_arrow.png") no-repeat center center/80% auto;
+    background: #fff url("/assets/map_images/bottom_arrow.png") no-repeat center center/80% auto;
 }
 
 
 .btn_map_download {
-    background: #fff url("../images/map_download.png") no-repeat center center/80% auto;
+    background: #fff url("/assets/map_images/map_download.png") no-repeat center center/80% auto;
 }
 
 .btn_full_screen {
-    background: #fff url("../images/map_full_screen.png") no-repeat center center/60% auto;
+    background: #fff url("/assets/map_images/map_full_screen.png") no-repeat center center/60% auto;
 }
 
 
@@ -304,7 +304,7 @@ h4 {
     display: inline-block;
     text-align: center;
     vertical-align: bottom;
-    background: transparent url("../images/database.png") no-repeat top center/auto 70%;
+    background: transparent url("/assets/map_images/database.png") no-repeat top center/auto 70%;
 }
 
 
@@ -534,7 +534,7 @@ h4 {
     height: 24px;
     margin-right: 10px;
     text-align: left;
-    background: transparent url("../images/arrow_left.png") no-repeat center left/100% auto;
+    background: transparent url("/assets/map_images/arrow_left.png") no-repeat center left/100% auto;
 }
 
 .legend_btn_right {
@@ -551,7 +551,7 @@ h4 {
     height: 24px;
     margin-left: 10px;
     text-align: right;
-    background: transparent url("../images/arrow_right.png") no-repeat center right/100% auto;
+    background: transparent url("/assets/map_images/arrow_right.png") no-repeat center right/100% auto;
 }
 
 .map_legend_btn {

@@ -88,7 +88,7 @@
         .map_btns_content {
             z-index: 1000;
             position: absolute;
-            /*top: 150px;*/
+            top: 150px;
             left: auto;
             right: 1%;
             width: 50px;
@@ -201,11 +201,11 @@
  
     <div>
 
-        <form method="POST" enctype="multipart/form-data">
+        <!-- <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Upload</button>
-        </form>
+        </form> -->
 
         <div id="map_btns_content" class="map_btns_content">
             <div id="filter_option" class="map_btns btn_map_layers" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable" title="Add Map Layer"></div>
@@ -219,10 +219,10 @@
 
         </div>
 
-        <!-- <div id="map_left_content" class="map_left_content">
+        <div id="map_left_content" class="map_left_content">
             <div id="map_layer_draw" class="map_draw_arrow_img" title="Draw Map" style="float:left"> </div>
             <div id="map_layer_data" class="map_draw_arrow_img" title="Attribute Information" style="float:right"> </div>
-        </div> -->
+        </div>
 
 
         <div id="basic-map" class="leaflet-map page-content" style="height: 700px;"></div>
@@ -269,11 +269,15 @@
                     //L.geoJSON(data).addTo(mymap).bindTooltip('Hello, world!', {sticky: true}).openTooltip();
 
                     const myLayer = L.geoJSON(data, {
-                        onEachFeature: function(feature, layer) {
-                          layer.bindPopup(Object.keys(feature.properties).map(function(k) {
-                            return k + ": " + feature.properties[k];
-                          }).join("<br>"));
-                        }
+                        //onEachFeature: function(feature, layer) {
+                          //layer.bindPopup(Object.keys(feature.properties).map(function(k) {
+                            //return k + ": " + feature.properties[k];
+                          //}).join("<br>"));
+                        //}
+
+                        style: style,
+                        onEachFeature: onEachFeature,
+                        //pointToLayer: pointToLayer,
                       }).addTo(mymap);
 
                     
@@ -289,7 +293,15 @@
             //L.geoJSON(data).addTo(mymap);
             //});
         }
-        
+        jQuery('#map_layer_draw').click(function($) {
+
+            if (jQuery('.leaflet-draw').is(':visible')) {
+                jQuery('.leaflet-draw').slideUp();
+
+            } else {
+                jQuery('.leaflet-draw').slideDown();
+            }
+        });
         
     </script>
 

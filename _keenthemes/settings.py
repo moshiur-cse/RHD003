@@ -379,7 +379,7 @@ KT_THEME_VENDORS = {
         "css": [
             "plugins/custom/leaflet/css/leaflet.css",
             "plugins/custom/leaflet/css/leaflet.draw.css",
-            "plugins/custom/leaflet/css/mapstyle.draw.css",
+            "plugins/custom/leaflet/css/mapstyle.css",
         ],
         "js": [
             "plugins/custom/leaflet/js/leaflet.js",
