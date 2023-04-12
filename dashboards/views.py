@@ -15,10 +15,7 @@ import json
 from django.http import JsonResponse
 from django.core.serializers import serialize
 import os
-
-
-
-
+from .forms import UploadFileForm
 
 """
 This file is a view controller for multiple pages as a module.
@@ -62,10 +59,31 @@ class DashboardsView(TemplateView):
 def map(request):
     layout = 'layout/master.html'  # set a default value 
     template_name = 'pages/maps/map.html'
-    shapefile = gpd.read_file('assets/geofiles/division/division.shp')
-    my_geojson_str = shapefile.to_crs(epsg=4326).to_json()  
+    #shapefile = gpd.read_file('assets/geofiles/division/division.shp')
+    #my_geojson_str = shapefile.to_crs(epsg=4326).to_json()  
     
-    
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            files = request.FILES.getlist('files')
+            for shapefile in files:
+                if shapefile.name.endswith('.shp'):
+                    os.environ['SHAPE_RESTORE_SHX'] = 'YES'                   
+                    shapefile_path = shapefile.temporary_file_path()
+                    shape_file = gpd.read_file(shapefile_path)
+                    shape_file = shape_file.set_crs(epsg=4326)                  
+                if shapefile.name.endswith('.dbf'):
+                    os.environ['SHAPE_RESTORE_SHX'] = 'YES'
+                    dbffile_path = shapefile.temporary_file_path()
+                    dbf_file = gpd.read_file(dbffile_path)
+                    dbf_file = dbf_file.set_crs(epsg=4326)                     
+                    
+            joined_df = gpd.pd.merge(shape_file, dbf_file, on='common_field')   
+            print(joined_df.head())                 
+            my_geojson_str = joined_df.to_crs(epsg=4326).to_json()    
+            # do something with the uploaded files
+    else:
+        form = UploadFileForm()
     
     
     #my_geojson_data = MyModel.objects.get(pk=1).geojson_field
@@ -76,25 +94,19 @@ def map(request):
     # filepath = os.path.join(folder_path, file_name)
     # with open(filepath, 'w') as f:
     #     f.write(my_geojson_str)
-
     # Save the GeoJSON data to the folder
-    #save_geojson_to_folder(my_geojson_str, folder_path, file_name)
-    
-    
-
+    #save_geojson_to_folder(my_geojson_str, folder_path, file_name) 
     #print('Test');        
     #my_geojson_str = json.dumps(my_geojson_str)      
-    #return render(request, 'my_template.html', {'my_geojson': my_geojson_str})  
-                
-    #my_geojson_str=  gpd.read_file('assets/geofiles/division/division.json')    
-          
+    #return render(request, 'my_template.html', {'my_geojson': my_geojson_str})                
+    #my_geojson_str=  gpd.read_file('assets/geofiles/division/division.json')        
     #print(my_geojson_str)
         
 
-    context = {'layout':layout,'geojson':JsonResponse(my_geojson_str, safe=False),'my_data': ''}
+    #context = {'layout':layout,'geojson':JsonResponse(my_geojson_str, safe=False),'my_data': '','form': form}
     
-    #context = {'layout':layout,'geojson':json(my_geojson_str),'my_data': ''}
-    return render(request, template_name, context)
+    context = {'layout':layout,'form': form}
+    return render(request, template_name,context)
         #return render(request, 'map.html', {'geojson': geojson,'my_variable':'Moshiur Rahman'})    
 
 def save_geojson_to_folder(geojson_data, folder_path, file_name):
@@ -110,7 +122,7 @@ def save_geojson_to_folder(geojson_data, folder_path, file_name):
 def get_geojson_data(request):
         # get the data you need, for example:
         shapefile = gpd.read_file('assets/geofiles/division/division.shp')
-        #shapefile = shapefile1.loc[shapefile1['GeoCode'] == '20']
+        shapefile = shapefile.loc[shapefile['GeoCode'] == '20']
         #console(shapefile.head())
         my_geojson_str = shapefile.to_crs(epsg=4326).to_json()     
         column_names = list(shapefile.columns)
