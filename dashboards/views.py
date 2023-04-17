@@ -54,7 +54,8 @@ class DashboardsView(TemplateView):
 
         return context
     
-
+    def web_map(request):
+        return render(request)
         #return render(request, 'map.html')
 def map(request):
     layout = 'layout/master.html'  # set a default value 
@@ -121,8 +122,8 @@ def save_geojson_to_folder(geojson_data, folder_path, file_name):
 
 def get_geojson_data(request):
         # get the data you need, for example:
-        shapefile = gpd.read_file('assets/geofiles/division/division.shp')
-        shapefile = shapefile.loc[shapefile['GeoCode'] == '20']
+        shapefile = gpd.read_file('assets/geofiles/upazila/upazila.shp')
+        #shapefile = shapefile.loc[shapefile['GeoCode'] == '20']
         #console(shapefile.head())
         my_geojson_str = shapefile.to_crs(epsg=4326).to_json()     
         column_names = list(shapefile.columns)

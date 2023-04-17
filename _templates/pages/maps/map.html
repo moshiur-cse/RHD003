@@ -237,6 +237,7 @@
 
    
     <script>
+        var mapLabels = L.layerGroup();
         mapInit();
         showHideLayer();
         function showHideLayer(){
@@ -265,7 +266,6 @@
                     //const featureProperties = data.features.map(feature => feature.properties);
                     //const propertyNames = Object.keys(featureProperties[0]);
                     //console.log(propertyNames.length);
-
                     //L.geoJSON(data).addTo(mymap).bindTooltip('Hello, world!', {sticky: true}).openTooltip();
 
                     const myLayer = L.geoJSON(data, {
@@ -300,6 +300,18 @@
 
             } else {
                 jQuery('.leaflet-draw').slideDown();
+            }
+        });
+
+        jQuery('#map_label').click(function($) {
+            if (jQuery("#map_label").prop("checked") == true) {
+                mymap.addLayer(mapLabels);
+                hideOverlappingTooltips();
+
+            } else {
+                if (mymap.hasLayer(mapLabels)) {
+                    mymap.removeLayer(mapLabels);
+                }
             }
         });
         

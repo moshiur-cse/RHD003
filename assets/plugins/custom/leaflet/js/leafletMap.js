@@ -140,7 +140,15 @@ function hideOverlappingTooltips() {
     }
 }
 
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
 
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 function map_reset() {
     location.reload(true);
@@ -185,10 +193,10 @@ function style(feature) {
         //fillColor: isLegendColor == 0 ? '#ffffff00' : userDefinedColorList[feature.properties[legendcolorField]], //colorList[feature.properties[attCode]],
         //fillColor: isLegendColor == 0 ? '#ffffff00' : userDefinedColorList[layerId][mapBindData[layerId][feature.properties[attCode]]],
         //fillColor: isLegendColor == 0 ? '#ffffff00' : getColor(layerId, mapBindData[layerId][feature.properties[attCode]]),
-        //fillColor: '#0000ffff',
+        fillColor: getRandomColor(),
         weight: 1,
         opacity: 1,
-        //color: tDataColor,
+        color: getRandomColor(),
         /*dashArray: '1',*/
         fillOpacity: 1
     };
@@ -205,6 +213,8 @@ function onEachFeature(feature, layer) {
     // if (cLat != null || cLong != null) {
     //     mapLabelShowHide(feature, layer, layerId, mainAtt, cLat, cLong);
     // }
+
+    mapLabelShowHide(feature, layer);
 }
 function highlightFeature(e) {
     var layer = e.target;
@@ -221,7 +231,29 @@ function highlightFeature(e) {
     
     layer.bindPopup(popupContent).openPopup(e.latlng);
 }
-
 function resetHighlight(e) {
     mymap.closePopup();
+}
+
+
+
+function mapLabelShowHide(feature, layer) {
+    var label = L.marker([layer.feature.properties['CntLat'], layer.feature.properties['CntLong']], {
+        icon: L.divIcon({
+            className: 'label mapLabel',
+            html: feature.properties['Upazila'],
+            iconSize: [100, 40],
+        })
+    });
+    mapLabels.addLayer(label);
+
+    if (jQuery("#map_label").prop("checked") == true) {
+        mymap.addLayer(mapLabels);
+        hideOverlappingTooltips();
+    }
+    else {
+        if (mymap.hasLayer(mapLabels)) {
+            mymap.removeLayer(mapLabels);
+        }
+    }
 }
