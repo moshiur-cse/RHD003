@@ -48,7 +48,25 @@ INSTALLED_APPS = [
     'crispy_forms',
     'leaflet',
     'django.contrib.gis',
-    "debug_toolbar",  # debug_toolbar
+    'debug_toolbar',  # debug_toolbar
+    
+    'arcgis.widgets',
+    #'admin_list',
+    # 'admin_modify',
+    # 'admin_urls',
+    # 'cache',
+    # 'crispy_forms_field',
+    # 'crispy_forms_filters',
+    # 'crispy_forms_tags',
+    # 'crispy_forms_utils',
+    # 'i18n',
+    # 'jazzmin',
+    # 'l10n',
+    # 'leaflet_tags',
+    # 'log',
+    # 'static',
+    # 'theme',
+    # 'tz',
 ]
 
 
@@ -591,3 +609,9 @@ if not GDAL_LIBRARY_PATH:
 # Add GDAL_LIBRARY_PATH to your Django settings
 if GDAL_LIBRARY_PATH:
     os.environ['GDAL_LIBRARY_PATH'] = GDAL_LIBRARY_PATH
+    
+# ArcGIS API configuration
+GIS_URL = 'https://www.arcgis.com'
+GIS_USERNAME = 'moshiur'
+GIS_PASSWORD = 'Rahman@2022'
+GIS_VERIFY_CERT = True    

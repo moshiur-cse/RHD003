@@ -16,7 +16,7 @@ from django.http import JsonResponse
 from django.core.serializers import serialize
 import os
 from .forms import UploadFileForm
-
+from arcgis.gis import GIS
 """
 This file is a view controller for multiple pages as a module.
 Here you can override the page view layout.
@@ -54,8 +54,22 @@ class DashboardsView(TemplateView):
 
         return context
     
-    def web_map(request):
-        return render(request)
+def web_map(request):
+    template_name = 'pages/maps/web_map.html'
+    # gis = GIS('https://www.arcgisbd.com/portal/home/', 'moshiur', 'Rahman@2022')
+
+    # # Get the map view item from ArcGIS Online
+    # map_item = gis.content.get('5350dfbbcc9b49318d474958cd6d0831')
+    # print(map_item)
+    # # Create a dictionary with the map's properties
+    # map_properties = {
+    #     'map_id': map_item.id,
+    #     'extent': map_item.extent,
+    #     #'layers': map_item.layers
+    # }
+    
+    #{'map_properties': map_properties}
+    return render(request,template_name)
         #return render(request, 'map.html')
 def map(request):
     layout = 'layout/master.html'  # set a default value 
