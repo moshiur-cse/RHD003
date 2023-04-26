@@ -71,6 +71,11 @@ def web_map(request):
     #{'map_properties': map_properties}
     return render(request,template_name)
         #return render(request, 'map.html')
+        
+def arc_gis_map(request):
+    template_name = 'pages/maps/web-map.html'
+    return render(request,template_name)
+        
 def map(request):
     layout = 'layout/master.html'  # set a default value 
     template_name = 'pages/maps/map.html'

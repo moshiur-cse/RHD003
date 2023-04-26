@@ -1,6 +1,5 @@
-{% extends 'layout/default.html' %}
+
 {% load i18n %}
-{% block title %}{% translate "Map" %}{% endblock %}
 {% block content %}
     <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
     
@@ -14,22 +13,32 @@
 
         esriConfig.portalUrl = "https://www.arcgisbd.com/portal/";
         esriConfig.apiKey = "YOUR_API_KEY";
-        var layerURL = "https://www.arcgisbd.com/server/rest/services/Hosted/Division/FeatureServer/0";
+        //https://www.arcgisbd.com/server/rest/services/Hosted/Division/FeatureServer/0
+        var layerURL = "https://www.arcgisbd.com/server/rest/services/Hosted/Historical_Rangamati_landslide_location/FeatureServer/";
         var layer = new FeatureLayer({
-            title: "District Boundary",
+            title: "Historical Rangamati landslide location",
             url: layerURL,
             outFields: ["*"],
             copyright: "CEGIS"
         });
+
+        var layerDivision = new FeatureLayer({
+            title: "Division",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Division/FeatureServer/",
+            outFields: ["*"],
+            copyright: "CEGIS"
+        });
+
         const map = new Map({
           basemap: "arcgis-topographic",
-          layers: [layer]
+          layers: [layer,layerDivision]
         });
-         
+        //Latitude: 22.6500 Longitude: 92.1833.
         const view = new MapView({
           map: map,
-          center: [90.537777, 23.737777], // Longitude, latitude
-          zoom: 7, // Zoom level
+          //center: [90.537777, 23.737777], // Longitude, latitude
+          center: [92.1833, 22.6500], // Longitude, latitude
+          zoom: 9, // Zoom level
           container: "viewDiv", // Div element
           ui: {
             components: ["zoom", "compass", "navigation-toggle"]
@@ -68,11 +77,6 @@
                 "top-left"
             );
       });
-
-        document.getElementById('myButton').addEventListener('click', function() {
-          var e = new KeyboardEvent('keydown', {key: 'F5', code: 'F5', keyCode: 116, ctrlKey: true, shiftKey: false, altKey: false, metaKey: false});
-          document.dispatchEvent(e);
-        });
-
+       
     </script>
 {% endblock content %}

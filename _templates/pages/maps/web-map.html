@@ -1,0 +1,2969 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Map Viewer Final</title>
+    <!-- Calcite Bootstrap -->
+    <link rel="stylesheet"href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.8.css" />
+
+    <!-- Calcite Maps -->
+    <link rel="stylesheet"href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.8.css" />
+
+    <!-- ArcGIS JS 4.16 -->
+    <link rel="stylesheet"href="https://js.arcgis.com/4.16/esri/themes/dark/main.css" />
+    <link href="https://mapgis.lged.gov.bd/gsims/Content/Map.css" rel="stylesheet" />
+    <script src="https://mapgis.lged.gov.bd/gsims/Content/jquery/dist/jquery.min.js"></script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        #toolbarDiv {
+            position: absolute;
+            top: 150px;
+            right: 15px;
+            cursor: default;
+            /*display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;*/
+        }
+        .sassy-theme .esri-widget,
+        .sassy-theme .esri-widget--button,
+        .sassy-theme .esri-menu,
+        .sassy-theme .esri-popup__main-container,
+        .sassy-theme .esri-popup .esri-popup__pointer-direction,
+        .sassy-theme .esri-popup .esri-popup__button,
+        .sassy-theme .esri-button,
+        .sassy-theme .esri-input,
+        .sassy-theme .esri-widget a {
+            background-color: black;
+            color: #fff;
+            width: 48px;
+            height: 96px;
+        }
+
+
+
+
+        .esri-widget--button
+        {
+            height:64px;
+            width:64px
+        }
+
+        .esri-widget--button.active,
+        .esri-widget--button.active:hover,
+        .esri-widget--button.active:focus {
+            cursor: default;
+            background-color: #999696;
+        }
+
+            .esri-widget--button.active path,
+            .esri-widget--button.active:hover path,
+            .esri-widget--button.active:focus path {
+                fill: #e4e4e4;
+            }
+
+        .buttonTitle {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+            .buttonTitle:hover, .buttonTitle:focus {
+                color: #e4e4e4;
+            }
+    </style>
+    <style>
+        #infoDivThemetic {
+            position: fixed;
+            bottom: 60px;
+            right: 10px;
+            cursor: default;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body class="calcite-maps calcite-nav-top">
+
+    <!-- Navbar -->
+    <nav class="navbar calcite-navbar navbar-fixed-top calcite-text-light calcite-bg-dark calcite-bgcolor-dark-blue">
+        <!-- Menu -->
+        <div class="dropdown calcite-dropdown calcite-text-dark calcite-bg-light"
+             role="presentation">
+            <a class="dropdown-toggle"
+               role="button"
+               aria-haspopup="true"
+               aria-expanded="false">
+                <div class="calcite-dropdown-toggle">
+                    <span class="sr-only">Toggle dropdown menu</span> <span></span>
+                    <span></span><span></span><span></span>
+                </div>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="active">
+                    <a class="hidden-md hidden-lg"
+                       href="#mapTab"
+                       aria-controls="mapTab"
+                       role="tab"
+                       data-toggle="tab">Map</a>
+                </li>
+                <li>
+                    <a class="hidden-md hidden-lg"
+                       href="#sceneTab"
+                       aria-controls="sceneTab"
+                       role="tab"
+                       data-toggle="tab">Scene</a>
+                </li>
+                <li>
+                    <a href="Dashboard" role="button" data-target="" aria-haspopup="true"><span class="glyphicon glyphicon-th-large"></span>Dashboard</a>
+                </li>
+                <li>
+                    <a role="button" data-target="#panelBasemaps" aria-haspopup="true"><span class="glyphicon glyphicon-th-large"></span>Basemaps</a>
+                </li>
+                <li>
+                    <a role="button" data-target="#panelSettings" aria-haspopup="true"><span class="glyphicon glyphicon-cog"></span>Settings</a>
+                </li>
+                <li>
+                    <a role="button" id="calciteToggleNavbar" aria-haspopup="true"><span class="glyphicon glyphicon-fullscreen"></span>Full Map</a>
+                </li>
+            </ul>
+        </div>
+        <!-- Title -->
+        <div class="calcite-title calcite-overflow-hidden">
+            <span class="calcite-title-main">RHD: Map Viewer</span>
+            <span class="calcite-title-divider hidden-xs"></span>
+            <span class="calcite-title-sub hidden-xs" id="btnHomeSpan">
+                <a href="/" role="button" data-target="" aria-haspopup="true" class="buttonTitle"><span class="glyphicon esri-icon-home">&nbsp;</span>Dashboard</a>
+            </span>
+            <span class="calcite-title-sub hidden-xs" style="margin-left: 10px; display:none" id="btnHomeSpan1">
+                <a href="MapViewer" role="button" data-target="" aria-haspopup="true" class="buttonTitle"><span class="glyphicon esri-icon-refresh">&nbsp;</span>Refresh</a>
+            </span>
+        </div>
+        <!-- Nav -->
+        <ul class="nav navbar-nav calcite-nav" style="display:none">
+            <li class="active">
+                <a id="mapNav"
+                   class="hidden-xs hidden-sm"
+                   href="#mapTab"
+                   aria-controls="mapTab"
+                   aria-expanded="true"
+                   role="tab"
+                   data-toggle="tab"
+                   data-tooltip="tip"
+                   title="2D View"
+                   data-placement="bottom">Map</a>
+            </li>
+            <li>
+                <a id="sceneNav"
+                   class="hidden-xs hidden-sm"
+                   href="#sceneTab"
+                   aria-controls="sceneTab"
+                   role="tab"
+                   data-toggle="tab"
+                   data-tooltip="tip"
+                   title="3D View"
+                   data-placement="bottom">Scene</a>
+            </li>
+        </ul>
+    </nav>
+    <!--/.calcite-navbar -->
+    <!-- Map  -->
+    <div id="styleSwitcher" class="style-switcher" style="right: -260px;">
+        <a id="styleSwitcherOpen" class="style-switcher-open" onclick="ShowDiv()" href="#"><i class="glyphicon glyphicon-cog"></i></a>
+        <script type="text/javascript">
+            function ShowDiv() {
+                // $("#styleSwitcher").addClass("active");
+                var ddl = $("#styleSwitcher");
+                //ddl.addClass("active")
+                //ddl.css('right', 0);
+
+                if (ddl.hasClass("active") == true) {
+                    ddl.removeClass("active");
+                    ddl.animate({ right: "-260px" });
+                }
+                else {
+                    ddl.addClass("active");
+                    ddl.animate({ right: "0px" });
+                }
+            }
+        </script>
+        <div class="style-switcher-wrap small">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tabFilter" data-toggle="tab"><strong>Filter</strong></a></li>
+                <li><a href="#tabSettings" data-toggle="tab"><strong>Settings</strong></a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content mb30">
+
+                <div class="tab-pane active" id="tabFilter">
+                    <div class="row" style="padding: 5px; margin-top: 5px">
+                       
+                    </div>
+                </div>
+                <div class="tab-pane" id="tabSettings">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="calcite-map calcite-map-absolute">
+        <div id="tabContainer" class="tab-content">
+            <div id="mapTab" class="tab-pane fade in active" role="tabpanel">
+                <div id="mapViewDiv"></div>
+            </div>
+            <div id="sceneTab" class="tab-pane fade" style="display:none" role="tabpanel">
+                <div id="sceneViewDiv"></div>
+            </div>
+        </div>
+        <div id="tools" class="esri-widget">
+            <button id="zoomToHome" class="btn btn-primary">Home</button>
+            <button id="BtnThemetic" class="btn btn-warning" style="font-weight:bold; display:none">Themetic</button>
+            <button id="clearButton" class="btn btn-primary">Clear</button>
+            <button id="zoomprev" class="btn btn-info tool">Previous</button>
+            <button id="zoomnext" class="btn btn-info tool">Next</button>
+        </div>
+    </div>
+    <!-- /.calcite-map -->
+    <!-- Start Measurement  -->
+    <div id="toolbarDiv" class="esri-component esri-widget">
+        <button id="distance"
+                class="esri-widget--button esri-interactive esri-icon-measure-line"
+                title="Distance Measurement Tool">
+        </button>
+        <button id="area"
+                class="esri-widget--button esri-interactive esri-icon-measure-area"
+                title="Area Measurement Tool">
+        </button>
+        <button id="clear"
+                class="esri-widget--button esri-interactive esri-icon-trash"
+                title="Clear Measurements">
+        </button>
+    </div>
+    <!-- End Measurement  -->
+
+    <div id="latLonInfo" style="width: 100%; text-align: center; font-weight: bold; position: absolute; bottom: 5px;"></div>
+    <!-- Themetic Panel -->
+    <div id="infoDivThemetic" class="esri-widget" style="border: solid 1px gray; display:none">
+        Layer:
+        <select id="theme_layer" class="esri-widget" style="width: 80px; height: 25px" onchange="loadThematicField()">
+            <option value="school" selected>Schools</option>
+            <option value="upazila">Upazila</option>
+        </select>
+        Field:
+        <select id="theme_field" class="esri-widget" style="width: 120px; height: 25px">
+            <option value="student_total" selected>No. of Students</option>
+            <option value="teacher_total">No. of Teachers</option>
+            <option value="has_electricity">Has Electricity</option>
+            <option value="has_water">Has Water Source</option>
+            <option value="is_cyclone_center">Has Cyclone Center</option>
+            <option value="is_flood_center">Has Flood Center</option>
+            <option value="has_access_road">Has Access Road</option>
+            <option value="voting_center">Has Voting Center</option>
+            <option value="const_status">Has Construction Ongoing</option>
+        </select>
+        Classification:
+        <select id="class-select" class="esri-widget" style="width: 100px; height: 25px">
+            <option value="equal-interval" selected>Equal interval</option>
+            <option value="quantile">Quantile</option>
+            <option value="natural-breaks">Natual Breaks</option>
+            <option value="manual">Manual</option>
+        </select>
+        Breaks:
+        <input id="theme_classes" class="esri-widget" type="number" value="5" min="2" step="1" max="10" style="width: 45px; height: 25px; text-align: center; border: solid 1px gray" />
+        <button id="themeBtnShow" class="btn btn-primary">Show</button>
+    </div>
+
+    <!-- Themetic Panel -->
+    <!-- Panels -->
+
+    <div class="calcite-panels calcite-panels-right calcite-text-light calcite-bg-dark panel-group">
+        <!-- Basemaps Panel -->
+
+        <div id="panelBasemaps" class="panel collapse">
+            <div id="headingBasemaps" class="panel-heading" role="tab">
+                <div class="panel-title">
+                    <a class="panel-toggle collapsed"
+                       role="button"
+                       data-toggle="collapse"
+                       href="#collapseBasemaps"
+                       aria-expanded="false"
+                       aria-controls="collapseBasemaps">
+                        <span class="glyphicon glyphicon-th-large"
+                              aria-hidden="true"></span><span class="panel-label">Basemaps</span>
+                    </a>
+                    <a class="panel-close"
+                       role="button"
+                       data-toggle="collapse"
+                       data-target="#panelBasemaps"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+                </div>
+            </div>
+            <div id="collapseBasemaps"
+                 class="panel-collapse collapse"
+                 role="tabpanel"
+                 aria-labelledby="headingBasemaps">
+                <div class="panel-body">
+                    <div id="basemapPanelDiv"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Panel Settings -->
+        <div id="panelSettings" class="panel panel-map collapse">
+            <div id="headingSettings" class="panel-heading">
+                <div class="panel-title">
+                    <a class="panel-toggle"
+                       role="button"
+                       data-toggle="collapse"
+                       href="#collapseSettings"
+                       data-parent="#panelAccordion"
+                       aria-expanded="true"
+                       aria-controls="collapseSettings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="panel-label">Settings</span></a>
+                    <a class="panel-close"
+                       role="button"
+                       data-toggle="collapse"
+                       data-target="#panelSettings"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+                </div>
+            </div>
+            <div id="collapseSettings"
+                 class="panel-collapse collapse"
+                 role="tabpanel"
+                 aria-labelledby="headingSettings">
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <!-- Theme -->
+
+                        <div class="form-group">
+                            <label for="settingsTheme" class="col-xs-3 control-label">
+                                Theme
+                            </label>
+                            <div class="col-xs-9">
+                                <select id="settingsTheme" class="form-control">
+                                    <option value="calcite-dark"
+                                            data-textcolor="calcite-text-light"
+                                            data-bgcolor="calcite-bg-dark"
+                                            selected>
+                                        Calcite Dark
+                                    </option>
+                                    <option value="calcite-light"
+                                            data-textcolor="calcite-text-dark"
+                                            data-bgcolor="calcite-bg-light">
+                                        Calcte Light
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Color -->
+
+                        <div class="form-group">
+                            <label for="settingsColor" class="col-xs-3 control-label">
+                                Color
+                            </label>
+                            <div class="col-xs-9">
+                                <select id="settingsColor" class="form-control">
+                                    <option value="" data-theme="calcite-theme-light">Calcite Default</option>
+                                    <option value="calcite-bgcolor-dark-blue"
+                                            data-textcolor="calcite-text-light"
+                                            data-bgcolor="calcite-bg-custom">
+                                        Calcite Dark Blue
+                                    </option>
+                                    <option value="calcite-bgcolor-dark-green"
+                                            data-textcolor="calcite-text-light"
+                                            data-bgcolor="calcite-bg-custom">
+                                        Calcite Dark Green
+                                    </option>
+                                    <option value="calcite-bgcolor-dark-brown"
+                                            data-textcolor="calcite-text-light"
+                                            data-bgcolor="calcite-bg-custom">
+                                        Calcite Dark Brown
+                                    </option>
+                                    <option value="calcite-bgcolor-dark-red"
+                                            data-textcolor="calcite-text-light"
+                                            data-bgcolor="calcite-bg-custom">
+                                        Calcite Dark Red
+                                    </option>
+                                    <option value="calcite-bgcolor-darkest-grey"
+                                            data-textcolor="calcite-text-light"
+                                            data-bgcolor="calcite-bg-custom">
+                                        Calcite Darkest Grey
+                                    </option>
+                                    <option value="calcite-bgcolor-lightest-grey"
+                                            data-textcolor="calcite-text-dark"
+                                            data-bgcolor="calcite-bg-custom">
+                                        Calcite Lightest Grey
+                                    </option>
+                                    <option value="calcite-bgcolor-blue-75"
+                                            data-textcolor="calcite-text-light"
+                                            data-bgcolor="calcite-bg-custom">
+                                        Calcite Blue 75%
+                                    </option>
+                                    <option value="calcite-bgcolor-black-75"
+                                            data-textcolor="calcite-text-light"
+                                            data-bgcolor="calcite-bg-custom">
+                                        Calcite Black 75%
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Widgets -->
+
+                        <div class="form-group">
+                            <label for="settingsWidgets" class="col-xs-3 control-label">
+                                Widgets
+                            </label>
+                            <div class="col-xs-9">
+                                <select id="settingsWidgets" class="form-control">
+                                    <option value="calcite-widgets-dark">Calcite Dark</option>
+                                    <option value="calcite-widgets-light" selected>Calcite Light</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Layout -->
+
+                        <div class="form-group">
+                            <label for="settingsLayout" class="col-xs-3 control-label">
+                                Layout
+                            </label>
+                            <div class="col-xs-9">
+                                <select id="settingsLayout" class="form-control">
+                                    <option value="calcite-nav-top"
+                                            data-nav="navbar-fixed-top"
+                                            selected>
+                                        Top
+                                    </option>
+                                    <option value="calcite-nav-bottom"
+                                            data-nav="navbar-fixed-bottom">
+                                        Bottom
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.calcite-panels -->
+    <script type="text/javascript">
+        var dojoConfig = {
+            packages: [
+                {
+                    name: "bootstrap",
+                    location:
+                        "https://esri.github.io/calcite-maps/dist/vendor/dojo-bootstrap"
+                },
+                {
+                    name: "calcite-maps",
+                    location: "https://esri.github.io/calcite-maps/dist/js/dojo"
+                }
+            ]
+        };
+    </script>
+    <!-- ArcGIS JS 4.16 -->
+    <script src="https://js.arcgis.com/4.16/"></script>
+
+    <script>
+        var _prevExtent, _preExtent, _currentvExtent, _extentHistory
+        var activeMapLayer;
+        var app;
+
+        var baseLayer;
+        var featureSchool;
+        var featurePoint;
+        var schoolLine;
+        var featureStructure;
+        var featSchoolArea;
+        var featureRoads;
+        var featureWater;
+        var featureUpazila;
+        var featureDistrict;
+        var featureRegion;
+        var featureDivision;
+        var featureConst;
+        //var hazardBorehole;
+        var hazardDrought;
+        var hazardStorm;
+        var hazardErosion;
+        var hazardCyclone;
+        var hazardSoil;
+        var hazardEatrthquake;
+        var hazardFlashFlood;
+        var hazardFloodProne;
+
+
+
+        require([
+            "esri/config",
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/layers/support/LabelClass",
+            "esri/Basemap",
+            "esri/layers/WebTileLayer",
+            "esri/WebScene",
+            "esri/views/SceneView",
+            "esri/layers/SceneLayer",
+            "esri/widgets/Home",
+            "esri/widgets/Search",
+            "esri/widgets/Legend",
+            "esri/widgets/Expand",
+            "esri/widgets/BasemapGallery",
+            "esri/geometry/Extent",
+            "esri/core/watchUtils",
+            "esri/layers/TileLayer",
+            "esri/layers/FeatureLayer",
+            "esri/geometry/support/webMercatorUtils",
+            "esri/smartMapping/renderers/color",
+            "esri/smartMapping/statistics/histogram",
+            "esri/widgets/smartMapping/ClassedColorSlider",
+            "esri/layers/MapImageLayer",
+            "esri/widgets/LayerList",
+            "esri/widgets/Print",
+            "esri/layers/GeoJSONLayer",
+            "esri/layers/GroupLayer",           
+            "esri/widgets/Locate",
+            "esri/widgets/Measurement",
+            "esri/widgets/ScaleBar",
+            "esri/widgets/BasemapGallery/support/LocalBasemapsSource",
+            "esri/widgets/BasemapGallery/support/PortalBasemapsSource",
+            "dojo/dom-class",
+            "dojo/dom",
+            "dojo/on",
+            "esri/renderers/support/jsonUtils",
+            // Calcite Maps
+            "calcite-maps/calcitemaps-v0.8",
+
+            // Calcite Maps ArcGIS Support
+            "calcite-maps/calcitemaps-arcgis-support-v0.8",
+
+            // Bootstrap
+            "bootstrap/Collapse",
+            "bootstrap/Dropdown",
+            "bootstrap/Tab",
+            // Can use @dojo shim for Array.from for IE11
+            "@dojo/framework/shim/array"
+        ], function (
+            esriConfig,
+            Map,
+            MapView,
+            LabelClass,
+            Basemap,
+            WebTileLayer,
+            WebScene,
+            SceneView,
+            SceneLayer,
+            Home,
+            Search,
+            Legend,
+            Expand,
+            BasemapGallery,
+            Extent,
+            watchUtils,
+            TileLayer,
+            FeatureLayer,
+            webMercatorUtils,
+            colorRendererCreator,
+            histogram,
+            ClassedColorSlider,
+            MapImageLayer,
+            LayerList,
+            Print,
+            GeoJSONLayer,
+            GroupLayer,
+            Locate,
+            Measurement,
+            ScaleBar,
+            LocalBasemapsSource,
+            PortalBasemapsSource,
+            domClass, dom, on,
+            rendererJsonUtils,
+            CalciteMaps,
+            CalciteMapsArcGIS
+        ) {
+            _prevExtent = false;
+            _preExtent = null;
+            _currentExtent = null;
+            _extentHistory = [];
+            _extentHistoryIndx = 0;
+            _nextExtent = false;
+
+            //require(["esri/config"], function (esriConfig) {
+
+            //});
+            //esriConfig.portalUrl = "https://mapgis.lged.gov.bd/portal/";
+            //esriConfig.apiKey = "YOUR-API-KEY";
+            esriConfig.portalUrl = "https://mapgis.lged.gov.bd/portal/";
+
+
+            /******************************************************************
+             *
+             * App settings
+             *
+             ******************************************************************/
+            let fieldSelect, classSelect, numClassesInput, slider;
+            app = {
+                zoom: 14,
+                center: [90.3455213, 23.7817257],
+                scale: 50000000,
+                basemap: "streets",
+                viewPadding: {
+                    top: 50,
+                    bottom: 0
+                },
+                uiComponents: ["zoom", "compass", "navigation-toggle"],
+                mapView: null,
+                sceneView: null,
+                containerMap: "mapViewDiv",
+                containerScene: "sceneViewDiv",
+                activeView: null,
+                searchWidget: null
+            };
+
+
+
+            //752287dc556f42038f9d9e45911ed431
+            //54da09a7c9164304bb425f6dfaa75413
+            // Load webscene from portal item
+            var webScene = new WebScene({
+                portalItem: { // autocasts as new PortalItem()
+                    id: "40b69a13334d40628e394698c923bf16"
+                }
+            });
+
+
+            //8726f0a5fc064d598ae77c0c5cd44dff
+            // Create SceneLayer and add to the map
+            //var sceneLayer = new SceneLayer({
+            //    portalItem: {
+            //        id: "5db9d9802f8a4de3a56ceb15ecdbd25f"
+            //    },
+            //    elevationInfo: {
+            //        mode: "absolute-height",
+            //        offset: 6
+            //    }
+            //});
+            //8726f0a5fc064d598ae77c0c5cd44dff
+            //  70b3257bd22c4f649605f4582feffc6e
+            //bf250b10df6d4954ad0eb133827f17c4 last used
+            var template = {
+                title: "<b>School Name: </b> {school_name}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "emis_code",
+                        label: "EMIS Code:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "school_name",
+                        label: "School Name",
+                        visible: true
+                    },
+                    {
+                        fieldName: "division_name",
+                        label: "Division Name",
+                        visible: true
+                    },
+                    {
+                        fieldName: "region_name",
+                        label: "Region Name",
+                        visible: true
+                    },
+                    {
+                        fieldName: "district_name",
+                        label: "District Name",
+                        visible: true
+                    },
+                    {
+                        fieldName: "upazila_name",
+                        label: "Upazila Name",
+                        visible: true
+                    },
+                    {
+                        fieldName: "union_name",
+                        label: "Union Name",
+                        visible: true
+                    },
+                    {
+                        fieldName: "mauza_name",
+                        label: "Mauza Name",
+                        visible: true
+                    },
+                    {
+                        fieldName: "latitude",
+                        label: "Latitude",
+                        visible: true
+                    },
+                    {
+                        fieldName: "longitude",
+                        label: "Longitude",
+                        visible: true
+                    }
+
+                    ]
+
+                },
+                {
+                    type: "media",
+                    mediaInfos: [
+                        {
+                            title: "<b>School Image</b>",
+                            type: "image",
+                            caption: "School Front View",
+                            value: {
+                                sourceURL: "Data/image/30503070601_1.jpg"
+                            }
+                        }
+                    ]
+                },
+                {
+                    type: "text",
+                    text: "<a style=\"color:blue;font-size:larger; font-weight:bold\" href=\"" +
+                        window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1) +
+                        "SchoolDetails.aspx?id={emis_code}\" target=\"_blank\">School Details</a> || <a style=\"color:blue;font-size:larger; font-weight:bold\" href=\""
+                        + window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1)
+                        + "AttachmentDetails.aspx?id={emis_code}\" target=\"_blank\">Attachments</a> || <a style=\"color:blue;font-size:larger; font-weight:bold\" href=\""
+                        + window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1)
+                        + "3DDrone.html?lat={latitude}&lon={longitude}&sname={school_name}\" target=\"_blank\">Drone 3D</a> || "
+                        + "<a style=\"color:blue;font-size:larger; font-weight:bold\" href=\""
+                        + window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1)
+                        + "3DSchool.html?lat={latitude}&lon={longitude}&sname={school_name}\" target=\"_blank\">Map 3D</a>"
+                }
+
+
+                ]
+
+            };
+            var templateLine = {
+                title: "<b>Layer Name: </b> Polyline Feature",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "feat_code",
+                        label: "Code:",
+                        visible: true
+                    },
+
+                    {
+                        fieldName: "feat_type",
+                        label: "Type:",
+                        visible: true
+                    }
+                    ]
+
+                }
+                ]
+
+            };
+            var templateStr = {
+                title: "<b>Layer Name: </b> Polygon Feature",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "feat_code",
+                        label: "Code:",
+                        visible: true
+                    },
+
+                    {
+                        fieldName: "feat_type",
+                        label: "Type:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "feat_name",
+                        label: "Name",
+                        visible: true
+                    }
+                        ,
+                    {
+                        fieldName: "ht_m",
+                        label: "Height (meter)",
+                        visible: true
+                    }
+                    ]
+
+                }
+                ]
+
+            };
+            var templatePoint = {
+                title: "<b>Layer Name: </b> Point Feature",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "feat_code",
+                        label: "Code:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "feat_type",
+                        label: "Type:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "feat_name",
+                        label: "Name",
+                        visible: true
+                    }
+                        ,
+                    {
+                        fieldName: "ht_m",
+                        label: "Height (meter)",
+                        visible: true
+                    }
+                    ]
+
+                }
+                ]
+
+            };
+            var templateSchoolArea = {
+                title: "<b>Layer Name: </b> School Area",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "emis_code",
+                        label: "EMIS Code : ",
+                        visible: true
+                    },
+                    {
+                        fieldName: "area_sqm",
+                        label: "Area (SQM) : ",
+                        visible: true
+                    },
+                    {
+                        fieldName: "area_hec",
+                        label: "Area (Hectare) : ",
+                        visible: true
+                    },
+                    {
+                        fieldName: "area_acr",
+                        label: "Area (Acre) : ",
+                        visible: true
+                    },
+                    {
+                        fieldName: "area_katha",
+                        label: "Area (Katha) : ",
+                        visible: true
+                    },
+                    {
+                        fieldName: "area_dec",
+                        label: "Area (Decimal) : ",
+                        visible: true
+                    }
+                    ]
+                }
+                ]
+
+            };
+            var templateUpazila = {
+                title: "<b>Upazila Name: </b> {upazila_name}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "district_name",
+                        label: "District:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "school_total",
+                        label: "Total School",
+                        visible: true
+                    }
+                        ,
+                    {
+                        fieldName: "teacher_total",
+                        label: "Total Teacher",
+                        visible: true
+                    }
+                        ,
+                    {
+                        fieldName: "student_total",
+                        label: "Total Student",
+                        visible: true
+                    }
+                    ]
+                }
+                ]
+
+            };
+            var baseServiceURL = "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/";
+            var hazardServiceURL = "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/HazardMap/MapServer/";
+            var schoolServiceURL = "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/School/MapServer/";
+            var upazilaServiceURL = "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/Upazila/MapServer/";
+            var mapExp = '';
+            //if ($("#DdlDivision").val() != '-1') {
+            //    mapExp = "division_id=" + $("#DdlDivision").val();
+            //}
+            //if ($("#DdlRegion").val() != '-1') {
+            //    mapExp = "division_id=" + $("#DdlDivision").val() + " and region_id=" + $("#DdlRegion").val();
+
+            //}
+            //if ($("#DdlDistrict").val() != '-1') {
+            //    mapExp = "division_id='" + $("#DdlDivision").val() + "' and region_id='" + $("#DdlRegion").val() + "' and district_id=" + $("#DdlDistrict").val();
+
+            //}
+
+            //if ($("#DdlUpazila").val() != '-1') {
+            //    mapExp = "division_id=" + $("#DdlDivision").val() + " and region_id=" + $("#DdlRegion").val() + " and district_id=" + $("#DdlDistrict").val() + " and upazila_id=" + $("#DdlUpazila").val();
+
+            //}
+            //if ($("#DdlSchool").val() != '-1') {
+            //    mapExp = "division_id=" + $("#DdlDivision").val() + " and region_id=" + $("#DdlRegion").val() + " and district_id=" + $("#DdlDistrict").val() + " and upazila_id=" + $("#DdlUpazila").val() + " and emis_code='" + $("#DdlSchool").val() + "'";
+
+            //}
+            var geojsonLayer = new GeoJSONLayer({
+                title: "Division Boundary",
+                url: "https://census2021icms.gov.bd/icms/data/json/division.json",
+                copyright: "CEGIS",
+                visible: false
+            });
+
+            var tempDivison = {
+                title: "<b>Divsion: </b> {DivName}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "DivGeoCode",
+                        label: "Division Code:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "DivName",
+                        label: "Division:",
+                        visible: true
+                    },
+                  
+                    ]
+                }
+                ]
+
+            };
+
+            var layerDivision = new FeatureLayer({
+                title: "Division Boundary",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Division/FeatureServer/0",
+                popupTemplate: tempDivison,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var layerRangamati = new FeatureLayer({
+                title: "Rangamati",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati/FeatureServer",
+                popupTemplate: tempDivison,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var layerBandarban = new FeatureLayer({
+                title: "Bandarban",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban/FeatureServer",
+                popupTemplate: tempDivison,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var tempLocation = {
+                title: "<b>Location: </b> {District}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "Risk",
+                        label: "Risk:",
+                        visible: true
+                    },
+                    
+                  
+                    ]
+                }
+                ]
+
+            };
+
+            var layerLocation = new FeatureLayer({
+                title: "Location",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Historical_Rangamati_landslide_location/FeatureServer/",
+                popupTemplate: tempLocation,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            
+
+
+
+            
+            var layerDistrict = new FeatureLayer({
+                title: "District Boundary",
+                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/15",
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+            var layerUpazila = new FeatureLayer({
+                title: "Upazila/Thana Boundary",
+                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/16",
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+            var layerUnion = new FeatureLayer({
+                title: "Union/Ward Boundary",
+                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/17",
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+            var layerCity = new FeatureLayer({
+                title: "City Corporation Boundary",
+                url: "https://census2021icms.gov.bd/icms/data/json/city.json",
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var layerMunicipality = new FeatureLayer({
+                title: "Municipality Boundary",
+                url: "https://census2021icms.gov.bd/icms/data/json/municipality.json",
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+
+            var groupAdmin = new GroupLayer({
+                title: "Administrative",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerRangamati,layerBandarban]
+            });
+
+            var groupLocation = new GroupLayer({
+                title: "Location",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerLocation]
+            });
+
+
+            var layerRiver = new GeoJSONLayer({
+                title: "River Network",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerCatchment= new GeoJSONLayer({
+                title: "River Catchment",
+                url: "#",
+                copyright: "CEGIS"
+            });
+
+            var layerAEZ = new GeoJSONLayer({
+                title: "AEZ",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerBEZ = new GeoJSONLayer({
+                title: "BEZ",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerElevation = new GeoJSONLayer({
+                title: "Elevation",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerPhysiography = new GeoJSONLayer({
+                title: "Physiography",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerLandUse = new GeoJSONLayer({
+                title: "Land Use",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerForest = new GeoJSONLayer({
+                title: "Forest and Protected Areas",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerBDP2100 = new GeoJSONLayer({
+                title: "BDP2100 Hotspot",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerCoastal = new GeoJSONLayer({
+                title: "Coastal Area",
+                url: "#",
+                copyright: "CEGIS"
+            });          
+
+            var groupBaseData = new GroupLayer({
+                title: "Base Data",
+                layers: [layerRiver, layerCatchment, layerAEZ, layerBEZ, layerElevation, layerPhysiography, layerLandUse, layerForest, layerBDP2100, layerCoastal]
+            });          
+
+            var groupSocial = new GroupLayer({
+                title: "Social",
+                layers: [geojsonLayer, geojsonLayer, geojsonLayer]
+            });
+
+            var groupEconomic = new GroupLayer({
+                title: "Economic",
+                layers: [geojsonLayer, geojsonLayer, geojsonLayer]
+            });
+
+
+
+            var tempNonTidalDischarge = {
+                title: "<b>Station Name: </b> {STNNAME}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "STATIONID",
+                        label: "Station ID:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "STNNAME",
+                        label: "Station Name",
+                        visible: true
+                    }
+                        ,
+                    {
+                        fieldName: "RIVERNAME",
+                        label: "River Name",
+                        visible: true
+                    }
+                    ]
+                }
+                ]
+
+            };
+            var layerNonTidalDischarge = new FeatureLayer({
+                title: "Non-tidal discharge station",
+                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/Test/MapServer/0",
+                popupTemplate: tempNonTidalDischarge,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var tempTidalDischarge = {
+                title: "<b>Station Name: </b> {STNNAME}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "STATIONID",
+                        label: "Station ID:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "STNNAME",
+                        label: "Station Name",
+                        visible: true
+                    }
+                        ,
+                    {
+                        fieldName: "RIVERNAME",
+                        label: "River Name",
+                        visible: true
+                    }
+                    ]
+                }
+                ]
+            };
+            var layerTidalDischarge = new FeatureLayer({
+                title: "Tidal discharge station",
+                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/Test/MapServer/1",
+                popupTemplate: tempTidalDischarge,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+            var tempTidalWL = {
+                title: "<b>Station Name: </b> {STNNAME}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "STATIONID",
+                        label: "Station ID:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "STNNAME",
+                        label: "Station Name",
+                        visible: true
+                    }
+                        ,
+                    {
+                        fieldName: "RIVERNAME",
+                        label: "River Name",
+                        visible: true
+                    }
+                    ]
+                }
+                ]
+
+            };
+            var layerTidalWL = new FeatureLayer({
+                title: "Tidal WL station",
+                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/Test/MapServer/2",
+                popupTemplate: tempTidalWL,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+            var tempNonTidalWL = {
+                title: "<b>Station Name: </b> {STNNAME}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "STATIONID",
+                        label: "Station ID:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "STNNAME",
+                        label: "Station Name",
+                        visible: true
+                    }
+                        ,
+                    {
+                        fieldName: "RIVERNAME",
+                        label: "River Name",
+                        visible: true
+                    }
+                    ]
+                }
+                ]
+
+            };
+            var layerNonTidalWL = new FeatureLayer({
+                title: "Non-tidal WL station ",
+                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/Test/MapServer/3",
+                popupTemplate: tempNonTidalWL,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var tempGWL = {
+                title: "<b>Layer Name: </b> Ground Water Level",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "thana",
+                        label: "Thana:",
+                        visible: true
+                    }, {
+                        fieldName: "village",
+                        label: "Village:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "source",
+                        label: "Source",
+                        visible: true
+                    }
+                    ]
+                }
+                ]
+            };
+            var layerGWL = new FeatureLayer({
+                title: "Ground Water Level",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/GisDataMap/FeatureServer/20",
+                outFields: ["*"],
+                popupTemplate: tempGWL,
+                copyright: "CEGIS"
+            });           
+            var tempRainfall = {
+                title: "<b>Layer Name: </b> Rainfall",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "stnname",
+                        label: "Station Name:",
+                        visible: true
+                    }
+                    ]
+                }
+                ]
+            }; 
+
+            var layerRainfall = new FeatureLayer({
+                title: "Rainfall",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/GisDataMap/FeatureServer/15",
+                outFields: ["*"],
+                popupTemplate: tempRainfall,
+                copyright: "CEGIS"
+            });
+            var groupWeather = new GroupLayer({
+                title: "Weather & River Situation",
+                layers: [layerNonTidalDischarge, layerTidalDischarge, layerTidalWL, layerNonTidalWL, layerGWL, layerRainfall]
+            });
+
+
+            var layerClimateStress = new GeoJSONLayer({
+                title: "Climate Stress Area",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerFlood = new GeoJSONLayer({
+                title: "Flood Different types of flood prone area – River flood, Flash flood, Tidal flood, Urban flood",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerFloodInundation = new GeoJSONLayer({
+                title: "Flood Inundation for Average Year (1 in 2.33)",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerFloodDamage = new GeoJSONLayer({
+                title: "Flood damage",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerFutureFlood = new GeoJSONLayer({
+                title: "Future Flood Severity",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerUrbanFlood = new GeoJSONLayer({
+                title: "Urban flood prone Locations",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerErosion = new GeoJSONLayer({
+                title: "Erosion",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerErosionProne = new GeoJSONLayer({
+                title: "Erosion prone areas",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerErosionDamage = new GeoJSONLayer({
+                title: "Erosion damage",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerCycloneStorm = new GeoJSONLayer({
+                title: "Cyclone & Storm surge Cyclone tracks",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerDroughtProne = new GeoJSONLayer({
+                title: "Drought prone area",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerSeaLevel = new GeoJSONLayer({
+                title: "Sea level rise",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerSalinity = new GeoJSONLayer({
+                title: "Salinity",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerFutureDrought = new GeoJSONLayer({
+                title: "Future Drought Severity",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerFutureCyclone = new GeoJSONLayer({
+                title: "Future Cyclone Severity",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerLandslideProne = new GeoJSONLayer({
+                title: "Landslide prone area",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerLandslideSeverity = new GeoJSONLayer({
+                title: "Landslide severity",
+                url: "#",
+                copyright: "CEGIS"
+            });
+           
+
+            var groupHazard = new GroupLayer({
+                title: "Hazard",
+                layers: [layerLandslideSeverity, layerLandslideProne, layerFutureCyclone, layerFutureDrought, layerSalinity, layerSeaLevel, layerDroughtProne,
+                    layerCycloneStorm, layerErosionDamage, layerErosionProne, layerErosion, layerUrbanFlood, layerFutureFlood,
+                    layerFloodDamage, layerFloodInundation, layerFlood, layerClimateStress]
+            });
+
+
+            var layerRHDRoads = new FeatureLayer({
+                title: "RHD Roads",
+                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/4",
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+            var layerLGEDRoads = new FeatureLayer({
+                title: "LGED Roads",
+                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/5",
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+            var layerBIWTARoutes = new GeoJSONLayer({
+                title: "BIWTA Routes",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerRailway = new GeoJSONLayer({
+                title: "Railway",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerTransportHubs = new GeoJSONLayer({
+                title: "Transport Hubs (Stations, Bus Terminal, port, Airport, Ferry/Launch Ghat etc.)",
+                url: "#",
+                copyright: "CEGIS"
+            });
+
+            var groupTransport = new GroupLayer({
+                title: "Transport Infrastructure",
+                layers: [layerRHDRoads, layerLGEDRoads, layerBIWTARoutes, layerRailway, layerTransportHubs]
+            });
+
+
+            var layerPowerPlant = new GeoJSONLayer({
+                title: "Power Plant",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerKPI = new GeoJSONLayer({
+                title: "KPI Structure",
+                url: "#",
+                copyright: "CEGIS"
+            });
+
+            var groupPower = new GroupLayer({
+                title: "Power and Energy Infrastructure",
+                layers: [layerPowerPlant, layerKPI]
+            });
+
+
+            var layerWater = new GeoJSONLayer({
+                title: "Water Management Project",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerEmbankment = new GeoJSONLayer({
+                title: "Embankment",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerSubmersible = new GeoJSONLayer({
+                title: "Submersible Embankment",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerCoastalPolder = new GeoJSONLayer({
+                title: "Coastal Polder",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerWaterInfras = new GeoJSONLayer({
+                title: "Water Infrastructure",
+                url: "#",
+                copyright: "CEGIS"
+            });
+
+            var groupWater= new GroupLayer({
+                title: "Water Management",
+                layers: [layerWater, layerEmbankment, layerSubmersible, layerCoastalPolder,layerWaterInfras]
+            });
+
+            var layerGovtOffice = new GeoJSONLayer({
+                title: "Government Offices",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerEducation = new GeoJSONLayer({
+                title: "Education Facilities",
+                url: "#",
+                copyright: "CEGIS"
+            });
+            var layerHealth = new GeoJSONLayer({
+                title: "Health Facilities",
+                url: "#",
+                copyright: "CEGIS"
+            });
+
+
+            var groupGeneral = new GroupLayer({
+                title: "General Infrastructure",
+                layers: [layerGovtOffice, layerEducation, layerHealth]
+            });
+
+
+            var layerTempAverage = new GeoJSONLayer({
+                title: "Future Temperature - Average",
+                url: "#",
+                copyright: "CEGIS"
+            });  
+            var layerTempMax = new GeoJSONLayer({
+                title: "Future Temperature - Max",
+                url: "#",
+                copyright: "CEGIS"
+            });  
+            var layerTempMin = new GeoJSONLayer({
+                title: "Future Temperature - Min",
+                url: "#",
+                copyright: "CEGIS"
+            });  
+
+            var groupClimate = new GroupLayer({
+                title: "Climate Change",
+                layers: [layerTempAverage, layerTempMax, layerTempMin]
+            });
+
+           // map.add(myGroupLayer);
+
+            featureSchool = new FeatureLayer({
+                url: schoolServiceURL + "0",                
+                outFields: ["*"], popupTemplate: template
+            });
+            featurePoint = new FeatureLayer({
+                url: schoolServiceURL + "1",
+                outFields: ["*"], popupTemplate: templatePoint
+            });
+
+            schoolLine = new FeatureLayer({
+                url: schoolServiceURL + "2",
+                outFields: ["*"], popupTemplate: templateLine
+            });
+
+            featureStructure = new FeatureLayer({
+                url: schoolServiceURL + "3",
+                outFields: ["*"], popupTemplate: templateStr
+            });
+            featSchoolArea = new FeatureLayer({
+                url: schoolServiceURL + "4",
+                outFields: ["*"], popupTemplate: templateSchoolArea
+            });
+            featureUpazila = new FeatureLayer({
+                url: upazilaServiceURL + "0",                
+                popupTemplate: templateUpazila,
+                visible: false,
+                outFields: ["*"]
+            });
+            featureDistrict = new FeatureLayer({
+                url: upazilaServiceURL + "1",
+                visible: false,
+                outFields: ["*"]
+            });
+            featureRegion = new FeatureLayer({
+                url: upazilaServiceURL + "2",
+                visible: false,
+                outFields: ["*"]
+            });
+            featureDivision = new FeatureLayer({
+                url: upazilaServiceURL + "3",
+                visible: false,
+                outFields: ["*"]
+            });
+            featureConst = new FeatureLayer({
+                url: upazilaServiceURL + "4",
+                visible: false,
+                outFields: ["*"]
+            });
+
+
+
+            baseLayer = new TileLayer({
+                url: baseServiceURL,
+                visible: false
+            });
+            
+            hazardDrought = new FeatureLayer({
+                url: hazardServiceURL + "0",
+                outFields: ["*"],
+                visible: false
+            });
+            hazardStorm = new FeatureLayer({
+                url: hazardServiceURL + "1",
+                outFields: ["*"],
+                visible: false
+            });
+            hazardErosion = new FeatureLayer({
+                url: hazardServiceURL + "2",
+                outFields: ["*"],
+                visible: false
+            });
+            hazardCyclone = new FeatureLayer({
+                url: hazardServiceURL + "3",
+                outFields: ["*"],
+                visible: false
+            });
+            hazardSoil = new FeatureLayer({
+                url: hazardServiceURL + "4",
+                outFields: ["*"],
+                visible: false
+            });
+            hazardEatrthquake = new FeatureLayer({
+                url: hazardServiceURL + "5",
+                outFields: ["*"],
+                visible: false
+            });
+            hazardFlashFlood = new FeatureLayer({
+                url: hazardServiceURL + "6",
+                outFields: ["*"],
+                visible: false
+            });
+            hazardFloodProne = new FeatureLayer({
+                url: hazardServiceURL + "7",
+                outFields: ["*"],
+                visible: false
+            });
+
+
+            /******************************************************************
+             *
+             * Create the map and scene view and ui components
+             *
+             ******************************************************************/
+
+            // Map
+            const map = new Map({
+                basemap: app.basemap,
+                //layers: [groupAdmin, groupBaseData, groupSocial, groupEconomic, groupWeather, groupHazard, groupTransport, groupPower, groupWater, groupGeneral, groupClimate]
+                layers: [groupAdmin,groupLocation],
+                zoom: 12,
+                center: [92.1833, 22.6500]
+            });
+
+            // 2D view
+            app.mapView = new MapView({
+                container: app.containerMap,
+                map: map,
+                zoom: app.zoom,
+                extent: {
+                    // autocasts as new Extent()
+                    xmin: 9787901,
+                    ymin: 2338503,
+                    xmax: 10329626,
+                    ymax: 3078993,
+                    spatialReference: 102100
+                },
+                center: app.center,
+                scale: app.scale,
+                padding: app.viewPadding,
+                ui: {
+                    components: app.uiComponents
+                }
+            });
+
+            //app.mapView.extent = new Extent({
+            //    xmin: -9177882,
+            //    ymin: 4246761,
+            //    xmax: -9176720,
+            //    ymax: 4247967,
+            //    spatialReference: {
+            //        wkid: 102100
+            //    }
+            //});
+
+            CalciteMapsArcGIS.setPopupPanelSync(app.mapView);
+
+            // 3D view
+            app.sceneView = new SceneView({
+                container: app.containerScene,
+                map: map,
+                zoom: app.zoom,
+                center: app.center,
+                scale: app.scale,
+                padding: app.viewPadding,
+                ui: {
+                    components: app.uiComponents
+                }
+            });
+
+
+            CalciteMapsArcGIS.setPopupPanelSync(app.sceneView);
+
+            /*****************************************************************
+                    * Layers are promises that resolve when loaded, or when all their
+                    * properties may be accessed. Once the population layer has loaded,
+                    * the view will animate to it's initial extent.
+                    *****************************************************************/
+
+
+
+            // Set the active view to scene
+            setActiveView(app.mapView);
+
+
+ 
+
+            //set map extent
+            app.activeView.when(function () {
+                baseLayer.when(function () {
+                    app.activeView.goTo(baseLayer.fullExtent).catch(function (error) {
+                        if (error.name != "AbortError") {
+                            console.error(error);
+                        }
+                    });
+                });
+            });
+
+            
+
+
+            // Add a legend instance to the panel of a
+            // ListItem in a LayerList instance
+            const layerList = new LayerList({
+                view: app.activeView,
+                listItemCreatedFunction: function (event) {
+                    const item = event.item;
+                    if (item.layer.type != "group") {
+                        // don't show legend twice
+                        item.panel = {
+                            content: "legend",
+                            open: true
+                        };
+                    }
+                }
+            });
+            //app.activeView.ui.add(layerList, "top-right");
+
+
+            var gMapImagery = new WebTileLayer({
+                urlTemplate:
+                    "https://mts1.google.com/vt/lyrs=s@186112443&hl=x-local&src=app&x={col}&y={row}&z={level}&s=Galile"
+            });
+            var gMapRoad = new WebTileLayer({
+                urlTemplate:
+                    "https://mts1.google.com/vt/lyrs=m@186112443&hl=x-local&src=app&x={col}&y={row}&z={level}&s=Galile"
+            });
+            var gMapHybrid = new WebTileLayer({
+                urlTemplate:
+                    "https://mts1.google.com/vt/lyrs=y@186112443&hl=x-local&src=app&x={col}&y={row}&z={level}&s=Galile"
+            });
+            var mapGMapSat = new Basemap({
+                baseLayers: [gMapImagery],
+                title: "Google Satellite",
+                id: "googleS",
+                thumbnailUrl: "Content/img/maps/googlesatellite.png"
+            });
+            var mapGMapRoad = new Basemap({
+                baseLayers: [gMapRoad],
+                title: "Google Road",
+                id: "googleR",
+                thumbnailUrl: "Content/img/maps/googleroad.jpg"
+            });
+            var mapGMapHybrid = new Basemap({
+                baseLayers: [gMapHybrid],
+                title: "Google Hybrid",
+                id: "googleH",
+                thumbnailUrl: "Content/img/maps/googlehybrid.jpg"
+            });
+            var baseMapNone = new Basemap({
+                baseLayers: null,
+                title: "No basemap",
+                id: "NoBaseMap",
+                thumbnailUrl: "Content/img/maps/no-basemap.svg"
+            });
+            let basemapDrone = new Basemap({
+                baseLayers: [
+                    new MapImageLayer({
+                        url: "https://mapgis.lged.gov.bd/arcgis/rest/services/OrthoImages_MIL1/MapServer/",
+                        title: "Drone Basemap"
+                    })
+                ],
+                title: "Drone Image",
+                id: "dronebasemap",
+                thumbnailUrl: "Content/img/maps/googlesatellite.png"
+            });
+
+            //var portalSource = new PortalBasemapsSource({
+
+            //});
+            //Basemap.fromId("topo"),
+            //Basemap.fromId("hybrid"),
+            //    Basemap.fromId("dark-gray"),
+            //    Basemap.fromId("gray"),
+            //    Basemap.fromId("national-geographic"),
+            //    Basemap.fromId("oceans"),
+            //    Basemap.fromId("terrain"),
+            //    Basemap.fromId("dark-gray-vector"),
+            //    Basemap.fromId("gray-vector"),
+            //    Basemap.fromId("streets-vector"),
+            //    Basemap.fromId("streets-night-vector"),
+            //    Basemap.fromId("streets-navigation-vector"),
+            //    Basemap.fromId("topo-vector"),
+            //Basemap.fromId("streets-relief-vector"),, mapGMapSat
+
+            var localSource = new LocalBasemapsSource({
+                basemaps: [
+
+                    Basemap.fromId("streets"),
+                    Basemap.fromId("satellite"),
+                    Basemap.fromId("osm"),
+                    mapGMapHybrid, mapGMapRoad, basemapDrone, baseMapNone]
+            });
+
+            var basemapGallery = new BasemapGallery({
+                showArcGISBasemaps: true,
+                view: app.activeView,
+                container: document.createElement("div"),
+                source: localSource
+
+            });
+
+
+
+
+            //var mapGMapSat = new Basemap({
+            //    layers: [new BasemapLayer({
+            //        type: "WebTiledLayer",
+            //        url: "https://mts1.google.com/vt/lyrs=s@186112443&hl=x-local&src=app&x={col}&y={row}&z={level}&s=Galile",
+            //        copyright: "Google Maps"
+            //    })],
+            //    id: "gmapsat",
+            //    thumbnailUrl: "https://maps.ngdc.noaa.gov/viewers/dijits/agsjs/xbuild/agsjs/dijit/images/googlehybrid.png",
+            //    title: "Google Imagery"
+            //});
+            //basemapGallery.add(mapGMapSat);
+
+            app.activeView.ui.add(
+                [
+                    new Expand({
+                        view: app.activeView,
+                        content: layerList,
+                        expandTooltip: "Map Layers",
+                        group: "top-left"
+                    }),
+                    new Expand({
+                        view: app.activeView,
+                        content: new Legend({ view: app.activeView }),
+                        expandTooltip: "Map Legend",
+                        group: "top-left",
+                        expanded: false
+                    }),
+                    new Expand({
+                        view: app.activeView,
+                        content: new Print({
+                            view: app.activeView,
+                            // specify your own print service
+                            printServiceUrl: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/ExportWebMap15Feb22/GPServer/Export%20Web%20Map"
+
+                        }),
+                        expandTooltip: "Print Map Layout",
+                        group: "top-left",
+                        expanded: false
+                    }),
+                    new Expand({
+                        view: app.activeView,
+                        content: document.getElementById("infoDivThemetic"),
+                        expandTooltip: "Themetic Map",
+                        expandIconClass: "esri-icon-collection",
+                        group: "bottom-right",
+                        expanded: false
+                    }),
+
+                ],
+                "top-left"
+            );
+            //app.activeView.ui.add("infoDivThemetic", "top-left");
+            // Start Locate
+            var locateBtn = new Locate({
+                view: app.activeView
+            });
+            //
+            // Add the locate widget to the top left corner of the view
+            app.activeView.ui.add(locateBtn, {
+                position: "top-left"
+            });
+
+            //const daylightWidget = new Daylight({
+            //    view: app.activeView
+            //});
+
+            //app.activeView.ui.add(daylightWidget, "top-right");
+
+            // Create the search widget and add it to the navbar instead of view
+            app.searchWidget = new Search(
+                {
+                    view: app.activeView,
+                    allPlaceholder: "Enter Search Text",
+                    sources: [
+                        
+                        {
+                            layer: featureUpazila,
+                            searchFields: ["upazila_name"],
+                            suggestionTemplate: "{upazila_name}, {district_name},{region_name}, {division_name}",
+                            displayField: "upazila_name",
+                            exactMatch: false,
+                            outFields: ["*"],
+                            name: "Upazila",
+                            placeholder: "Enter upazila name"
+                        }
+                        ,
+                        {
+                            layer: featureDistrict,
+                            searchFields: ["district_name"],
+                            suggestionTemplate: "{district_name},{region_name}, {division_name}",
+                            displayField: "district_name",
+                            exactMatch: false,
+                            outFields: ["*"],
+                            name: "District",
+                            placeholder: "Enter district name"
+                        }                        
+                        ,
+                        {
+                            layer: featureDivision,
+                            searchFields: ["division_name"],
+                            suggestionTemplate: "{division_name}",
+                            displayField: "division_name",
+                            exactMatch: false,
+                            outFields: ["*"],
+                            name: "Division",
+                            placeholder: "Enter division name"
+                        },
+                        {
+                            layer: featureConst,
+                            searchFields: ["const_name"],
+                            suggestionTemplate: "{const_name}, {upazila_name}, {district_name}",
+                            displayField: "const_name",
+                            exactMatch: false,
+                            outFields: ["*"],
+                            name: "Constitution",
+                            placeholder: "Enter constitution name"
+                        }
+                    ]
+                },
+                "searchWidgetDiv"
+            );
+
+            app.searchWidget.on("select-result", function (event) {
+                //app.searchWidget.
+
+            });
+            // Add the search widget to the top left corner of the view
+            //app.activeView.ui.add(app.searchWidget, {
+            //    position: "top-right"
+            // });
+
+
+
+
+            watchUtils.whenTrue(app.activeView, "ready", function () {
+                initToolbar();
+                watchUtils.whenOnce(app.activeView, "extent", function () {
+                    watchUtils.when(app.activeView, 'stationary', function (evt) {
+                        if (evt) {
+                            extentChangeHandler(app.activeView.extent);
+                        }
+                    });
+                });
+            });
+
+            function extentChangeHandler(evt) {
+                if (_prevExtent || _nextExtent) {
+                    _currentExtent = evt;
+                } else {
+                    _preExtent = _currentExtent;
+                    _currentExtent = evt;
+                    _extentHistory.push({
+                        preExtent: _preExtent,
+                        currentExtent: _currentExtent
+                    });
+                    _extentHistoryIndx = _extentHistory.length - 1;
+                }
+                _prevExtent = _nextExtent = false;
+                extentHistoryChange();
+            }
+
+            function extentHistoryChange() {
+                if (_extentHistory.length === 0 || _extentHistoryIndx === 0) {
+                    domClass.add(dom.byId("zoomprev"), "disabled");
+                } else {
+                    domClass.remove(dom.byId("zoomprev"), "disabled");
+                }
+                if (_extentHistory.length === 0 || _extentHistoryIndx === _extentHistory.length - 1) {
+                    domClass.add(dom.byId("zoomnext"), "disabled");
+                } else {
+                    domClass.remove(dom.byId("zoomnext"), "disabled");
+                }
+            }
+
+            function initToolbar() {
+                on(dom.byId("zoomnext"), "click", function () {
+                    _nextExtent = true;
+                    _extentHistoryIndx++;
+                    app.activeView.goTo(_extentHistory[_extentHistoryIndx].currentExtent);
+                });
+                on(dom.byId("zoomprev"), "click", function () {
+                    if (_extentHistory[_extentHistoryIndx].preExtent) {
+                        _prevExtent = true;
+                        app.activeView.goTo(_extentHistory[_extentHistoryIndx].preExtent);
+                        _extentHistoryIndx--;
+                    }
+                });
+            }
+            app.activeView.ui.add("tools", "bottom-right");
+
+
+            app.activeView.ui.add(
+                [
+
+                    new Expand({
+                        view: app.activeView,
+                        content: app.searchWidget,
+                        expandTooltip: "Search in Map",
+                        expanded: false
+                    }),
+
+                    new Expand({
+                        view: app.activeView,
+                        expandTooltip: "Base Map Gallery",
+                        content: basemapGallery
+                    })
+
+                ],
+                "top-right"
+            );
+
+            //app.activeView.ui.add(
+            //    [
+            //        new Expand({
+            //            view: app.activeView,
+            //            content: document.getElementById('tools'),
+            //            expandTooltip: "Search in Map",
+            //            expanded: false
+            //        })
+            //    ],
+            //    "bottom-right"
+            //);
+
+
+            app.activeView.on('pointer-move', function (event) {
+                let point = app.activeView.toMap({ x: event.x, y: event.y });
+                var latLon = webMercatorUtils.xyToLngLat(point.x, point.y);
+                document.getElementById("latLonInfo").innerText = 'Latitude: ' + latLon[1].toFixed(7) + ' Longitude: ' + latLon[0].toFixed(7);
+
+            });
+
+            var scaleBar = new ScaleBar({
+                view: app.activeView,
+                unit: "dual" // The scale bar displays both metric and non-metric units.
+            });
+
+            // Add the widget to the bottom left corner of the view
+            app.activeView.ui.add(scaleBar, {
+                position: "bottom-left"
+            });
+
+            //start print
+            app.activeView.when(function () {
+                var print = new Print({
+                    view: app.activeView,
+                    // specify your own print service
+                    printServiceUrl:
+                        "https://mapgis.lged.gov.bd/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+                });
+
+                // Add widget to the top right corner of the view
+                //app.activeView.ui.add(print, "top-right");
+            });
+
+            //////const showMapLabelButton = document.getElementById("showMapLabel");
+            //////showMapLabelButton.addEventListener("click", function () {
+            //////    var ddlMapLayer = document.getElementById("DdlMapLayer");
+            //////    var ddlMapLabelField = document.getElementById("DdlLabelField");
+            //////    statesLabelClass = new LabelClass({
+            //////        labelExpressionInfo: { expression: "$feature." + ddlMapLabelField.value },
+            //////        symbol: {
+            //////            type: "text",  // autocasts as new TextSymbol()
+            //////            color: "black",
+            //////            haloSize: 1,
+            //////            haloColor: "white"
+            //////        }
+            //////    });
+            //////    //featureSchool.labelingInfo = [statesLabelClass];
+            //////    //featureSchool.labelsVisible = true;
+
+            //////    if (ddlMapLayer.value == 'featureSchool') {
+            //////        featureSchool.labelingInfo = [statesLabelClass];
+            //////        featureSchool.labelsVisible = true;
+            //////    }
+            //////    else if (ddlMapLayer.value == 'featurePoint') {
+            //////        featurePoint.labelingInfo = [statesLabelClass];
+            //////        featurePoint.labelsVisible = true;
+            //////    }
+            //////    else if (ddlMapLayer.value == 'featureStructure') {
+            //////        featureStructure.labelingInfo = [statesLabelClass];
+            //////        featureStructure.labelsVisible = true;
+            //////    }
+            //////    //alert("Kamal");
+            //////});
+
+            const zoomToHomeButton = document.getElementById("zoomToHome");
+            zoomToHomeButton.addEventListener("click", function () {
+                //alert(app.map.layers[0].name);
+                ZoomToHome();
+
+            });
+
+            function ZoomToHome() {
+                app.activeView.extent = new Extent({
+                    xmin: 9787901,
+                    ymin: 2338503,
+                    xmax: 10329626,
+                    ymax: 3078993,
+                    spatialReference: 102100
+                });
+            }
+            const clearButton1 = document.getElementById("clearButton");
+            clearButton1.addEventListener("click", function () {
+                //alert(app.map.layers[0].name);
+                ClearSelection1();
+            });
+
+
+            function ClearSelection1() {
+                app.searchWidget.clear();
+                app.activeView.popup.close();
+                //app.activeView.map.basemap = null;
+                // app.activeView.popup.destroy();
+                //featureSchool.refresh();
+                // featureUpazila.clearSelection();
+                //featureRegion.clearSelection();
+                //featureDistrict.clearSelection();
+                // featureDivision.clearSelection();
+                // featureSchool.clearSelection();
+            }
+            //Start For Thematic Mapping
+            const themeBtnShow = document.getElementById("themeBtnShow");
+            themeBtnShow.addEventListener("click", function () {
+
+                var themeLayer1 = document.getElementById("theme_layer");
+                if (themeLayer1.value == 'school') {
+                    activeMapLayer = featureSchool;
+                }
+                else if (themeLayer1.value == 'upazila') {
+                    activeMapLayer = featureUpazila;
+                }
+
+                var rendererYesNo = {
+                    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+                    field: fieldSelect.value,
+                    legendOptions: {
+                        title: fieldSelect.options[fieldSelect.selectedIndex].text
+                    },
+                    uniqueValueInfos: [{
+                        // All features with value of "North" will be blue
+                        value: "1",
+                        label: "Yes",
+                        symbol: {
+                            type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+                            style: "circle",
+                            color: "blue",
+                            size: "8px",  // pixels
+                            outline: {  // autocasts as new SimpleLineSymbol()
+                                color: [0, 0, 0],
+                                width: 1  // points
+                            }
+                        }
+                    }, {
+                        // All features with value of "East" will be green
+                        value: "0",
+                        label: "No",
+                        symbol: {
+                            type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+                            style: "circle",
+                            color: "red",
+                            size: "8px",  // pixels
+                            outline: {  // autocasts as new SimpleLineSymbol()
+                                color: [0, 0, 0],
+                                width: 1  // points
+                            }
+                        }
+                    }]
+                };
+
+
+                if (fieldSelect.options[fieldSelect.selectedIndex].text.substr(0, 3) == 'Has') {
+                    activeMapLayer.renderer = rendererYesNo;
+                }
+                else {
+                    generateRenderer();
+                }
+                if (activeMapLayer.visible == false)
+                    activeMapLayer.visible = true;
+
+
+
+                //activeMapLayer
+
+
+                //alert(featureUpazila.id);
+                //ShowThemeticMap();
+            });
+
+            fieldSelect = document.getElementById("theme_field");
+            //fieldSelect.addEventListener("change", generateRenderer);
+
+            classSelect = document.getElementById("class-select");
+            //classSelect.addEventListener("change", generateRenderer);
+
+            numClassesInput = document.getElementById("theme_classes");
+            //numClassesInput.addEventListener("change", generateRenderer);
+
+            //watchUtils.whenFalseOnce(view, "updating", generateRenderer);
+
+
+            // Generate rounded arcade expression when user
+            // selects a field name
+            function getValueExpression(field) {
+                //return "Round( ( $feature." + field + " / 65000.0 ) * 100, 1)";
+                return "$feature." + field;
+            }
+
+            function generateRenderer() {
+
+                const fieldLabel = fieldSelect.options[fieldSelect.selectedIndex].text;
+                //alert(fieldLabel);
+                // default to natural-breaks when manual is selected for classification method
+                const classificationMethod = classSelect.value === "manual" ? "natural-breaks" : classSelect.value;
+
+                const params = {
+                    layer: activeMapLayer,
+                    valueExpression: getValueExpression(fieldSelect.value),
+                    view: app.activeView,
+                    classificationMethod: classificationMethod,
+                    numClasses: parseInt(numClassesInput.value),
+                    legendOptions: {
+                        title: fieldLabel
+                    }
+                };
+                // generate the renderer and set it on the layer
+                colorRendererCreator.createClassBreaksRenderer(params).then(function (rendererResponse) {
+                    activeMapLayer.renderer = rendererResponse.renderer;
+
+                    if (!map.layers.includes(activeMapLayer)) {
+                        map.add(activeMapLayer);
+                    }
+
+                    if (classSelect.value === "manual") {
+                        // if manual is selected, then add or update
+                        // a classed color slider to allow the user to
+                        // construct manual class breaks
+                        updateColorSlider(rendererResponse);
+                    } else {
+                        destroySlider();
+                    }
+
+                });
+            }
+
+            // If manual classification method is selected, then create
+            // a classed color slider to allow user to manually modify
+            // the class breaks starting with the generated renderer
+
+            function updateColorSlider(rendererResult) {
+
+                histogram({
+                    layer: activeMapLayer,
+                    valueExpression: getValueExpression(fieldSelect.value),
+                    view: app.activeView,
+                    numBins: 100
+                }).then(function (histogramResult) {
+                    if (!slider) {
+                        const sliderContainer = document.createElement("div");
+                        const container = document.createElement("div");
+                        container.id = "containerDiv";
+                        container.appendChild(sliderContainer);
+                        app.activeView.ui.add(container, "bottom-left");
+
+                        slider = ClassedColorSlider.fromRendererResult(rendererResult, histogramResult);
+                        slider.container = container;
+                        slider.viewModel.precision = 1;
+
+                        function changeEventHandler() {
+                            const renderer = activeMapLayer.renderer.clone();
+                            renderer.classBreakInfos = slider.updateClassBreakInfos(renderer.classBreakInfos);
+                            activeMapLayer.renderer = renderer;
+                        }
+
+                        slider.on(["thumb-change", "thumb-drag", "min-change", "max-change"], changeEventHandler);
+                    } else {
+                        slider.updateFromRendererResult(rendererResult, histogramResult);
+                    }
+                });
+            }
+            function destroySlider() {
+                if (slider) {
+                    let container = document.getElementById("containerDiv");
+                    app.activeView.ui.remove(container);
+                    slider.container = null;
+                    slider = null;
+                    container = null;
+                }
+            }
+
+            //End For Thematic Mapping
+
+            function ShowThemeticMap1() {
+                var themeLayer = document.getElementById("theme_layer");
+                var themeField = document.getElementById("theme_field");
+
+                var cd =
+                {
+                    type: "class-breaks",
+                    field: "school_total",
+                    classBreakInfos: [
+                        {
+                            minValue: 0,
+                            maxValue: 50,
+                            symbol:
+                            {
+                                type: "simple-fill",
+                                color: "red",
+                                style: "solid",
+                                outline: {
+                                    width: 0.2, color: [255, 255, 255, 0.5]
+                                }
+                            },
+                            label: "fewer than 50"
+                        }]
+                };
+                if (themeLayer.value == 'school') {
+                    featureSchool.renderer = renderer;
+                }
+                else if (themeLayer.value == 'upazila') {
+                    // var postData = JSON.stringify({ "themeLayer": ddlDivision.val(), "regionID": ddlRegion.val(), "districtID": ddlDistrict.val(), "upazilaID": ddlUpazila.val(), "emisCode": "-1" });
+                    $.ajax({
+                        type: "POST",
+                        async: true,
+                        url: "DataService.asmx/GetRenderClass",
+                        data: {},
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            $.each(response.d, function (key, value) {
+                                //alert(value.RenderText);
+                                featureUpazila.renderer = JSON.parse(cd);
+                            });
+                        },
+                        failure: function (response) {
+                            alert(response);
+                        }
+                    });
+
+                }
+
+
+                //generateRenderer();
+            }
+
+
+
+            // Create new instance of the Measurement widget
+            const measurement = new Measurement();
+            const distanceButton = document.getElementById("distance");
+            const areaButton = document.getElementById("area");
+            const clearButton = document.getElementById("clear");
+
+
+            distanceButton.addEventListener("click", function () {
+                distanceMeasurement();
+            });
+            areaButton.addEventListener("click", function () {
+                areaMeasurement();
+            });
+            clearButton.addEventListener("click", function () {
+                clearMeasurements();
+            });
+
+            // Add the appropriate measurement UI to the bottom-right when activated
+            app.activeView.ui.add(measurement, "bottom-right");
+            // Add the legend to the bottom left
+            //activeView.ui.add(legend, "bottom-left");
+            // Set the views for the widgets
+            measurement.view = app.activeView;
+            //legend.view = activeView;
+
+            CalciteMapsArcGIS.setSearchExpandEvents(app.searchWidget);
+
+            // Create basemap widget
+            app.basemapWidget = new BasemapGallery({
+                view: app.activeView,
+                container: "basemapPanelDiv"
+            });
+
+            // Call the appropriate DistanceMeasurement2D or DirectLineMeasurement3D
+            function distanceMeasurement() {
+                const type = app.activeView.type;
+                measurement.activeTool =
+                    type.toUpperCase() === "2D" ? "distance" : "direct-line";
+                distanceButton.classList.add("active");
+                areaButton.classList.remove("active");
+
+            }
+
+            // Call the appropriate AreaMeasurement2D or AreaMeasurement3D
+            function areaMeasurement() {
+                measurement.activeTool = "area";
+                distanceButton.classList.remove("active");
+                areaButton.classList.add("active");
+            }
+
+            // Clears all measurements
+            function clearMeasurements() {
+                distanceButton.classList.remove("active");
+                areaButton.classList.remove("active");
+                measurement.clear();
+            }
+
+
+
+
+            /******************************************************************
+             *
+             * Synchronize the view, search and popup
+             *
+             ******************************************************************/
+
+            // Views
+            function setActiveView(view) {
+                app.activeView = view;
+
+            }
+
+            function syncViews(fromView, toView) {
+                const viewPt = fromView.viewpoint.clone();
+                fromView.container = null;
+                if (fromView.type === "3d") {
+                    toView.container = app.containerMap;
+                } else {
+                    toView.container = app.containerScene;
+                }
+                toView.padding = app.viewPadding;
+                toView.viewpoint = viewPt;
+            }
+
+            // Search Widget
+            function syncSearch(view) {
+                watchUtils.whenTrueOnce(view, "ready", function () {
+                    app.searchWidget.view = view;
+                    if (app.searchWidget.selectedResult) {
+                        app.searchWidget.search(app.searchWidget.selectedResult.name);
+                    }
+                });
+            }
+
+            // Tab - toggle between map and scene view
+            const tabs = Array.from(
+                document.querySelectorAll(".calcite-navbar li a[data-toggle='tab']")
+            );
+            tabs.forEach(function (tab) {
+                tab.addEventListener("click", function (event) {
+                    if (event.target.text.indexOf("Map") > -1) {
+                        syncViews(app.sceneView, app.mapView);
+                        setActiveView(app.mapView);
+                    } else {
+                        syncViews(app.mapView, app.sceneView);
+                        setActiveView(app.sceneView);
+                    }
+                    syncSearch(app.activeView);
+                });
+            });
+
+            /******************************************************************
+             *
+             * Apply Calcite Maps CSS classes to change application on the fly
+             *
+             * For more information about the CSS styles or Sass build visit:
+             * http://github.com/esri/calcite-maps
+             *
+             ******************************************************************/
+
+            const cssSelectorUi = [
+                document.querySelector(".calcite-navbar"),
+                document.querySelector(".calcite-panels")
+            ];
+            const cssSelectorMap = document.querySelector(".calcite-map");
+
+            // Theme - light (default) or dark theme
+            const settingsTheme = document.getElementById("settingsTheme");
+            const settingsColor = document.getElementById("settingsColor");
+            settingsTheme.addEventListener("change", function (event) {
+                const textColor =
+                    event.target.options[event.target.selectedIndex].dataset.textcolor;
+                const bgColor =
+                    event.target.options[event.target.selectedIndex].dataset.bgcolor;
+
+                cssSelectorUi.forEach(function (element) {
+                    element.classList.remove(
+                        "calcite-text-dark",
+                        "calcite-text-light",
+                        "calcite-bg-dark",
+                        "calcite-bg-light",
+                        "calcite-bg-custom"
+                    );
+                    element.classList.add(textColor, bgColor);
+                    element.classList.remove(
+                        "calcite-bgcolor-dark-blue",
+                        "calcite-bgcolor-blue-75",
+                        "calcite-bgcolor-dark-green",
+                        "calcite-bgcolor-dark-brown",
+                        "calcite-bgcolor-darkest-grey",
+                        "calcite-bgcolor-lightest-grey",
+                        "calcite-bgcolor-black-75",
+                        "calcite-bgcolor-dark-red"
+                    );
+                    element.classList.add(bgColor);
+                });
+                settingsColor.value = "";
+            });
+            // Color - custom color
+            settingsColor.addEventListener("change", function (event) {
+                const customColor = event.target.value;
+                const textColor =
+                    event.target.options[event.target.selectedIndex].dataset.textcolor;
+                const bgColor =
+                    event.target.options[event.target.selectedIndex].dataset.bgcolor;
+
+                cssSelectorUi.forEach(function (element) {
+                    element.classList.remove(
+                        "calcite-text-dark",
+                        "calcite-text-light",
+                        "calcite-bg-dark",
+                        "calcite-bg-light",
+                        "calcite-bg-custom"
+                    );
+                    element.classList.add(textColor, bgColor);
+                    element.classList.remove(
+                        "calcite-bgcolor-dark-blue",
+                        "calcite-bgcolor-blue-75",
+                        "calcite-bgcolor-dark-green",
+                        "calcite-bgcolor-dark-brown",
+                        "calcite-bgcolor-darkest-grey",
+                        "calcite-bgcolor-lightest-grey",
+                        "calcite-bgcolor-black-75",
+                        "calcite-bgcolor-dark-red"
+                    );
+                    element.classList.add(customColor);
+                    if (!customColor) {
+                        settingsTheme.dispatchEvent(new Event("change"));
+                    }
+                });
+            });
+
+            // Widgets - light (default) or dark theme
+            const settingsWidgets = document.getElementById("settingsWidgets");
+            settingsWidgets.addEventListener("change", function (event) {
+                const theme = event.target.value;
+                cssSelectorMap.classList.remove(
+                    "calcite-widgets-dark",
+                    "calcite-widgets-light"
+                );
+                cssSelectorMap.classList.add(theme);
+            });
+
+            // Layout - top or bottom nav position
+            const settingsLayout = document.getElementById("settingsLayout");
+            settingsLayout.addEventListener("change", function (event) {
+                const layout = event.target.value;
+                const layoutNav =
+                    event.target.options[event.target.selectedIndex].dataset.nav;
+
+                document.body.classList.remove(
+                    "calcite-nav-bottom",
+                    "calcite-nav-top"
+                );
+                document.body.classList.add(layout);
+
+                const nav = document.querySelector("nav");
+                nav.classList.remove("navbar-fixed-bottom", "navbar-fixed-top");
+                nav.classList.add(layoutNav);
+                setViewPadding(layout);
+            });
+
+            // Set view padding for widgets based on navbar position
+            function setViewPadding(layout) {
+                let padding, uiPadding;
+                // Top
+                if (layout === "calcite-nav-top") {
+                    padding = {
+                        padding: {
+                            top: 50,
+                            bottom: 0
+                        }
+                    };
+                    uiPadding = {
+                        padding: {
+                            top: 15,
+                            right: 15,
+                            bottom: 30,
+                            left: 15
+                        }
+                    };
+                } else {
+                    // Bottom
+                    padding = {
+                        padding: {
+                            top: 0,
+                            bottom: 50
+                        }
+                    };
+                    uiPadding = {
+                        padding: {
+                            top: 30,
+                            right: 15,
+                            bottom: 15,
+                            left: 15
+                        }
+                    };
+                }
+                app.mapView.set(padding);
+                app.mapView.ui.set(uiPadding);
+                app.sceneView.set(padding);
+                app.sceneView.ui.set(uiPadding);
+                // Reset popup
+                if (
+                    app.activeView.popup.visible &&
+                    app.activeView.popup.dockEnabled
+                ) {
+                    app.activeView.popup.visible = false;
+                    app.activeView.popup.visible = true;
+                }
+            }
+        });
+    </script>
+    <script>
+       
+        function loadThematicField() {
+            var mapLayer = document.getElementById("theme_layer");
+            var mapField = $("#theme_field");//document.getElementById("DdlLabelField");
+            //alert(ddlMapLayer.value);
+            mapField.empty();
+            if (mapLayer.value == 'school') {
+                mapField.append('<option value="student_total" selected="selected">No. of Students</option>');
+                mapField.append('<option value="teacher_total">No. of Teachers</option>');
+                mapField.append('<option value="has_electricity">Has Electricity</option>');
+                mapField.append('<option value="has_water">Has Water Source</option>');
+                mapField.append('<option value="is_cyclone_center">Has Cyclone Center</option>');
+                mapField.append('<option value="is_flood_center">Has Flood Center</option>');
+                mapField.append('<option value="has_access_road">Has Access Road</option>');
+                mapField.append('<option value="voting_center">Has Voting Center</option>');
+                mapField.append('<option value="const_status">Has Construction Ongoing</option>');
+            }
+            else if (mapLayer.value == 'upazila') {
+                mapField.append('<option value="school_total" selected="selected">No. of Schools</option>');
+                mapField.append('<option value="teacher_total">No. of Teachers</option>');
+                mapField.append('<option value="student_total">No. of Students</option>');
+            }
+            else if (mapLayer.value == 'featureStructure') {
+                mapField.append('<option value="feat_type" selected="selected">Feature Type</option>');
+                mapField.append('<option value="feat_name">Feature Name</option>');
+                mapField.append('<option value="ht_m">Height (Meter)</option>');
+            }
+        }
+
+        function loadMapLabelField() {
+            var ddlMapLayer = document.getElementById("DdlMapLayer");
+            var ddlMapLabelField = $("#DdlLabelField");//document.getElementById("DdlLabelField");
+            //alert(ddlMapLayer.value);
+            ddlMapLabelField.empty();
+            if (ddlMapLayer.value == 'featureSchool') {
+                ddlMapLabelField.append('<option value="school_name" selected="selected">School Name</option>');
+                ddlMapLabelField.append('<option value="emis_code">EMIS Code</option>');
+                ddlMapLabelField.append('<option value="year_of_establishment">Year of Establishment</option>');
+            }
+            else if (ddlMapLayer.value == 'featurePoint') {
+                ddlMapLabelField.append('<option value="feat_type" selected="selected">Feature Type</option>');
+                ddlMapLabelField.append('<option value="feat_name">Feature Name</option>');
+            }
+            else if (ddlMapLayer.value == 'featureStructure') {
+                ddlMapLabelField.append('<option value="feat_type" selected="selected">Feature Type</option>');
+                ddlMapLabelField.append('<option value="feat_name">Feature Name</option>');
+                ddlMapLabelField.append('<option value="ht_m">Height (Meter)</option>');
+            }
+        }
+
+        
+
+        function ShowMap(divisionID, regionID, districtID, upazilaID, emisCode) {
+
+            var mapExp = '';
+            //if (divisionID != '-1') {
+            //    featureUpazila.definitionExpression = "division_id=" + divisionID;
+            //    featureSchool.definitionExpression = "division_id=" + divisionID;
+
+            //}
+            //if (regionID != '-1') {
+            //    featureUpazila.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID;
+            //    featureSchool.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID;
+            //}
+            //if (districtID != '-1') {
+            //    featureUpazila.definitionExpression = "division_id='" + divisionID + "' and region_id='" + regionID + "' and district_id=" + districtID;
+            //    featureSchool.definitionExpression = "division_id='" + divisionID + "' and region_id='" + regionID + "' and district_id=" + districtID;
+            //}
+
+            //if (upazilaID != '-1') {
+            //    featureUpazila.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID + " and district_id=" + districtID + " and upazila_id=" + upazilaID;
+            //    featureSchool.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID + " and district_id=" + districtID + " and upazila_id=" + upazilaID;
+            //}
+            //if (emisCode != '-1') {
+            //    featureUpazila.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID + " and district_id=" + districtID + " and upazila_id=" + upazilaID;
+            //    featureSchool.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID + " and district_id=" + districtID + " and upazila_id=" + upazilaID + " and emis_code='" + emisCode + "'";
+            //}
+
+            //var symbol = {
+            //    type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+            //    style: "square",
+            //    color: "blue",
+            //    size: "8px",  // pixels
+            //    outline: {  // autocasts as new SimpleLineSymbol()
+            //        color: [255, 255, 0],
+            //        width: 3  // points
+            //    }
+            //};
+            // var filter = '';
+            // if ()
+
+
+
+            //featureSchool.when(function () {
+            //    app.activeView.goTo(featureSchool.fullExtent);
+            //});
+
+            //zoomToLayer(featureSchool);
+
+            //var renderer1 = featureSchool.re
+            // featureSchool.definitionExpression = "DivName='" + divCode + "'";
+
+
+            ////if (emisCode != '-1') {
+            ////    featureSchool.queryExtent().then(function (results) {
+            ////        //alert(results);
+            ////        app.activeView.goTo(results.extent);
+            ////    });
+            ////}
+            ////else {
+            ////    featureUpazila.queryExtent().then(function (results) {
+            ////        //alert(result);
+            ////        app.activeView.goTo(results.extent);
+            ////    });
+
+            ////}
+            var query;
+            if (emisCode != '-1') {
+                //query = featureSchool.createQuery();
+                //query.outSpatialReference = app.activeView.spatialReference
+                //featureSchool.queryExtent(query).then(response => {
+                //    app.activeView.goTo(response.extent).catch(function (error) {
+                //        console.error(error);
+                //    });
+                //});
+            }
+            else {
+                query = featureUpazila.createQuery();
+                query.outSpatialReference = app.activeView.spatialReference
+                featureUpazila.queryExtent(query).then(response => {
+                    app.activeView.goTo(response.extent).catch(function (error) {
+                        console.error(error);
+                    });
+                });
+            }
+            if (emisCode != '-1') {
+                app.mapView.zoom = 20;
+            }
+
+
+            //app.map.centerAndZoom(features[0].geometry, 18);
+
+            //featureSchool.renderer = symbol;
+
+            //zoomToLayer(featureSchool);
+
+        }
+
+
+        function zoomToLayer(layer) {
+            return layer.queryExtent().then(function (response) {
+                app.activeView.goTo(response.extent).catch(function (error) {
+                    if (error.name != "AbortError") {
+                        console.error(error);
+                    }
+                });
+            });
+        }
+
+
+        //function generateRendererNew() {
+        //    var fieldLabel = "school_total";
+        //    // default to natural-breaks when manual is selected for classification method
+        //    var classificationMethod = "natural-breaks";//"equal-interval"
+
+        //    const params = {
+        //        layer: featureUpazila,
+        //        valueExpression: "$feature.school_total",
+        //        view: app.activeView,
+        //        classificationMethod: classificationMethod,
+        //        numClasses: 5,
+        //        legendOptions: {
+        //            title: "% population with " + fieldLabel
+        //        }
+        //    };
+
+        //    // generate the renderer and set it on the layer
+        //    colorRendererCreator.createClassBreaksRenderer(params).then(function (rendererResponse) {
+        //        layer.renderer = rendererResponse.renderer;
+
+        //        if (!map.layers.includes(layer)) {
+        //            map.add(layer);
+        //        }
+
+        //        if (classSelect.value === "manual") {
+        //            // if manual is selected, then add or update
+        //            // a classed color slider to allow the user to
+        //            // construct manual class breaks
+        //            updateColorSlider(rendererResponse);
+        //        } else {
+        //            destroySlider();
+        //        }
+
+        //    });
+        //}
+
+        function ShowThemeticMap() {
+            var themeLayer = document.getElementById("theme_layer");
+            var themeField = document.getElementById("theme_field");
+            //var rendererTS21 = {
+            //    type: "class-breaks",  // autocasts as new ClassBreaksRenderer()
+            //    field: themeField.value,
+            //    classBreakInfos: [
+            //        {
+            //            minValue: 0,  // 0 acres
+            //            maxValue: 50,  // 200,000 acres
+            //            symbol: {
+            //                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+            //                color: "red",
+            //                style: "solid",
+            //                outline: {
+            //                    width: 0.2,
+            //                    color: [255, 255, 255, 0.5]
+            //                }
+            //            },  // will be assigned sym1
+            //            label: "fewer than 200,000 acres"
+            //        }, {
+            //            minValue: 51,  // 200,001 acres
+            //            maxValue: 100,  // 500,000 acres
+            //            symbol: {
+            //                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+            //                color: "green",
+            //                style: "solid",
+            //                outline: {
+            //                    width: 0.2,
+            //                    color: [255, 255, 255, 0.5]
+            //                }
+            //            },  // will be assigned sym2
+            //            label: "200,000 - 500,000 acres"
+            //        }, {
+            //            minValue: 101,  // 500,001 acres
+            //            maxValue: 50000,  // 750,000 acres
+            //            symbol: {
+            //                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+            //                color: "blue",
+            //                style: "solid",
+            //                outline: {
+            //                    width: 0.2,
+            //                    color: [255, 255, 255, 0.5]
+            //                }
+            //            },  // will be assigned sym2
+            //            label: "more than 500,000 acres"
+            //        }
+            //    ]
+            //};
+
+
+            var renderer = {
+                type: "unique-value",  // autocasts as new UniqueValueRenderer()
+                field: themeField.value,
+                defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+                defaultLabel: themeField.options[themeField.selectedIndex].text,
+                uniqueValueInfos: [{
+                    // All features with value of "North" will be blue
+                    value: "1",
+                    label: "Yes",
+                    symbol: {
+                        type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+                        style: "circle",
+                        color: "blue",
+                        size: "8px",  // pixels
+                        outline: {  // autocasts as new SimpleLineSymbol()
+                            color: [255, 255, 0],
+                            width: 1  // points
+                        }
+                    }
+                }, {
+                    // All features with value of "East" will be green
+                    value: "0",
+                    label: "No",
+                    symbol: {
+                        type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+                        style: "circle",
+                        color: "red",
+                        size: "8px",  // pixels
+                        outline: {  // autocasts as new SimpleLineSymbol()
+                            color: [255, 255, 0],
+                            width: 1  // points
+                        }
+                    }
+                }]
+            };
+
+            if (themeLayer.value == 'school') {
+                featureSchool.renderer = renderer;
+            }
+            else if (themeLayer.value == 'upazila') {
+                // var postData = JSON.stringify({ "themeLayer": ddlDivision.val(), "regionID": ddlRegion.val(), "districtID": ddlDistrict.val(), "upazilaID": ddlUpazila.val(), "emisCode": "-1" });
+                $.ajax({
+                    type: "POST",
+                    async: true,
+                    url: "DataService.asmx/GetRenderClass",
+                    data: {},
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+
+                        //featureUpazila.renderer = JSON.parse(response.d);
+                        $.each(response.d, function (key, value) {
+                            var rebv = value.RenderText;
+                            featureUpazila.renderer = rebv;
+                        });
+                    },
+                    failure: function (response) {
+                        alert(response);
+                    }
+                });
+
+            }
+
+
+            //generateRenderer();
+        }
+
+    </script>
+</body>
+</html>
