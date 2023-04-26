@@ -122,7 +122,7 @@
                        data-toggle="tab">Scene</a>
                 </li>
                 <li>
-                    <a href="Dashboard" role="button" data-target="" aria-haspopup="true"><span class="glyphicon glyphicon-th-large"></span>Dashboard</a>
+                    <a href="/" role="button" data-target="" aria-haspopup="true"><span class="glyphicon glyphicon-th-large"></span>Dashboard</a>
                 </li>
                 <li>
                     <a role="button" data-target="#panelBasemaps" aria-haspopup="true"><span class="glyphicon glyphicon-th-large"></span>Basemaps</a>
@@ -652,250 +652,7 @@
             //});
             //8726f0a5fc064d598ae77c0c5cd44dff
             //  70b3257bd22c4f649605f4582feffc6e
-            //bf250b10df6d4954ad0eb133827f17c4 last used
-            var template = {
-                title: "<b>School Name: </b> {school_name}",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "emis_code",
-                        label: "EMIS Code:",
-                        visible: true
-                    },
-                    {
-                        fieldName: "school_name",
-                        label: "School Name",
-                        visible: true
-                    },
-                    {
-                        fieldName: "division_name",
-                        label: "Division Name",
-                        visible: true
-                    },
-                    {
-                        fieldName: "region_name",
-                        label: "Region Name",
-                        visible: true
-                    },
-                    {
-                        fieldName: "district_name",
-                        label: "District Name",
-                        visible: true
-                    },
-                    {
-                        fieldName: "upazila_name",
-                        label: "Upazila Name",
-                        visible: true
-                    },
-                    {
-                        fieldName: "union_name",
-                        label: "Union Name",
-                        visible: true
-                    },
-                    {
-                        fieldName: "mauza_name",
-                        label: "Mauza Name",
-                        visible: true
-                    },
-                    {
-                        fieldName: "latitude",
-                        label: "Latitude",
-                        visible: true
-                    },
-                    {
-                        fieldName: "longitude",
-                        label: "Longitude",
-                        visible: true
-                    }
-
-                    ]
-
-                },
-                {
-                    type: "media",
-                    mediaInfos: [
-                        {
-                            title: "<b>School Image</b>",
-                            type: "image",
-                            caption: "School Front View",
-                            value: {
-                                sourceURL: "Data/image/30503070601_1.jpg"
-                            }
-                        }
-                    ]
-                },
-                {
-                    type: "text",
-                    text: "<a style=\"color:blue;font-size:larger; font-weight:bold\" href=\"" +
-                        window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1) +
-                        "SchoolDetails.aspx?id={emis_code}\" target=\"_blank\">School Details</a> || <a style=\"color:blue;font-size:larger; font-weight:bold\" href=\""
-                        + window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1)
-                        + "AttachmentDetails.aspx?id={emis_code}\" target=\"_blank\">Attachments</a> || <a style=\"color:blue;font-size:larger; font-weight:bold\" href=\""
-                        + window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1)
-                        + "3DDrone.html?lat={latitude}&lon={longitude}&sname={school_name}\" target=\"_blank\">Drone 3D</a> || "
-                        + "<a style=\"color:blue;font-size:larger; font-weight:bold\" href=\""
-                        + window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1)
-                        + "3DSchool.html?lat={latitude}&lon={longitude}&sname={school_name}\" target=\"_blank\">Map 3D</a>"
-                }
-
-
-                ]
-
-            };
-            var templateLine = {
-                title: "<b>Layer Name: </b> Polyline Feature",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "feat_code",
-                        label: "Code:",
-                        visible: true
-                    },
-
-                    {
-                        fieldName: "feat_type",
-                        label: "Type:",
-                        visible: true
-                    }
-                    ]
-
-                }
-                ]
-
-            };
-            var templateStr = {
-                title: "<b>Layer Name: </b> Polygon Feature",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "feat_code",
-                        label: "Code:",
-                        visible: true
-                    },
-
-                    {
-                        fieldName: "feat_type",
-                        label: "Type:",
-                        visible: true
-                    },
-                    {
-                        fieldName: "feat_name",
-                        label: "Name",
-                        visible: true
-                    }
-                        ,
-                    {
-                        fieldName: "ht_m",
-                        label: "Height (meter)",
-                        visible: true
-                    }
-                    ]
-
-                }
-                ]
-
-            };
-            var templatePoint = {
-                title: "<b>Layer Name: </b> Point Feature",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "feat_code",
-                        label: "Code:",
-                        visible: true
-                    },
-                    {
-                        fieldName: "feat_type",
-                        label: "Type:",
-                        visible: true
-                    },
-                    {
-                        fieldName: "feat_name",
-                        label: "Name",
-                        visible: true
-                    }
-                        ,
-                    {
-                        fieldName: "ht_m",
-                        label: "Height (meter)",
-                        visible: true
-                    }
-                    ]
-
-                }
-                ]
-
-            };
-            var templateSchoolArea = {
-                title: "<b>Layer Name: </b> School Area",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "emis_code",
-                        label: "EMIS Code : ",
-                        visible: true
-                    },
-                    {
-                        fieldName: "area_sqm",
-                        label: "Area (SQM) : ",
-                        visible: true
-                    },
-                    {
-                        fieldName: "area_hec",
-                        label: "Area (Hectare) : ",
-                        visible: true
-                    },
-                    {
-                        fieldName: "area_acr",
-                        label: "Area (Acre) : ",
-                        visible: true
-                    },
-                    {
-                        fieldName: "area_katha",
-                        label: "Area (Katha) : ",
-                        visible: true
-                    },
-                    {
-                        fieldName: "area_dec",
-                        label: "Area (Decimal) : ",
-                        visible: true
-                    }
-                    ]
-                }
-                ]
-
-            };
-            var templateUpazila = {
-                title: "<b>Upazila Name: </b> {upazila_name}",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "district_name",
-                        label: "District:",
-                        visible: true
-                    },
-                    {
-                        fieldName: "school_total",
-                        label: "Total School",
-                        visible: true
-                    }
-                        ,
-                    {
-                        fieldName: "teacher_total",
-                        label: "Total Teacher",
-                        visible: true
-                    }
-                        ,
-                    {
-                        fieldName: "student_total",
-                        label: "Total Student",
-                        visible: true
-                    }
-                    ]
-                }
-                ]
-
-            };
+            //bf250b10df6d4954ad0eb133827f17c4 last use
             var baseServiceURL = "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/";
             var hazardServiceURL = "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/HazardMap/MapServer/";
             var schoolServiceURL = "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/School/MapServer/";
@@ -950,59 +707,11 @@
 
             };
 
-            var layerDivision = new FeatureLayer({
-                title: "Division Boundary",
-                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Division/FeatureServer/0",
-                popupTemplate: tempDivison,
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
+            
 
-            var layerRangamati = new FeatureLayer({
-                title: "Rangamati",
-                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati/FeatureServer",
-                popupTemplate: tempDivison,
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
+            
 
-            var layerBandarban = new FeatureLayer({
-                title: "Bandarban",
-                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban/FeatureServer",
-                popupTemplate: tempDivison,
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
-
-            var tempLocation = {
-                title: "<b>Location: </b> {District}",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [
-                    {
-                        fieldName: "Risk",
-                        label: "Risk:",
-                        visible: true
-                    },
-                    
-                  
-                    ]
-                }
-                ]
-
-            };
-
-            var layerLocation = new FeatureLayer({
-                title: "Location",
-                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Historical_Rangamati_landslide_location/FeatureServer/",
-                popupTemplate: tempLocation,
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
+           
 
             
 
@@ -1042,528 +751,27 @@
             });
 
 
-            var groupAdmin = new GroupLayer({
-                title: "Administrative",
-                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerRangamati,layerBandarban]
-            });
-
-            var groupLocation = new GroupLayer({
-                title: "Location",
-                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerLocation]
-            });
-
-
-            var layerRiver = new GeoJSONLayer({
-                title: "River Network",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerCatchment= new GeoJSONLayer({
-                title: "River Catchment",
-                url: "#",
-                copyright: "CEGIS"
-            });
-
-            var layerAEZ = new GeoJSONLayer({
-                title: "AEZ",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerBEZ = new GeoJSONLayer({
-                title: "BEZ",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerElevation = new GeoJSONLayer({
-                title: "Elevation",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerPhysiography = new GeoJSONLayer({
-                title: "Physiography",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerLandUse = new GeoJSONLayer({
-                title: "Land Use",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerForest = new GeoJSONLayer({
-                title: "Forest and Protected Areas",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerBDP2100 = new GeoJSONLayer({
-                title: "BDP2100 Hotspot",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerCoastal = new GeoJSONLayer({
-                title: "Coastal Area",
-                url: "#",
-                copyright: "CEGIS"
-            });          
-
-            var groupBaseData = new GroupLayer({
-                title: "Base Data",
-                layers: [layerRiver, layerCatchment, layerAEZ, layerBEZ, layerElevation, layerPhysiography, layerLandUse, layerForest, layerBDP2100, layerCoastal]
-            });          
-
-            var groupSocial = new GroupLayer({
-                title: "Social",
-                layers: [geojsonLayer, geojsonLayer, geojsonLayer]
-            });
-
-            var groupEconomic = new GroupLayer({
-                title: "Economic",
-                layers: [geojsonLayer, geojsonLayer, geojsonLayer]
-            });
-
-
-
-            var tempNonTidalDischarge = {
-                title: "<b>Station Name: </b> {STNNAME}",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "STATIONID",
-                        label: "Station ID:",
-                        visible: true
-                    },
-                    {
-                        fieldName: "STNNAME",
-                        label: "Station Name",
-                        visible: true
-                    }
-                        ,
-                    {
-                        fieldName: "RIVERNAME",
-                        label: "River Name",
-                        visible: true
-                    }
-                    ]
-                }
-                ]
-
-            };
-            var layerNonTidalDischarge = new FeatureLayer({
-                title: "Non-tidal discharge station",
-                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/Test/MapServer/0",
-                popupTemplate: tempNonTidalDischarge,
-                visible: false,
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
-
-            var tempTidalDischarge = {
-                title: "<b>Station Name: </b> {STNNAME}",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "STATIONID",
-                        label: "Station ID:",
-                        visible: true
-                    },
-                    {
-                        fieldName: "STNNAME",
-                        label: "Station Name",
-                        visible: true
-                    }
-                        ,
-                    {
-                        fieldName: "RIVERNAME",
-                        label: "River Name",
-                        visible: true
-                    }
-                    ]
-                }
-                ]
-            };
-            var layerTidalDischarge = new FeatureLayer({
-                title: "Tidal discharge station",
-                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/Test/MapServer/1",
-                popupTemplate: tempTidalDischarge,
-                visible: false,
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
-            var tempTidalWL = {
-                title: "<b>Station Name: </b> {STNNAME}",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "STATIONID",
-                        label: "Station ID:",
-                        visible: true
-                    },
-                    {
-                        fieldName: "STNNAME",
-                        label: "Station Name",
-                        visible: true
-                    }
-                        ,
-                    {
-                        fieldName: "RIVERNAME",
-                        label: "River Name",
-                        visible: true
-                    }
-                    ]
-                }
-                ]
-
-            };
-            var layerTidalWL = new FeatureLayer({
-                title: "Tidal WL station",
-                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/Test/MapServer/2",
-                popupTemplate: tempTidalWL,
-                visible: false,
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
-            var tempNonTidalWL = {
-                title: "<b>Station Name: </b> {STNNAME}",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "STATIONID",
-                        label: "Station ID:",
-                        visible: true
-                    },
-                    {
-                        fieldName: "STNNAME",
-                        label: "Station Name",
-                        visible: true
-                    }
-                        ,
-                    {
-                        fieldName: "RIVERNAME",
-                        label: "River Name",
-                        visible: true
-                    }
-                    ]
-                }
-                ]
-
-            };
-            var layerNonTidalWL = new FeatureLayer({
-                title: "Non-tidal WL station ",
-                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/Test/MapServer/3",
-                popupTemplate: tempNonTidalWL,
-                visible: false,
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
-
-            var tempGWL = {
-                title: "<b>Layer Name: </b> Ground Water Level",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "thana",
-                        label: "Thana:",
-                        visible: true
-                    }, {
-                        fieldName: "village",
-                        label: "Village:",
-                        visible: true
-                    },
-                    {
-                        fieldName: "source",
-                        label: "Source",
-                        visible: true
-                    }
-                    ]
-                }
-                ]
-            };
-            var layerGWL = new FeatureLayer({
-                title: "Ground Water Level",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/GisDataMap/FeatureServer/20",
-                outFields: ["*"],
-                popupTemplate: tempGWL,
-                copyright: "CEGIS"
-            });           
-            var tempRainfall = {
-                title: "<b>Layer Name: </b> Rainfall",
-                content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "stnname",
-                        label: "Station Name:",
-                        visible: true
-                    }
-                    ]
-                }
-                ]
-            }; 
-
-            var layerRainfall = new FeatureLayer({
-                title: "Rainfall",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/GisDataMap/FeatureServer/15",
-                outFields: ["*"],
-                popupTemplate: tempRainfall,
-                copyright: "CEGIS"
-            });
-            var groupWeather = new GroupLayer({
-                title: "Weather & River Situation",
-                layers: [layerNonTidalDischarge, layerTidalDischarge, layerTidalWL, layerNonTidalWL, layerGWL, layerRainfall]
-            });
-
-
-            var layerClimateStress = new GeoJSONLayer({
-                title: "Climate Stress Area",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerFlood = new GeoJSONLayer({
-                title: "Flood Different types of flood prone area – River flood, Flash flood, Tidal flood, Urban flood",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerFloodInundation = new GeoJSONLayer({
-                title: "Flood Inundation for Average Year (1 in 2.33)",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerFloodDamage = new GeoJSONLayer({
-                title: "Flood damage",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerFutureFlood = new GeoJSONLayer({
-                title: "Future Flood Severity",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerUrbanFlood = new GeoJSONLayer({
-                title: "Urban flood prone Locations",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerErosion = new GeoJSONLayer({
-                title: "Erosion",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerErosionProne = new GeoJSONLayer({
-                title: "Erosion prone areas",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerErosionDamage = new GeoJSONLayer({
-                title: "Erosion damage",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerCycloneStorm = new GeoJSONLayer({
-                title: "Cyclone & Storm surge Cyclone tracks",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerDroughtProne = new GeoJSONLayer({
-                title: "Drought prone area",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerSeaLevel = new GeoJSONLayer({
-                title: "Sea level rise",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerSalinity = new GeoJSONLayer({
-                title: "Salinity",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerFutureDrought = new GeoJSONLayer({
-                title: "Future Drought Severity",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerFutureCyclone = new GeoJSONLayer({
-                title: "Future Cyclone Severity",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerLandslideProne = new GeoJSONLayer({
-                title: "Landslide prone area",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerLandslideSeverity = new GeoJSONLayer({
-                title: "Landslide severity",
-                url: "#",
-                copyright: "CEGIS"
-            });
            
+         
 
-            var groupHazard = new GroupLayer({
-                title: "Hazard",
-                layers: [layerLandslideSeverity, layerLandslideProne, layerFutureCyclone, layerFutureDrought, layerSalinity, layerSeaLevel, layerDroughtProne,
-                    layerCycloneStorm, layerErosionDamage, layerErosionProne, layerErosion, layerUrbanFlood, layerFutureFlood,
-                    layerFloodDamage, layerFloodInundation, layerFlood, layerClimateStress]
-            });
+          
 
 
-            var layerRHDRoads = new FeatureLayer({
-                title: "RHD Roads",
-                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/4",
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
-            var layerLGEDRoads = new FeatureLayer({
-                title: "LGED Roads",
-                url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/5",
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
-            var layerBIWTARoutes = new GeoJSONLayer({
-                title: "BIWTA Routes",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerRailway = new GeoJSONLayer({
-                title: "Railway",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerTransportHubs = new GeoJSONLayer({
-                title: "Transport Hubs (Stations, Bus Terminal, port, Airport, Ferry/Launch Ghat etc.)",
-                url: "#",
-                copyright: "CEGIS"
-            });
 
-            var groupTransport = new GroupLayer({
-                title: "Transport Infrastructure",
-                layers: [layerRHDRoads, layerLGEDRoads, layerBIWTARoutes, layerRailway, layerTransportHubs]
-            });
+            
+
+            
 
 
-            var layerPowerPlant = new GeoJSONLayer({
-                title: "Power Plant",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerKPI = new GeoJSONLayer({
-                title: "KPI Structure",
-                url: "#",
-                copyright: "CEGIS"
-            });
-
-            var groupPower = new GroupLayer({
-                title: "Power and Energy Infrastructure",
-                layers: [layerPowerPlant, layerKPI]
-            });
+            
+            
 
 
-            var layerWater = new GeoJSONLayer({
-                title: "Water Management Project",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerEmbankment = new GeoJSONLayer({
-                title: "Embankment",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerSubmersible = new GeoJSONLayer({
-                title: "Submersible Embankment",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerCoastalPolder = new GeoJSONLayer({
-                title: "Coastal Polder",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerWaterInfras = new GeoJSONLayer({
-                title: "Water Infrastructure",
-                url: "#",
-                copyright: "CEGIS"
-            });
-
-            var groupWater= new GroupLayer({
-                title: "Water Management",
-                layers: [layerWater, layerEmbankment, layerSubmersible, layerCoastalPolder,layerWaterInfras]
-            });
-
-            var layerGovtOffice = new GeoJSONLayer({
-                title: "Government Offices",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerEducation = new GeoJSONLayer({
-                title: "Education Facilities",
-                url: "#",
-                copyright: "CEGIS"
-            });
-            var layerHealth = new GeoJSONLayer({
-                title: "Health Facilities",
-                url: "#",
-                copyright: "CEGIS"
-            });
-
-
-            var groupGeneral = new GroupLayer({
-                title: "General Infrastructure",
-                layers: [layerGovtOffice, layerEducation, layerHealth]
-            });
-
-
-            var layerTempAverage = new GeoJSONLayer({
-                title: "Future Temperature - Average",
-                url: "#",
-                copyright: "CEGIS"
-            });  
-            var layerTempMax = new GeoJSONLayer({
-                title: "Future Temperature - Max",
-                url: "#",
-                copyright: "CEGIS"
-            });  
-            var layerTempMin = new GeoJSONLayer({
-                title: "Future Temperature - Min",
-                url: "#",
-                copyright: "CEGIS"
-            });  
-
-            var groupClimate = new GroupLayer({
-                title: "Climate Change",
-                layers: [layerTempAverage, layerTempMax, layerTempMin]
-            });
+            
 
            // map.add(myGroupLayer);
 
-            featureSchool = new FeatureLayer({
-                url: schoolServiceURL + "0",                
-                outFields: ["*"], popupTemplate: template
-            });
-            featurePoint = new FeatureLayer({
-                url: schoolServiceURL + "1",
-                outFields: ["*"], popupTemplate: templatePoint
-            });
-
-            schoolLine = new FeatureLayer({
-                url: schoolServiceURL + "2",
-                outFields: ["*"], popupTemplate: templateLine
-            });
-
-            featureStructure = new FeatureLayer({
-                url: schoolServiceURL + "3",
-                outFields: ["*"], popupTemplate: templateStr
-            });
-            featSchoolArea = new FeatureLayer({
-                url: schoolServiceURL + "4",
-                outFields: ["*"], popupTemplate: templateSchoolArea
-            });
-            featureUpazila = new FeatureLayer({
-                url: upazilaServiceURL + "0",                
-                popupTemplate: templateUpazila,
-                visible: false,
-                outFields: ["*"]
-            });
+            
             featureDistrict = new FeatureLayer({
                 url: upazilaServiceURL + "1",
                 visible: false,
@@ -1592,47 +800,6 @@
                 visible: false
             });
             
-            hazardDrought = new FeatureLayer({
-                url: hazardServiceURL + "0",
-                outFields: ["*"],
-                visible: false
-            });
-            hazardStorm = new FeatureLayer({
-                url: hazardServiceURL + "1",
-                outFields: ["*"],
-                visible: false
-            });
-            hazardErosion = new FeatureLayer({
-                url: hazardServiceURL + "2",
-                outFields: ["*"],
-                visible: false
-            });
-            hazardCyclone = new FeatureLayer({
-                url: hazardServiceURL + "3",
-                outFields: ["*"],
-                visible: false
-            });
-            hazardSoil = new FeatureLayer({
-                url: hazardServiceURL + "4",
-                outFields: ["*"],
-                visible: false
-            });
-            hazardEatrthquake = new FeatureLayer({
-                url: hazardServiceURL + "5",
-                outFields: ["*"],
-                visible: false
-            });
-            hazardFlashFlood = new FeatureLayer({
-                url: hazardServiceURL + "6",
-                outFields: ["*"],
-                visible: false
-            });
-            hazardFloodProne = new FeatureLayer({
-                url: hazardServiceURL + "7",
-                outFields: ["*"],
-                visible: false
-            });
-
 
             /******************************************************************
              *
@@ -1641,10 +808,120 @@
              ******************************************************************/
 
             // Map
+            var layerDivision = new FeatureLayer({
+                title: "Division Boundary",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Division/FeatureServer/0",
+                popupTemplate: tempDivison,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+           
+            
+
+            
+
+
+
+            //Bandarban
+
+            var layerBandarban = new FeatureLayer({
+                title: "Boundary",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban/FeatureServer",
+                //popupTemplate: tempDivison,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+     
+            
+            var layerBandarbanAspect = new TileLayer({
+                title: "Aspect",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Aspect/MapServer",             
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var layerBandarbanSlope = new TileLayer({
+                title: "Slope",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Slope/MapServer",             
+                outFields: ["*"],
+                copyright: "CEGIS"
+            }); 
+
+
+
+            var groupBandarban = new GroupLayer({
+                title: "Bandarban",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerBandarban,layerBandarbanAspect,layerBandarbanSlope]
+            });
+
+
+
+
+            // Rangamati 
+            var layerRangamati = new FeatureLayer({
+                title: "Boundary",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati/FeatureServer",
+                //popupTemplate: tempDivison,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+
+            var tempLocation = {
+                title: "<b>Location: </b> {District}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "Risk",
+                        label: "Risk:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "Location",
+                        label: "Location:",
+                        visible: true
+                    },
+                                 
+                    ]
+                }
+                ]
+            };
+
+            var layerLocation = new FeatureLayer({
+                title: "Historical Landslide Location",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Historical_Rangamati_landslide_location/FeatureServer/",
+                popupTemplate: tempLocation,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+            
+
+
+
+
+            var groupRangamati = new GroupLayer({
+                title: "Rangamati",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerRangamati,layerLocation]
+            });
+
+           
+
+
             const map = new Map({
                 basemap: app.basemap,
                 //layers: [groupAdmin, groupBaseData, groupSocial, groupEconomic, groupWeather, groupHazard, groupTransport, groupPower, groupWater, groupGeneral, groupClimate]
-                layers: [groupAdmin,groupLocation],
+                layers: [groupBandarban,groupRangamati],
                 zoom: 12,
                 center: [92.1833, 22.6500]
             });
@@ -1670,15 +947,6 @@
                 }
             });
 
-            //app.mapView.extent = new Extent({
-            //    xmin: -9177882,
-            //    ymin: 4246761,
-            //    xmax: -9176720,
-            //    ymax: 4247967,
-            //    spatialReference: {
-            //        wkid: 102100
-            //    }
-            //});
 
             CalciteMapsArcGIS.setPopupPanelSync(app.mapView);
 
@@ -1828,19 +1096,6 @@
             });
 
 
-
-
-            //var mapGMapSat = new Basemap({
-            //    layers: [new BasemapLayer({
-            //        type: "WebTiledLayer",
-            //        url: "https://mts1.google.com/vt/lyrs=s@186112443&hl=x-local&src=app&x={col}&y={row}&z={level}&s=Galile",
-            //        copyright: "Google Maps"
-            //    })],
-            //    id: "gmapsat",
-            //    thumbnailUrl: "https://maps.ngdc.noaa.gov/viewers/dijits/agsjs/xbuild/agsjs/dijit/images/googlehybrid.png",
-            //    title: "Google Imagery"
-            //});
-            //basemapGallery.add(mapGMapSat);
 
             app.activeView.ui.add(
                 [
@@ -2041,17 +1296,7 @@
                 "top-right"
             );
 
-            //app.activeView.ui.add(
-            //    [
-            //        new Expand({
-            //            view: app.activeView,
-            //            content: document.getElementById('tools'),
-            //            expandTooltip: "Search in Map",
-            //            expanded: false
-            //        })
-            //    ],
-            //    "bottom-right"
-            //);
+
 
 
             app.activeView.on('pointer-move', function (event) {
@@ -2122,15 +1367,29 @@
 
             });
 
+
+
+
             function ZoomToHome() {
                 app.activeView.extent = new Extent({
-                    xmin: 9787901,
-                    ymin: 2338503,
-                    xmax: 10329626,
-                    ymax: 3078993,
+                    xmin: 292437,
+                    ymin: 2565504,
+                    xmax: 407259,
+                    ymax: 2712248,
                     spatialReference: 102100
                 });
             }
+
+            //Bangladesh
+            //function ZoomToHome() {
+                //app.activeView.extent = new Extent({
+                    //xmin: 9787901,
+                    //ymin: 2338503,
+                    //xmax: 10329626,
+                    //ymax: 3078993,
+                    //spatialReference: 102100
+                //});
+            //}
             const clearButton1 = document.getElementById("clearButton");
             clearButton1.addEventListener("click", function () {
                 //alert(app.map.layers[0].name);
@@ -2320,60 +1579,6 @@
             }
 
             //End For Thematic Mapping
-
-            function ShowThemeticMap1() {
-                var themeLayer = document.getElementById("theme_layer");
-                var themeField = document.getElementById("theme_field");
-
-                var cd =
-                {
-                    type: "class-breaks",
-                    field: "school_total",
-                    classBreakInfos: [
-                        {
-                            minValue: 0,
-                            maxValue: 50,
-                            symbol:
-                            {
-                                type: "simple-fill",
-                                color: "red",
-                                style: "solid",
-                                outline: {
-                                    width: 0.2, color: [255, 255, 255, 0.5]
-                                }
-                            },
-                            label: "fewer than 50"
-                        }]
-                };
-                if (themeLayer.value == 'school') {
-                    featureSchool.renderer = renderer;
-                }
-                else if (themeLayer.value == 'upazila') {
-                    // var postData = JSON.stringify({ "themeLayer": ddlDivision.val(), "regionID": ddlRegion.val(), "districtID": ddlDistrict.val(), "upazilaID": ddlUpazila.val(), "emisCode": "-1" });
-                    $.ajax({
-                        type: "POST",
-                        async: true,
-                        url: "DataService.asmx/GetRenderClass",
-                        data: {},
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (response) {
-                            $.each(response.d, function (key, value) {
-                                //alert(value.RenderText);
-                                featureUpazila.renderer = JSON.parse(cd);
-                            });
-                        },
-                        failure: function (response) {
-                            alert(response);
-                        }
-                    });
-
-                }
-
-
-                //generateRenderer();
-            }
-
 
 
             // Create new instance of the Measurement widget
@@ -2702,102 +1907,6 @@
 
         
 
-        function ShowMap(divisionID, regionID, districtID, upazilaID, emisCode) {
-
-            var mapExp = '';
-            //if (divisionID != '-1') {
-            //    featureUpazila.definitionExpression = "division_id=" + divisionID;
-            //    featureSchool.definitionExpression = "division_id=" + divisionID;
-
-            //}
-            //if (regionID != '-1') {
-            //    featureUpazila.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID;
-            //    featureSchool.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID;
-            //}
-            //if (districtID != '-1') {
-            //    featureUpazila.definitionExpression = "division_id='" + divisionID + "' and region_id='" + regionID + "' and district_id=" + districtID;
-            //    featureSchool.definitionExpression = "division_id='" + divisionID + "' and region_id='" + regionID + "' and district_id=" + districtID;
-            //}
-
-            //if (upazilaID != '-1') {
-            //    featureUpazila.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID + " and district_id=" + districtID + " and upazila_id=" + upazilaID;
-            //    featureSchool.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID + " and district_id=" + districtID + " and upazila_id=" + upazilaID;
-            //}
-            //if (emisCode != '-1') {
-            //    featureUpazila.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID + " and district_id=" + districtID + " and upazila_id=" + upazilaID;
-            //    featureSchool.definitionExpression = "division_id=" + divisionID + " and region_id=" + regionID + " and district_id=" + districtID + " and upazila_id=" + upazilaID + " and emis_code='" + emisCode + "'";
-            //}
-
-            //var symbol = {
-            //    type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
-            //    style: "square",
-            //    color: "blue",
-            //    size: "8px",  // pixels
-            //    outline: {  // autocasts as new SimpleLineSymbol()
-            //        color: [255, 255, 0],
-            //        width: 3  // points
-            //    }
-            //};
-            // var filter = '';
-            // if ()
-
-
-
-            //featureSchool.when(function () {
-            //    app.activeView.goTo(featureSchool.fullExtent);
-            //});
-
-            //zoomToLayer(featureSchool);
-
-            //var renderer1 = featureSchool.re
-            // featureSchool.definitionExpression = "DivName='" + divCode + "'";
-
-
-            ////if (emisCode != '-1') {
-            ////    featureSchool.queryExtent().then(function (results) {
-            ////        //alert(results);
-            ////        app.activeView.goTo(results.extent);
-            ////    });
-            ////}
-            ////else {
-            ////    featureUpazila.queryExtent().then(function (results) {
-            ////        //alert(result);
-            ////        app.activeView.goTo(results.extent);
-            ////    });
-
-            ////}
-            var query;
-            if (emisCode != '-1') {
-                //query = featureSchool.createQuery();
-                //query.outSpatialReference = app.activeView.spatialReference
-                //featureSchool.queryExtent(query).then(response => {
-                //    app.activeView.goTo(response.extent).catch(function (error) {
-                //        console.error(error);
-                //    });
-                //});
-            }
-            else {
-                query = featureUpazila.createQuery();
-                query.outSpatialReference = app.activeView.spatialReference
-                featureUpazila.queryExtent(query).then(response => {
-                    app.activeView.goTo(response.extent).catch(function (error) {
-                        console.error(error);
-                    });
-                });
-            }
-            if (emisCode != '-1') {
-                app.mapView.zoom = 20;
-            }
-
-
-            //app.map.centerAndZoom(features[0].geometry, 18);
-
-            //featureSchool.renderer = symbol;
-
-            //zoomToLayer(featureSchool);
-
-        }
-
 
         function zoomToLayer(layer) {
             return layer.queryExtent().then(function (response) {
@@ -2810,93 +1919,12 @@
         }
 
 
-        //function generateRendererNew() {
-        //    var fieldLabel = "school_total";
-        //    // default to natural-breaks when manual is selected for classification method
-        //    var classificationMethod = "natural-breaks";//"equal-interval"
-
-        //    const params = {
-        //        layer: featureUpazila,
-        //        valueExpression: "$feature.school_total",
-        //        view: app.activeView,
-        //        classificationMethod: classificationMethod,
-        //        numClasses: 5,
-        //        legendOptions: {
-        //            title: "% population with " + fieldLabel
-        //        }
-        //    };
-
-        //    // generate the renderer and set it on the layer
-        //    colorRendererCreator.createClassBreaksRenderer(params).then(function (rendererResponse) {
-        //        layer.renderer = rendererResponse.renderer;
-
-        //        if (!map.layers.includes(layer)) {
-        //            map.add(layer);
-        //        }
-
-        //        if (classSelect.value === "manual") {
-        //            // if manual is selected, then add or update
-        //            // a classed color slider to allow the user to
-        //            // construct manual class breaks
-        //            updateColorSlider(rendererResponse);
-        //        } else {
-        //            destroySlider();
-        //        }
-
-        //    });
-        //}
+        
 
         function ShowThemeticMap() {
             var themeLayer = document.getElementById("theme_layer");
             var themeField = document.getElementById("theme_field");
-            //var rendererTS21 = {
-            //    type: "class-breaks",  // autocasts as new ClassBreaksRenderer()
-            //    field: themeField.value,
-            //    classBreakInfos: [
-            //        {
-            //            minValue: 0,  // 0 acres
-            //            maxValue: 50,  // 200,000 acres
-            //            symbol: {
-            //                type: "simple-fill", // autocasts as new SimpleFillSymbol()
-            //                color: "red",
-            //                style: "solid",
-            //                outline: {
-            //                    width: 0.2,
-            //                    color: [255, 255, 255, 0.5]
-            //                }
-            //            },  // will be assigned sym1
-            //            label: "fewer than 200,000 acres"
-            //        }, {
-            //            minValue: 51,  // 200,001 acres
-            //            maxValue: 100,  // 500,000 acres
-            //            symbol: {
-            //                type: "simple-fill", // autocasts as new SimpleFillSymbol()
-            //                color: "green",
-            //                style: "solid",
-            //                outline: {
-            //                    width: 0.2,
-            //                    color: [255, 255, 255, 0.5]
-            //                }
-            //            },  // will be assigned sym2
-            //            label: "200,000 - 500,000 acres"
-            //        }, {
-            //            minValue: 101,  // 500,001 acres
-            //            maxValue: 50000,  // 750,000 acres
-            //            symbol: {
-            //                type: "simple-fill", // autocasts as new SimpleFillSymbol()
-            //                color: "blue",
-            //                style: "solid",
-            //                outline: {
-            //                    width: 0.2,
-            //                    color: [255, 255, 255, 0.5]
-            //                }
-            //            },  // will be assigned sym2
-            //            label: "more than 500,000 acres"
-            //        }
-            //    ]
-            //};
-
-
+        
             var renderer = {
                 type: "unique-value",  // autocasts as new UniqueValueRenderer()
                 field: themeField.value,
