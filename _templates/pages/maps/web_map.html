@@ -3,35 +3,186 @@
 {% block content %}
     <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
     
-    <div id="viewDiv" style="height: 700px;"></div>
-
+    <div id="viewDiv" style="height: 100%;"></div>
+    <!-- <div id="viewDiv" style="height: 700px;"></div> -->
     <script src="https://js.arcgis.com/4.26/"></script>
     <script>           
-      require(["esri/config", "esri/Map", "esri/layers/FeatureLayer","esri/views/MapView","esri/widgets/Expand"
-      ,"esri/widgets/LayerList","esri/widgets/Legend"],
-       function(esriConfig, Map,FeatureLayer, MapView,Expand,LayerList,Legend) {
+      require(
+        ["esri/config", 
+        "esri/Map", 
+        "esri/layers/FeatureLayer",
+        "esri/views/MapView",
+        "esri/widgets/Expand",
+        "esri/layers/MapImageLayer",
+        "esri/widgets/LayerList",
+        "esri/widgets/Legend",
+        "esri/layers/TileLayer",
+        "esri/layers/GroupLayer",
+        "esri/widgets/Print",
+        "esri/layers/WebTileLayer",
+        "esri/Basemap",
+        "esri/widgets/BasemapGallery",
+        "esri/widgets/BasemapGallery/support/LocalBasemapsSource",
+        "esri/widgets/BasemapGallery/support/PortalBasemapsSource",
+        "esri/widgets/Search",
+        "esri/views/SceneView",
+        ],
+       function(
+        esriConfig, 
+        Map,FeatureLayer, 
+        MapView,
+        Expand,
+        MapImageLayer,
+        LayerList,
+        Legend,
+        TileLayer, 
+        GroupLayer,
+        Print,
+        WebTileLayer,
+        Basemap, 
+        BasemapGallery,
+        LocalBasemapsSource,
+        PortalBasemapsSource,
+        Search,
+        SceneView,
+       
+       ) {
 
         esriConfig.portalUrl = "https://www.arcgisbd.com/portal/";
         esriConfig.apiKey = "YOUR_API_KEY";
         //https://www.arcgisbd.com/server/rest/services/Hosted/Division/FeatureServer/0
-        var layerURL = "https://www.arcgisbd.com/server/rest/services/Hosted/Historical_Rangamati_landslide_location/FeatureServer/";
-        var layer = new FeatureLayer({
-            title: "Historical Rangamati landslide location",
-            url: layerURL,
+        
+        //Bandarban
+
+        var layerBandarban = new FeatureLayer({
+            title: "Boundary",
+            //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban/FeatureServer/0",
+            //popupTemplate: tempDivison,
             outFields: ["*"],
             copyright: "CEGIS"
         });
 
-        var layerDivision = new FeatureLayer({
-            title: "Division",
-            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Division/FeatureServer/",
+ 
+        
+        var layerBandarbanAspect = new TileLayer({
+            title: "Aspect",
+            //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Aspect/MapServer/",             
             outFields: ["*"],
             copyright: "CEGIS"
         });
+
+        var layerBandarbanSlope = new TileLayer({
+            title: "Slope",
+            //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Slope/MapServer",             
+            outFields: ["*"],
+            copyright: "CEGIS"
+        }); 
+
+        var layerBandarbanRainfallFuture30YRP = new TileLayer({
+            title: "Rainfall Future 30 Year Plan",
+            //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Rainfall_Future_30YRP/MapServer",             
+            outFields: ["*"],
+            copyright: "CEGIS"
+        });
+        var layerBandarbanRainfallBase10YRP = new TileLayer({
+            title: "Rainfall Base 10 Year Plan",
+            //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Rainfall_Base_10YRP/MapServer",             
+            outFields: ["*"],
+            copyright: "CEGIS"
+        });
+        var layerBandarbanDistanceRoad = new TileLayer({
+            title: "Distance from Road",
+            //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Distance_from_Road/MapServer",             
+            outFields: ["*"],
+            copyright: "CEGIS"
+        });
+        var layerBandarbanDistanceDrainage = new TileLayer({
+            title: "Distance from Drainage",
+            //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Distance_from_Drainage/MapServer",             
+            outFields: ["*"],
+            copyright: "CEGIS"
+        });
+        var layerBandarbanLithology = new TileLayer({
+            title: "Lithology",
+            //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Lithology/MapServer",             
+            outFields: ["*"],
+            copyright: "CEGIS"
+        });
+
+        
+
+        var groupBandarban = new GroupLayer({
+            title: "Bandarban",
+            //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+            layers: [layerBandarban,layerBandarbanAspect,layerBandarbanSlope,layerBandarbanRainfallFuture30YRP,layerBandarbanRainfallBase10YRP,layerBandarbanDistanceRoad,layerBandarbanDistanceDrainage,layerBandarbanLithology]
+        });
+
+        // Rangamati 
+        var layerRangamati = new FeatureLayer({
+            title: "Boundary",
+            //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati/FeatureServer",
+            //popupTemplate: tempDivison,
+            outFields: ["*"],
+            copyright: "CEGIS"
+        });
+
+
+        var tempLocation = {
+            title: "<b>Location: </b> {District}",
+            content: [{
+                type: "fields",
+                fieldInfos: [
+                {
+                    fieldName: "Risk",
+                    label: "Risk:",
+                    visible: true
+                },
+                {
+                    fieldName: "Location",
+                    label: "Location:",
+                    visible: true
+                },
+                             
+                ]
+            }
+            ]
+        };
+
+        var layerLocation = new FeatureLayer({
+            title: "Historical Landslide Location",
+            //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+            url: "https://www.arcgisbd.com/server/rest/services/Hosted/Historical_Rangamati_landslide_location/FeatureServer/",
+            popupTemplate: tempLocation,
+            outFields: ["*"],
+            copyright: "CEGIS"
+        });
+        
+
+
+
+
+        var groupRangamati = new GroupLayer({
+            title: "Rangamati",
+            //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+            layers: [layerRangamati,layerLocation]
+        });
+
+       
+
+
 
         const map = new Map({
           basemap: "arcgis-topographic",
-          layers: [layer,layerDivision]
+          layers: [groupBandarban,groupRangamati]
         });
         //Latitude: 22.6500 Longitude: 92.1833.
         const view = new MapView({
@@ -43,8 +194,14 @@
           ui: {
             components: ["zoom", "compass", "navigation-toggle"]
         }
-          
         });
+
+        //const sceneView = new SceneView({
+           // scale: 123456789,
+            //container: "viewDiv",
+            //map: map
+          //});
+
         const layerList = new LayerList({
             view: view,
             listItemCreatedFunction: function (event) {
@@ -58,6 +215,76 @@
                 }
             }
         });
+
+
+        // Map background Layer Start 
+        var gMapImagery = new WebTileLayer({
+            urlTemplate:
+                "https://mts1.google.com/vt/lyrs=s@186112443&hl=x-local&src=app&x={col}&y={row}&z={level}&s=Galile"
+        });
+        var gMapRoad = new WebTileLayer({
+            urlTemplate:
+                "https://mts1.google.com/vt/lyrs=m@186112443&hl=x-local&src=app&x={col}&y={row}&z={level}&s=Galile"
+        });
+        var gMapHybrid = new WebTileLayer({
+            urlTemplate:
+                "https://mts1.google.com/vt/lyrs=y@186112443&hl=x-local&src=app&x={col}&y={row}&z={level}&s=Galile"
+        });
+
+        var mapGMapSat = new Basemap({
+            baseLayers: [gMapImagery],
+            title: "Google Satellite",
+            id: "googleS",
+            thumbnailUrl: "Content/img/maps/googlesatellite.png"
+        });
+        var mapGMapRoad = new Basemap({
+            baseLayers: [gMapRoad],
+            title: "Google Road",
+            id: "googleR",
+            thumbnailUrl: "Content/img/maps/googleroad.jpg"
+        });
+        var mapGMapHybrid = new Basemap({
+            baseLayers: [gMapHybrid],
+            title: "Google Hybrid",
+            id: "googleH",
+            thumbnailUrl: "Content/img/maps/googlehybrid.jpg"
+        });
+        var baseMapNone = new Basemap({
+            baseLayers: null,
+            title: "No basemap",
+            id: "NoBaseMap",
+            thumbnailUrl: "Content/img/maps/no-basemap.svg"
+        });
+        let basemapDrone = new Basemap({
+            baseLayers: [
+                new MapImageLayer({
+                    url: "https://mapgis.lged.gov.bd/arcgis/rest/services/OrthoImages_MIL1/MapServer/",
+                    title: "Drone Basemap"
+                })
+            ],
+            title: "Drone Image",
+            id: "dronebasemap",
+            thumbnailUrl: "Content/img/maps/googlesatellite.png"
+        });
+
+
+        var localSource = new LocalBasemapsSource({
+            basemaps: [
+
+                Basemap.fromId("streets"),
+                Basemap.fromId("satellite"),
+                Basemap.fromId("osm"),
+                mapGMapHybrid, mapGMapRoad, basemapDrone, baseMapNone]
+        });
+
+        var basemapGallery = new BasemapGallery({
+            showArcGISBasemaps: true,
+            view: view,
+            container: document.createElement("div"),
+            source: localSource
+
+        });
+        // Map background Layer End 
         view.ui.add(
                 [
                     new Expand({
@@ -72,10 +299,42 @@
                         expandTooltip: "Map Legend",
                         group: "top-left",
                         expanded: false
-                    })
+                    }),
+                    new Expand({
+                        view: view,
+                        content: new Print({
+                            view: view,
+                            // specify your own print service
+                            printServiceUrl: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/ExportWebMap15Feb22/GPServer/Export%20Web%20Map"
+
+                        }),
+                        expandTooltip: "Print Map Layout",
+                        group: "top-left",
+                        expanded: false
+                    }),
+                    
+                    
                 ],
-                "top-left"
+                "top-left",
             );
+
+                view.ui.add([
+                    new Expand({
+                        view: view,
+                        content: new Search({ view: view }),
+                        expandTooltip: "Search",
+                        group: "top-right",
+                        expanded: false
+                    }),
+                    //Map background Layer 
+                    new Expand({
+                        view: view,
+                        expandTooltip: "Base Map Gallery",
+                        content: basemapGallery
+                    }),
+                ], 
+                "top-right"
+                );
       });
        
     </script>

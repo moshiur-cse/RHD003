@@ -1,5 +1,5 @@
+{% block content %}
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="utf-8" />
@@ -244,7 +244,7 @@
         </button>
         <button id="clear"
                 class="esri-widget--button esri-interactive esri-icon-trash"
-                title="Clear Measurements">
+                title="Clear">
         </button>
     </div>
     <!-- End Measurement  -->
@@ -612,6 +612,7 @@
             app = {
                 zoom: 14,
                 center: [90.3455213, 23.7817257],
+
                 scale: 50000000,
                 basemap: "streets",
                 viewPadding: {
@@ -657,6 +658,20 @@
             var hazardServiceURL = "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/HazardMap/MapServer/";
             var schoolServiceURL = "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/School/MapServer/";
             var upazilaServiceURL = "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/Upazila/MapServer/";
+            var templateUpazila = {
+                title: "<b>Upazila Name: </b> {upazila_name}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "district_name",
+                        label: "District:",
+                        visible: true
+                    },                   
+                    ]
+                }
+                ]
+
+            };
             var mapExp = '';
             //if ($("#DdlDivision").val() != '-1') {
             //    mapExp = "division_id=" + $("#DdlDivision").val();
@@ -711,11 +726,19 @@
 
             
 
-           
+            featureUpazila = new FeatureLayer({
+                url: upazilaServiceURL + "0",                
+                popupTemplate: templateUpazila,
+                visible: false,
+                outFields: ["*"]
+            });
+            featureDistrict = new FeatureLayer({
+                url: upazilaServiceURL + "1",
+                visible: false,
+                outFields: ["*"]
+            });
 
             
-
-
 
             
             var layerDistrict = new FeatureLayer({
@@ -752,23 +775,7 @@
 
 
            
-         
-
-          
-
-
-
-            
-
-            
-
-
-            
-            
-
-
-            
-
+    
            // map.add(myGroupLayer);
 
             
@@ -819,17 +826,12 @@
 
            
             
-
-            
-
-
-
             //Bandarban
 
             var layerBandarban = new FeatureLayer({
                 title: "Boundary",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban/FeatureServer",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban/FeatureServer/0",
                 //popupTemplate: tempDivison,
                 outFields: ["*"],
                 copyright: "CEGIS"
@@ -840,9 +842,11 @@
             var layerBandarbanAspect = new TileLayer({
                 title: "Aspect",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Aspect/MapServer",             
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Aspect/MapServer/",             
                 outFields: ["*"],
+                visible: false,
                 copyright: "CEGIS"
+                
             });
 
             var layerBandarbanSlope = new TileLayer({
@@ -850,15 +854,57 @@
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
                 url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Slope/MapServer",             
                 outFields: ["*"],
+                visible: false,
                 copyright: "CEGIS"
             }); 
 
+            var layerBandarbanRainfallFuture30YRP = new TileLayer({
+                title: "Rainfall Future 30 Year Plan",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Rainfall_Future_30YRP/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+            });
+            var layerBandarbanRainfallBase10YRP = new TileLayer({
+                title: "Rainfall Base 10 Year Plan",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Rainfall_Base_10YRP/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+            });
+            var layerBandarbanDistanceRoad = new TileLayer({
+                title: "Distance from Road",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Distance_from_Road/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+            });
+            var layerBandarbanDistanceDrainage = new TileLayer({
+                title: "Distance from Drainage",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Distance_from_Drainage/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+            });
+            var layerBandarbanLithology = new TileLayer({
+                title: "Lithology",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Lithology/MapServer",             
+                outFields: ["*"],
+                
+                copyright: "CEGIS"
+            });
 
+            
 
             var groupBandarban = new GroupLayer({
                 title: "Bandarban",
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerBandarban,layerBandarbanAspect,layerBandarbanSlope]
+                layers: [layerBandarban,layerBandarbanAspect,layerBandarbanSlope,layerBandarbanRainfallFuture30YRP,layerBandarbanRainfallBase10YRP,layerBandarbanDistanceRoad,layerBandarbanDistanceDrainage,layerBandarbanLithology]
             });
 
 
@@ -900,12 +946,12 @@
                 title: "Historical Landslide Location",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
                 url: "https://www.arcgisbd.com/server/rest/services/Hosted/Historical_Rangamati_landslide_location/FeatureServer/",
-                popupTemplate: tempLocation,
+                //visible: false,
+                popupTemplate: tempLocation,                
                 outFields: ["*"],
                 copyright: "CEGIS"
             });
             
-
 
 
 
@@ -922,8 +968,6 @@
                 basemap: app.basemap,
                 //layers: [groupAdmin, groupBaseData, groupSocial, groupEconomic, groupWeather, groupHazard, groupTransport, groupPower, groupWater, groupGeneral, groupClimate]
                 layers: [groupBandarban,groupRangamati],
-                zoom: 12,
-                center: [92.1833, 22.6500]
             });
 
             // 2D view
@@ -933,10 +977,10 @@
                 zoom: app.zoom,
                 extent: {
                     // autocasts as new Extent()
-                    xmin: 9787901,
-                    ymin: 2338503,
-                    xmax: 10329626,
-                    ymax: 3078993,
+                    xmin: 9662208,//9787901,
+                    ymin: 2359277,//2338503,
+                    xmax: 10836280,//10329626,
+                    ymax: 2666860,//3078993,
                     spatialReference: 102100
                 },
                 center: app.center,
@@ -947,6 +991,18 @@
                 }
             });
 
+            map.on("extent-change", showExtent);
+            function showExtent(ext){
+                var extentString = "";
+                extentString = "XMin: " + ext.xmin +
+                  " YMin: " + ext.ymin +
+                  " XMax: " + ext.xmax +
+                  " YMax: " + ext.ymax;
+                document.getElementById("onExtentChangeInfo").innerHTML = extentString;
+                console.log(extentString)
+               }
+
+            console.log(app.mapView)
 
             CalciteMapsArcGIS.setPopupPanelSync(app.mapView);
 
@@ -1192,16 +1248,16 @@
                             name: "Division",
                             placeholder: "Enter division name"
                         },
-                        {
-                            layer: featureConst,
-                            searchFields: ["const_name"],
-                            suggestionTemplate: "{const_name}, {upazila_name}, {district_name}",
-                            displayField: "const_name",
-                            exactMatch: false,
-                            outFields: ["*"],
-                            name: "Constitution",
-                            placeholder: "Enter constitution name"
-                        }
+                        //{
+                            //layer: featureConst,
+                            //searchFields: ["const_name"],
+                            //suggestionTemplate: "{const_name}, {upazila_name}, {district_name}",
+                            //displayField: "const_name",
+                            //exactMatch: false,
+                            //outFields: ["*"],
+                            //name: "Constitution",
+                          //  placeholder: "Enter constitution name"
+                        //}
                     ]
                 },
                 "searchWidgetDiv"
@@ -1372,10 +1428,10 @@
 
             function ZoomToHome() {
                 app.activeView.extent = new Extent({
-                    xmin: 292437,
-                    ymin: 2565504,
-                    xmax: 407259,
-                    ymax: 2712248,
+                    xmin: 10133365,//9787901,
+                    ymin: 2448020,//2338503,
+                    xmax: 10426883,//10329626,
+                    ymax: 2524916,//3078993,
                     spatialReference: 102100
                 });
             }
@@ -1995,3 +2051,4 @@
     </script>
 </body>
 </html>
+{% endblock content %}

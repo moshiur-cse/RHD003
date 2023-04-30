@@ -74,7 +74,8 @@ def web_map(request):
         
 def arc_gis_map(request):
     template_name = 'pages/maps/web-map.html'
-    return render(request,template_name)
+    context = {'Name':'Moshiur Rahman'}
+    return render(request,template_name,context)
         
 def map(request):
     layout = 'layout/master.html'  # set a default value 
