@@ -46,11 +46,11 @@ INSTALLED_APPS = [
     #RMO Install
     'django_admin_logs',
     'crispy_forms',
-    'leaflet',
-    'django.contrib.gis',
-    'debug_toolbar',  # debug_toolbar
+    #'leaflet',
+    #'django.contrib.gis',
+    #'debug_toolbar',  # debug_toolbar
     
-    'arcgis.widgets',
+    #'arcgis.widgets',
     #'admin_list',
     # 'admin_modify',
     # 'admin_urls',
@@ -615,3 +615,5 @@ GIS_URL = 'https://www.arcgis.com'
 GIS_USERNAME = 'moshiur'
 GIS_PASSWORD = 'Rahman@2022'
 GIS_VERIFY_CERT = True    
+
+#Super User admin admin1234

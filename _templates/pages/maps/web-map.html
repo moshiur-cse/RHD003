@@ -24,6 +24,10 @@
             height: 100%;
         }
 
+        .calcite-bgcolor-dark-blue {
+            background-color: #1E1E2D!important;
+        }
+
         #toolbarDiv {
             position: absolute;
             top: 150px;
@@ -837,6 +841,47 @@
                 copyright: "CEGIS"
             });
 
+            var layerBandarbanNationalRoadRHD = new FeatureLayer({
+                title: "National Road RHD",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_National_Road_RHD/FeatureServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var layerBandarbanRegionalRoadRHD = new FeatureLayer({
+                title: "Regional Road RHD",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Regional_Road_RHD/FeatureServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+            var layerBandarbanZillaRoadRHD = new FeatureLayer({
+                title: "Zilla Road RHD",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Zilla_Road_RHD/FeatureServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+            
+            var layerBandarbanHistoricalLandslideLocation = new FeatureLayer({
+                title: "Historical Landslide Location",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Historical_Landslide_Location/FeatureServer/0",
+                //popupTemplate: tempDivison,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+
+            
+
      
             
             var layerBandarbanAspect = new TileLayer({
@@ -895,7 +940,7 @@
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
                 url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Lithology/MapServer",             
                 outFields: ["*"],
-                
+                visible: false,
                 copyright: "CEGIS"
             });
 
@@ -904,7 +949,7 @@
             var groupBandarban = new GroupLayer({
                 title: "Bandarban",
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerBandarban,layerBandarbanAspect,layerBandarbanSlope,layerBandarbanRainfallFuture30YRP,layerBandarbanRainfallBase10YRP,layerBandarbanDistanceRoad,layerBandarbanDistanceDrainage,layerBandarbanLithology]
+                layers: [layerBandarban,layerBandarbanNationalRoadRHD,layerBandarbanRegionalRoadRHD,layerBandarbanZillaRoadRHD,layerBandarbanHistoricalLandslideLocation,layerBandarbanAspect,layerBandarbanSlope,layerBandarbanRainfallFuture30YRP,layerBandarbanRainfallBase10YRP,layerBandarbanDistanceRoad,layerBandarbanDistanceDrainage,layerBandarbanLithology]
             });
 
 
@@ -968,6 +1013,7 @@
                 basemap: app.basemap,
                 //layers: [groupAdmin, groupBaseData, groupSocial, groupEconomic, groupWeather, groupHazard, groupTransport, groupPower, groupWater, groupGeneral, groupClimate]
                 layers: [groupBandarban,groupRangamati],
+                
             });
 
             // 2D view
