@@ -6,11 +6,7 @@ from importlib import import_module, util
 import json
 from django.core.cache import cache
 
-from django.http import JsonResponse
-from django.views.decorators.http import require_GET
-from osgeo import ogr
-import geopandas as gpd
-from django.http import HttpResponse
+
 
 
 # Core theme class
@@ -290,39 +286,6 @@ class KTTheme:
 
         return output
     
-    def get_geojson(geojsonName):
-        filename = '/assets/geofiles/division/division.json'
-        driver = ogr.GetDriverByName('GeoJSON')
-        dataSource = driver.Open(filename, 0)
-        layer = dataSource.GetLayer()
-        featureCollection = {'type': 'FeatureCollection', 'features': []}
-        for feature in layer:
-            geometry = feature.GetGeometryRef()
-            properties = feature.items()
-            featureJson = {'type': 'Feature', 'geometry': geometry.ExportToJson(), 'properties': properties}
-            featureCollection['features'].append(featureJson)
-        print(featureCollection)    
-        return JsonResponse(featureCollection, safe=False)  
-    
-    def getShapeFile():
-        
-        
-        # files = []
-        # # Check if vendor exist in the settings
 
-        # if filename in settings.KT_THEME_VENDORS[data_type]:
-        #     # Skip duplicate entry
-        #     if settings.KT_THEME_VENDORS[data_type][filename] not in files:
-        #         for path in settings.KT_THEME_VENDORS[data_type][filename]:
-        #             # add static url to local file paths, skip for external urls
-        #             files.append(KTTheme.addStatic(path))
 
-        #shapefile = gpd.read_file('F:/RHD003/django_demo/starterkit/assets/geofiles/division/division.shp') 
-        shapefile = gpd.read_file('assets/geofiles/division/division.shp')
-        geojson = shapefile.to_crs(epsg=4326).to_json()       
-        print(geojson)
-
-    # Return the GeoJSON as an HTTP response
-        #return HttpResponse(geojson, content_type='application/json')
-        return JsonResponse(geojson, status=200, safe=False)
         

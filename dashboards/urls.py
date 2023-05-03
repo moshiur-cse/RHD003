@@ -9,8 +9,6 @@ urlpatterns = [
     #path('map/', DashboardsView.as_view(template_name = 'pages/maps/map.html'), name='map'),
     path('Web_map/',views.web_map, name='web_map'),
     path('Web-map/',views.arc_gis_map, name='web-map'),
-    path('map/', views.map, name='map'),
-    path('get_geojson_data/', views.get_geojson_data, name='get_geojson_data'),
-    
-    
+    #path('map/', views.map, name='map'),
+    #path('get_geojson_data/', views.get_geojson_data, name='get_geojson_data'),    
 ]

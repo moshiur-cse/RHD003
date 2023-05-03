@@ -869,7 +869,70 @@
                 outFields: ["*"],
                 copyright: "CEGIS"
             });
-            
+
+
+            var groupBandarbanBaseLayer = new GroupLayer({
+                title: "Base Layer",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerBandarbanZillaRoadRHD,layerBandarbanNationalRoadRHD,layerBandarbanRegionalRoadRHD,layerBandarban]
+            });
+
+            var layerBandarbanRainfall10yr = new TileLayer({
+                title: "Landslide Susceptibility (Base-10 yr RP Rainfall)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Base_10_yr_RP_Rainfall/MapServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var layerBandarbanRainfall30yr = new TileLayer({
+                title: "Landslide Susceptibility (2050s- 30yr RP Rainfall)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_2050s_30yr_RP_Rainfall/MapServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var groupBandarbanHazardScenario = new GroupLayer({
+                title: "Probabilistic Landslide Hazard Scenario",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerBandarbanRainfall10yr,layerBandarbanRainfall30yr]
+            });
+
+
+
+
+            var layerBandarbanRainfallmmBase10yr = new TileLayer({
+                title: "Rainfall in mm (Base- 10yr RP)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Rainfall_in_mm_Base_10yr_RP/MapServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var layerBandarbanRainfallmm2050s30yr = new TileLayer({
+                title: "Climate Change Induced Rainfall in mm (2050s- 30yr RP)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Rainfall_in_mm_2050s_30yr_RP/MapServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var groupBandarbanTriggeringFactor = new GroupLayer({
+                title: "Triggering Factor",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerBandarbanRainfallmmBase10yr,layerBandarbanRainfallmm2050s30yr]
+            });
+
+
             var layerBandarbanHistoricalLandslideLocation = new FeatureLayer({
                 title: "Historical Landslide Location",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
@@ -880,9 +943,18 @@
             });
 
 
-            
+        
 
-     
+
+            var layerBandarbanLULC = new TileLayer({
+                title: "LULC",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_LULC/MapServer/",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+                
+            });
             
             var layerBandarbanAspect = new TileLayer({
                 title: "Aspect",
@@ -895,46 +967,15 @@
             });
 
             var layerBandarbanSlope = new TileLayer({
-                title: "Slope",
+                title: "Slope (Degree)",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Slope/MapServer",             
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Slope_Degree/MapServer",             
                 outFields: ["*"],
                 visible: false,
                 copyright: "CEGIS"
             }); 
 
-            var layerBandarbanRainfallFuture30YRP = new TileLayer({
-                title: "Rainfall Future 30 Year Plan",
-                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Rainfall_Future_30YRP/MapServer",             
-                outFields: ["*"],
-                visible: false,
-                copyright: "CEGIS"
-            });
-            var layerBandarbanRainfallBase10YRP = new TileLayer({
-                title: "Rainfall Base 10 Year Plan",
-                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Rainfall_Base_10YRP/MapServer",             
-                outFields: ["*"],
-                visible: false,
-                copyright: "CEGIS"
-            });
-            var layerBandarbanDistanceRoad = new TileLayer({
-                title: "Distance from Road",
-                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Distance_from_Road/MapServer",             
-                outFields: ["*"],
-                visible: false,
-                copyright: "CEGIS"
-            });
-            var layerBandarbanDistanceDrainage = new TileLayer({
-                title: "Distance from Drainage",
-                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Distance_from_Drainage/MapServer",             
-                outFields: ["*"],
-                visible: false,
-                copyright: "CEGIS"
-            });
+            
             var layerBandarbanLithology = new TileLayer({
                 title: "Lithology",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
@@ -943,17 +984,35 @@
                 visible: false,
                 copyright: "CEGIS"
             });
+            var layerBandarbanDistanceRoad = new TileLayer({
+                title: "Distance from Road (m)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Distance_from_Road/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+            });
+            var layerBandarbanDistanceDrainage = new TileLayer({
+                title: "Distance from Drainage (m)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Distance_from_Drainage/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+            });
+           
+            var groupBandarbanCausalFactors = new GroupLayer({
+                title: "Preconditioning and Preparatory Causal Factors",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerBandarbanAspect,layerBandarbanDistanceRoad,layerBandarbanDistanceDrainage,layerBandarbanSlope,layerBandarbanLithology,layerBandarbanLULC]
+            });
 
             
-
             var groupBandarban = new GroupLayer({
                 title: "Bandarban",
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerBandarban,layerBandarbanNationalRoadRHD,layerBandarbanRegionalRoadRHD,layerBandarbanZillaRoadRHD,layerBandarbanHistoricalLandslideLocation,layerBandarbanAspect,layerBandarbanSlope,layerBandarbanRainfallFuture30YRP,layerBandarbanRainfallBase10YRP,layerBandarbanDistanceRoad,layerBandarbanDistanceDrainage,layerBandarbanLithology]
+                layers: [groupBandarbanHazardScenario,groupBandarbanTriggeringFactor,groupBandarbanCausalFactors,groupBandarbanBaseLayer,layerBandarbanHistoricalLandslideLocation]
             });
-
-
-
 
             // Rangamati 
             var layerRangamati = new FeatureLayer({
@@ -987,10 +1046,10 @@
                 ]
             };
 
-            var layerLocation = new FeatureLayer({
+            var layerRangamatiHistoricalLandslideLocation = new FeatureLayer({
                 title: "Historical Landslide Location",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Historical_Rangamati_landslide_location/FeatureServer/",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Historical_Landslide_Location/FeatureServer",
                 //visible: false,
                 popupTemplate: tempLocation,                
                 outFields: ["*"],
@@ -1003,7 +1062,7 @@
             var groupRangamati = new GroupLayer({
                 title: "Rangamati",
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerRangamati,layerLocation]
+                layers: [layerRangamati,layerRangamatiHistoricalLandslideLocation]
             });
 
            
@@ -1045,10 +1104,10 @@
                   " XMax: " + ext.xmax +
                   " YMax: " + ext.ymax;
                 document.getElementById("onExtentChangeInfo").innerHTML = extentString;
-                console.log(extentString)
+                //console.log(extentString)
                }
 
-            console.log(app.mapView)
+            //console.log(app.mapView)
 
             CalciteMapsArcGIS.setPopupPanelSync(app.mapView);
 

@@ -10,13 +10,13 @@ from django.shortcuts import redirect, render
 from django.shortcuts import render
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import Point
-import geopandas as gpd
-import json
-from django.http import JsonResponse
-from django.core.serializers import serialize
-import os
-from .forms import UploadFileForm
-from arcgis.gis import GIS
+# import geopandas as gpd
+# import json
+# from django.http import JsonResponse
+# from django.core.serializers import serialize
+# import os
+# from .forms import UploadFileForm
+# from arcgis.gis import GIS
 """
 This file is a view controller for multiple pages as a module.
 Here you can override the page view layout.
@@ -77,34 +77,34 @@ def arc_gis_map(request):
     context = {'Name':'Moshiur Rahman'}
     return render(request,template_name,context)
         
-def map(request):
-    layout = 'layout/master.html'  # set a default value 
-    template_name = 'pages/maps/map.html'
-    #shapefile = gpd.read_file('assets/geofiles/division/division.shp')
-    #my_geojson_str = shapefile.to_crs(epsg=4326).to_json()  
+#def map(request):
+#     layout = 'layout/master.html'  # set a default value 
+#     template_name = 'pages/maps/map.html'
+#     #shapefile = gpd.read_file('assets/geofiles/division/division.shp')
+#     #my_geojson_str = shapefile.to_crs(epsg=4326).to_json()  
     
-    if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            files = request.FILES.getlist('files')
-            for shapefile in files:
-                if shapefile.name.endswith('.shp'):
-                    os.environ['SHAPE_RESTORE_SHX'] = 'YES'                   
-                    shapefile_path = shapefile.temporary_file_path()
-                    shape_file = gpd.read_file(shapefile_path)
-                    shape_file = shape_file.set_crs(epsg=4326)                  
-                if shapefile.name.endswith('.dbf'):
-                    os.environ['SHAPE_RESTORE_SHX'] = 'YES'
-                    dbffile_path = shapefile.temporary_file_path()
-                    dbf_file = gpd.read_file(dbffile_path)
-                    dbf_file = dbf_file.set_crs(epsg=4326)                     
+#     if request.method == 'POST':
+#         form = UploadFileForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             files = request.FILES.getlist('files')
+#             for shapefile in files:
+#                 if shapefile.name.endswith('.shp'):
+#                     os.environ['SHAPE_RESTORE_SHX'] = 'YES'                   
+#                     shapefile_path = shapefile.temporary_file_path()
+#                     shape_file = gpd.read_file(shapefile_path)
+#                     shape_file = shape_file.set_crs(epsg=4326)                  
+#                 if shapefile.name.endswith('.dbf'):
+#                     os.environ['SHAPE_RESTORE_SHX'] = 'YES'
+#                     dbffile_path = shapefile.temporary_file_path()
+#                     dbf_file = gpd.read_file(dbffile_path)
+#                     dbf_file = dbf_file.set_crs(epsg=4326)                     
                     
-            joined_df = gpd.pd.merge(shape_file, dbf_file, on='common_field')   
-            print(joined_df.head())                 
-            my_geojson_str = joined_df.to_crs(epsg=4326).to_json()    
-            # do something with the uploaded files
-    else:
-        form = UploadFileForm()
+#             joined_df = gpd.pd.merge(shape_file, dbf_file, on='common_field')   
+#             print(joined_df.head())                 
+#             my_geojson_str = joined_df.to_crs(epsg=4326).to_json()    
+#             # do something with the uploaded files
+#     else:
+#         form = UploadFileForm()
     
     
     #my_geojson_data = MyModel.objects.get(pk=1).geojson_field
@@ -126,26 +126,26 @@ def map(request):
 
     #context = {'layout':layout,'geojson':JsonResponse(my_geojson_str, safe=False),'my_data': '','form': form}
     
-    context = {'layout':layout,'form': form}
-    return render(request, template_name,context)
+    #context = {'layout':layout,'form': form}
+    #return render(request, template_name,context)
         #return render(request, 'map.html', {'geojson': geojson,'my_variable':'Moshiur Rahman'})    
 
-def save_geojson_to_folder(geojson_data, folder_path, file_name):
-    # Convert the GeoJSON data to a GeoDataFrame
-    gdf = gpd.GeoDataFrame.from_features(geojson_data['features'])
+# def save_geojson_to_folder(geojson_data, folder_path, file_name):
+#     # Convert the GeoJSON data to a GeoDataFrame
+#     gdf = gpd.GeoDataFrame.from_features(geojson_data['features'])
 
-    # Create the folder if it doesn't exist
-    os.makedirs(folder_path, exist_ok=True)
+#     # Create the folder if it doesn't exist
+#     os.makedirs(folder_path, exist_ok=True)
 
-    # Save the GeoDataFrame to a GeoJSON file in the folder
-    gdf.to_file(os.path.join(folder_path, file_name), driver='GeoJSON')  
+#     # Save the GeoDataFrame to a GeoJSON file in the folder
+#     gdf.to_file(os.path.join(folder_path, file_name), driver='GeoJSON')  
 
-def get_geojson_data(request):
-        # get the data you need, for example:
-        shapefile = gpd.read_file('assets/geofiles/upazila/upazila.shp')
-        #shapefile = shapefile.loc[shapefile['GeoCode'] == '20']
-        #console(shapefile.head())
-        my_geojson_str = shapefile.to_crs(epsg=4326).to_json()     
-        column_names = list(shapefile.columns)
-        print(column_names)
-        return JsonResponse(my_geojson_str,safe=False)
+# def get_geojson_data(request):
+#         # get the data you need, for example:
+#         shapefile = gpd.read_file('assets/geofiles/upazila/upazila.shp')
+#         #shapefile = shapefile.loc[shapefile['GeoCode'] == '20']
+#         #console(shapefile.head())
+#         my_geojson_str = shapefile.to_crs(epsg=4326).to_json()     
+#         column_names = list(shapefile.columns)
+#         print(column_names)
+#         return JsonResponse(my_geojson_str,safe=False)
