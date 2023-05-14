@@ -190,10 +190,15 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'assets/'
+#STATIC_URL = 'assets/'
+STATIC_URL = 'static/'
+
+#STATICFILES_DIRS = [
+#    BASE_DIR / 'assets',
+#]
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'assets',
+    BASE_DIR / 'static',
 ]
 
 

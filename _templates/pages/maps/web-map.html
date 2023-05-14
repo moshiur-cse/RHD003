@@ -52,9 +52,6 @@
             height: 96px;
         }
 
-
-
-
         .esri-widget--button
         {
             height:64px;
@@ -141,7 +138,7 @@
         </div>
         <!-- Title -->
         <div class="calcite-title calcite-overflow-hidden">
-            <span class="calcite-title-main">RHD: Map Viewer</span>
+            <span class="calcite-title-main" data-tooltip="Landslide Risk Informatoin Portal for RHD">Landslide Risk Informatoin Portal for RHD</span>
             <span class="calcite-title-divider hidden-xs"></span>
             <span class="calcite-title-sub hidden-xs" id="btnHomeSpan">
                 <a href="/" role="button" data-target="" aria-haspopup="true" class="buttonTitle"><span class="glyphicon esri-icon-home">&nbsp;</span>Dashboard</a>
@@ -228,7 +225,8 @@
             </div>
         </div>
         <div id="tools" class="esri-widget">
-            <button id="zoomToHome" class="btn btn-primary">Home</button>
+            <button id="zoomToRangamati" class="btn btn-primary">Rangamati</button>
+            <button id="zoomToHome" class="btn btn-primary">Bandarban</button>
             <button id="BtnThemetic" class="btn btn-warning" style="font-weight:bold; display:none">Themetic</button>
             <button id="clearButton" class="btn btn-primary">Clear</button>
             <button id="zoomprev" class="btn btn-info tool">Previous</button>
@@ -376,7 +374,7 @@
                                     <option value="calcite-bgcolor-dark-blue"
                                             data-textcolor="calcite-text-light"
                                             data-bgcolor="calcite-bg-custom">
-                                        Calcite Dark Blue
+                                        Calcite Dark Black
                                     </option>
                                     <option value="calcite-bgcolor-dark-green"
                                             data-textcolor="calcite-text-light"
@@ -831,44 +829,149 @@
            
             
             //Bandarban
+            var tempBandarbanLocation = {
+                title: "<b>District: </b> {District}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "Risk",
+                        label: "Risk:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "Location",
+                        label: "Location:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "Area",
+                        label: "Area:",
+                        visible: true
+                    },
+                    {
+                        fieldName: "Fail_Type",
+                        label: "Fail Type:",
+                        visible: true
+                    },
+                                 
+                    ]
+                }
+                ]
+            };
+            var layerBandarbanHistoricalLandslideLocation = new FeatureLayer({
+                title: "Historical Landslide Location",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Historical_Landslide_Location/FeatureServer/0",
+                popupTemplate: tempBandarbanLocation,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
 
             var layerBandarban = new FeatureLayer({
                 title: "Boundary",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
                 url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban/FeatureServer/0",
-                //popupTemplate: tempDivison,
                 outFields: ["*"],
                 copyright: "CEGIS"
             });
+
+            var tempBandarbanNationalRoad = {
+                title: "<b>Road Name: </b> {RoadName}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "length_km",
+                        label: "Length (km):",
+                        visible: true
+                    },    
+                    {
+                        fieldName: "RoadNo",
+                        label: "Road No:",
+                        visible: true
+                    },                  
+                                                  
+                    ]
+                }
+                ]
+            };
 
             var layerBandarbanNationalRoadRHD = new FeatureLayer({
                 title: "National Road RHD",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
                 url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_National_Road_RHD/FeatureServer",
-                //popupTemplate: tempDivison,
+                popupTemplate: tempBandarbanNationalRoad,
                 visible: false,
                 outFields: ["*"],
                 copyright: "CEGIS"
             });
+            var tempBandarbanRegionalRoad = {
+                title: "<b>Road Name: </b> {RoadName}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "length_km",
+                        label: "Length (km):",
+                        visible: true
+                    },    
+                    {
+                        fieldName: "RoadNo",
+                        label: "Road No:",
+                        visible: true
+                    },                  
+                                                  
+                    ]
+                }
+                ]
+            };
+
 
             var layerBandarbanRegionalRoadRHD = new FeatureLayer({
                 title: "Regional Road RHD",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
                 url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Regional_Road_RHD/FeatureServer",
-                //popupTemplate: tempDivison,
+                popupTemplate: tempBandarbanRegionalRoad,
                 visible: false,
                 outFields: ["*"],
                 copyright: "CEGIS"
             });
+
+
+            var tempBandarbanZillaRoad = {
+                title: "<b>Road Name: </b> {RoadName}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "length_km",
+                        label: "Length (km):",
+                        visible: true
+                    },    
+                    {
+                        fieldName: "RoadNo",
+                        label: "Road No:",
+                        visible: true
+                    },                  
+                                                  
+                    ]
+                }
+                ]
+            };
+
             var layerBandarbanZillaRoadRHD = new FeatureLayer({
                 title: "Zilla Road RHD",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
                 url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Zilla_Road_RHD/FeatureServer",
-                //popupTemplate: tempDivison,
+                popupTemplate: tempBandarbanZillaRoad,
                 visible: false,
                 outFields: ["*"],
                 copyright: "CEGIS"
             });
+
+
+            
 
 
             var groupBandarbanBaseLayer = new GroupLayer({
@@ -900,7 +1003,7 @@
             var groupBandarbanHazardScenario = new GroupLayer({
                 title: "Probabilistic Landslide Hazard Scenario",
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerBandarbanRainfall10yr,layerBandarbanRainfall30yr]
+                layers: [layerBandarbanRainfall30yr,layerBandarbanRainfall10yr]
             });
 
 
@@ -929,22 +1032,12 @@
             var groupBandarbanTriggeringFactor = new GroupLayer({
                 title: "Triggering Factor",
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerBandarbanRainfallmmBase10yr,layerBandarbanRainfallmm2050s30yr]
+                layers: [layerBandarbanRainfallmm2050s30yr,layerBandarbanRainfallmmBase10yr]
             });
 
-
-            var layerBandarbanHistoricalLandslideLocation = new FeatureLayer({
-                title: "Historical Landslide Location",
-                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Historical_Landslide_Location/FeatureServer/0",
-                //popupTemplate: tempDivison,
-                outFields: ["*"],
-                copyright: "CEGIS"
-            });
 
 
         
-
 
             var layerBandarbanLULC = new TileLayer({
                 title: "LULC",
@@ -959,7 +1052,7 @@
             var layerBandarbanAspect = new TileLayer({
                 title: "Aspect",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Aspect/MapServer/",             
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Aspect/MapServer",             
                 outFields: ["*"],
                 visible: false,
                 copyright: "CEGIS"
@@ -1015,18 +1108,150 @@
             });
 
             // Rangamati 
-            var layerRangamati = new FeatureLayer({
-                title: "Boundary",
+            var tempKaptaiLake = {
+                title: "<b>River: </b> {RIVNAME}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "Shape_Area",
+                        label: "Area:",
+                        visible: true
+                    },                   
+                                 
+                    ]
+                }
+                ]
+            };
+
+            var layerKaptaiLake = new FeatureLayer({
+                title: "Kaptai lake",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati/FeatureServer",
-                //popupTemplate: tempDivison,
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Base_Layer/FeatureServer/1",
+                popupTemplate: tempKaptaiLake,
                 outFields: ["*"],
                 copyright: "CEGIS"
             });
 
 
-            var tempLocation = {
-                title: "<b>Location: </b> {District}",
+
+
+           
+
+
+            var layerRangamati = new FeatureLayer({
+                title: "Boundary",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Base_Layer/FeatureServer/2",
+                //popupTemplate: tempDivison,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var tempRangamatiNationalRoad = {
+                title: "<b>Road Name: </b> {RoadName}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "length_km",
+                        label: "Length (km):",
+                        visible: true
+                    },    
+                    {
+                        fieldName: "RoadNo",
+                        label: "Road No:",
+                        visible: true
+                    },                  
+                                                  
+                    ]
+                }
+                ]
+            };
+
+
+            var layerRangamatiNationalRoadRHD = new FeatureLayer({
+                title: "National Road RHD",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Base_Layer/FeatureServer/3",
+                popupTemplate: tempRangamatiNationalRoad,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var tempRangamatiRegionalRoad = {
+                title: "<b>Road Name: </b> {RoadName}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "length_km",
+                        label: "Length (km):",
+                        visible: true
+                    },    
+                    {
+                        fieldName: "RoadNo",
+                        label: "Road No:",
+                        visible: true
+                    },                  
+                                                  
+                    ]
+                }
+                ]
+            };
+
+            var layerRangamatiRegionalRoadRHD = new FeatureLayer({
+                title: "Regional Road RHD",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Base_Layer/FeatureServer/4",
+                popupTemplate: tempRangamatiRegionalRoad,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var tempRangamatiZillaRoad={
+                title: "<b>Road Name: </b> {RoadName}",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [
+                    {
+                        fieldName: "length_km",
+                        label: "Length (km):",
+                        visible: true
+                    },    
+                    {
+                        fieldName: "RoadNo",
+                        label: "Road No:",
+                        visible: true
+                    },                  
+                                                  
+                    ]
+                }
+                ]
+            };
+            var layerRangamatiZillaRoadRHD = new FeatureLayer({
+                title: "Zilla Road RHD",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Base_Layer/FeatureServer/5",
+                popupTemplate: tempRangamatiZillaRoad,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+
+            var groupBandarBaseLayer = new GroupLayer({
+                title: "Base Layers",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerRangamatiZillaRoadRHD,layerRangamatiRegionalRoadRHD,layerRangamatiNationalRoadRHD,layerRangamati,layerKaptaiLake]
+            });
+
+
+        
+            var tempRangamatiLocation = {
+                title: "<b>District: </b> {District}",
                 content: [{
                     type: "fields",
                     fieldInfos: [
@@ -1040,6 +1265,11 @@
                         label: "Location:",
                         visible: true
                     },
+                    {
+                        fieldName: "Road_No_",
+                        label: "Road No:",
+                        visible: true
+                    },
                                  
                     ]
                 }
@@ -1051,9 +1281,130 @@
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
                 url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Historical_Landslide_Location/FeatureServer",
                 //visible: false,
-                popupTemplate: tempLocation,                
+                popupTemplate: tempRangamatiLocation,                
                 outFields: ["*"],
                 copyright: "CEGIS"
+            });
+           
+
+
+            var layerRangamatiLULC = new TileLayer({
+                title: "LULC",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_LULC/MapServer",            
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"              
+            });
+
+
+
+
+            var layerRangamatiAspect = new TileLayer({
+                title: "Aspect",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Aspect/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+                 
+            });
+
+            var layerRangamatiSlope = new TileLayer({
+                title: "Slope (Degree)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Slope_Degree/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+            }); 
+
+            
+            var layerRangamatiLithology = new TileLayer({
+                title: "Lithology",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Lithology/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+            });
+            var layerRangamatiDistanceRoad = new TileLayer({
+                title: "Distance from Road (m)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Distance_from_Road_m/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+            });
+            var layerRangamatiDistanceDrainage = new TileLayer({
+                title: "Distance from Drainage (m)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Distance_from_Drainage_m/MapServer",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+            });
+           
+            var groupRangamatiCausalFactors = new GroupLayer({
+                title: "Preconditioning and Preparatory Causal Factors",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerRangamatiAspect,layerRangamatiDistanceRoad,layerRangamatiDistanceDrainage,layerRangamatiSlope,layerRangamatiLithology,layerRangamatiLULC]
+            });
+
+
+            var layerRangamatiRainfall10yr = new TileLayer({
+                title: "Landslide Susceptibility (Base-10 yr RP Rainfall)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Landslide_Susceptibility_Base_10_Yr_RP_Rainfall/MapServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var layerRangamatiRainfall30yr = new TileLayer({
+                title: "Landslide Susceptibility (2050s- 30yr RP Rainfall)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Landslide_Susceptibility_2050s_30yr_RP_Rainfall/MapServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var groupRangamatiHazardScenario = new GroupLayer({
+                title: "Probabilistic Landslide Hazard Scenario",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerRangamatiRainfall30yr,layerRangamatiRainfall10yr]
+            });
+
+
+
+
+            var layerRangamatiRainfallmmBase10yr = new TileLayer({
+                title: "Rainfall in mm (Base- 10yr RP)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Rainfall_in_mm_Base_10yr_RP/MapServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var layerRangamatiRainfallmm2050s30yr = new TileLayer({
+                title: "Climate Change Induced Rainfall in mm (2050s- 30yr RP)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Climate_Change_Induced_Rainfall_in_mm_2050s_30yr_RP/MapServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var groupRangamatiTriggeringFactor = new GroupLayer({
+                title: "Triggering Factor",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerRangamatiRainfallmm2050s30yr,layerRangamatiRainfallmmBase10yr]
             });
             
 
@@ -1062,7 +1413,7 @@
             var groupRangamati = new GroupLayer({
                 title: "Rangamati",
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerRangamati,layerRangamatiHistoricalLandslideLocation]
+                layers: [groupRangamatiHazardScenario,groupRangamatiTriggeringFactor,groupRangamatiCausalFactors,groupBandarBaseLayer,layerRangamatiHistoricalLandslideLocation]
             });
 
            
@@ -1107,7 +1458,7 @@
                 //console.log(extentString)
                }
 
-            //console.log(app.mapView)
+            console.log(app.mapView)
 
             CalciteMapsArcGIS.setPopupPanelSync(app.mapView);
 
@@ -1143,8 +1494,17 @@
 
             //set map extent
             app.activeView.when(function () {
+
+                app.activeView.extent = new Extent({
+                    xmin: 9723968,//9787901,
+                    ymin: 2375252,//2338503,
+                    xmax: 10898040,//10329626,
+                    ymax: 2671216,//3078993,
+                    spatialReference: 102100
+                });
+                
                 baseLayer.when(function () {
-                    app.activeView.goTo(baseLayer.fullExtent).catch(function (error) {
+                    app.activeView.goTo(baseLayer.fullExtent).catch(function (error) {                       
                         if (error.name != "AbortError") {
                             console.error(error);
                         }
@@ -1529,6 +1889,19 @@
             });
 
 
+            const zoomToRangamatiButton = document.getElementById("zoomToRangamati");
+            zoomToRangamatiButton.addEventListener("click", function () {
+                app.activeView.extent = new Extent({
+                    xmin: 10128625,//9787901,
+                    ymin: 2546394,//2338503,
+                    xmax: 10422143,//10329626,
+                    ymax: 2620385,//3078993,
+                    spatialReference: 102100
+                });
+
+            });
+
+
 
 
             function ZoomToHome() {
@@ -1798,8 +2171,6 @@
                 areaButton.classList.remove("active");
                 measurement.clear();
             }
-
-
 
 
             /******************************************************************
