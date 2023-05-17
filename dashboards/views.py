@@ -48,6 +48,10 @@ class DashboardsView(TemplateView):
 
         # A function to init the global layout. It is defined in _keenthemes/__init__.py file
         context = KTLayout.init(context)
+        
+        print(context)
+        
+        context["Moshiur"]="Rahman"
 
         # Include vendors and javascript files for dashboard widgets
         KTTheme.addVendors(['amcharts', 'amcharts-maps', 'amcharts-stock'])

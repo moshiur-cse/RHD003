@@ -862,7 +862,7 @@
             var layerBandarbanHistoricalLandslideLocation = new FeatureLayer({
                 title: "Historical Landslide Location",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Historical_Landslide_Location/FeatureServer/0",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Historical_Landslide_Location_Bandarban/FeatureServer",
                 popupTemplate: tempBandarbanLocation,
                 outFields: ["*"],
                 copyright: "CEGIS"
@@ -871,7 +871,7 @@
             var layerBandarban = new FeatureLayer({
                 title: "Boundary",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban/FeatureServer/0",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Base_Layer_Bandarban/FeatureServer/1",
                 outFields: ["*"],
                 copyright: "CEGIS"
             });
@@ -900,7 +900,7 @@
             var layerBandarbanNationalRoadRHD = new FeatureLayer({
                 title: "National Road RHD",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_National_Road_RHD/FeatureServer",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Base_Layer_Bandarban/FeatureServer/2",
                 popupTemplate: tempBandarbanNationalRoad,
                 visible: false,
                 outFields: ["*"],
@@ -931,7 +931,7 @@
             var layerBandarbanRegionalRoadRHD = new FeatureLayer({
                 title: "Regional Road RHD",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Regional_Road_RHD/FeatureServer",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Base_Layer_Bandarban/FeatureServer/3",
                 popupTemplate: tempBandarbanRegionalRoad,
                 visible: false,
                 outFields: ["*"],
@@ -963,7 +963,7 @@
             var layerBandarbanZillaRoadRHD = new FeatureLayer({
                 title: "Zilla Road RHD",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Zilla_Road_RHD/FeatureServer",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Base_Layer_Bandarban/FeatureServer/4",
                 popupTemplate: tempBandarbanZillaRoad,
                 visible: false,
                 outFields: ["*"],
@@ -979,6 +979,15 @@
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
                 layers: [layerBandarbanZillaRoadRHD,layerBandarbanNationalRoadRHD,layerBandarbanRegionalRoadRHD,layerBandarban]
             });
+
+
+
+
+
+// NDVI raster function where the output will be between 0-255
+
+
+
 
             var layerBandarbanRainfall10yr = new TileLayer({
                 title: "Landslide Susceptibility (Base-10 yr RP Rainfall)",
@@ -1127,7 +1136,7 @@
             var layerKaptaiLake = new FeatureLayer({
                 title: "Kaptai lake",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Base_Layer/FeatureServer/1",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Base_Layer_Rangamati/FeatureServer/1",
                 popupTemplate: tempKaptaiLake,
                 outFields: ["*"],
                 copyright: "CEGIS"
@@ -1142,7 +1151,7 @@
             var layerRangamati = new FeatureLayer({
                 title: "Boundary",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Base_Layer/FeatureServer/2",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Base_Layer_Rangamati/FeatureServer/2",
                 //popupTemplate: tempDivison,
                 outFields: ["*"],
                 copyright: "CEGIS"
@@ -1173,7 +1182,7 @@
             var layerRangamatiNationalRoadRHD = new FeatureLayer({
                 title: "National Road RHD",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Base_Layer/FeatureServer/3",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Base_Layer_Rangamati/FeatureServer/3",
                 popupTemplate: tempRangamatiNationalRoad,
                 visible: false,
                 outFields: ["*"],
@@ -1204,7 +1213,7 @@
             var layerRangamatiRegionalRoadRHD = new FeatureLayer({
                 title: "Regional Road RHD",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Base_Layer/FeatureServer/4",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Base_Layer_Rangamati/FeatureServer/4",
                 popupTemplate: tempRangamatiRegionalRoad,
                 visible: false,
                 outFields: ["*"],
@@ -1234,7 +1243,7 @@
             var layerRangamatiZillaRoadRHD = new FeatureLayer({
                 title: "Zilla Road RHD",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Base_Layer/FeatureServer/5",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Base_Layer_Rangamati/FeatureServer/5",
                 popupTemplate: tempRangamatiZillaRoad,
                 visible: false,
                 outFields: ["*"],
@@ -1279,7 +1288,7 @@
             var layerRangamatiHistoricalLandslideLocation = new FeatureLayer({
                 title: "Historical Landslide Location",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_Historical_Landslide_Location/FeatureServer",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Historical_Landslide_Location_Rangamati/FeatureServer",
                 //visible: false,
                 popupTemplate: tempRangamatiLocation,                
                 outFields: ["*"],
