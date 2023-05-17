@@ -145,9 +145,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'rhd_db',
         'USER': 'postgres',
-        'PASSWORD': 'cegis',
-        'HOST': 'localhost',  #'130.180.3.119',  # or 'localhost' if running locally
-        'PORT': '5432',  # default port for PostgreSQL is 5432
+        'PASSWORD':'Cegis@2020', #'cegis',
+        'HOST': '202.53.173.179',  #'130.180.3.119',  # or 'localhost' if running locally
+        'PORT': '5436',#'5432',  # default port for PostgreSQL is 5432
     }
 }
 
