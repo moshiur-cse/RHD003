@@ -599,21 +599,7 @@ EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 
 
-# Set the GDAL library path
-GDAL_LIBRARY_PATH ='GDAL' 
-#os.environ.get('GDAL_LIBRARY_PATH')
 
-# If the GDAL library path is not set, try to set it automatically
-if not GDAL_LIBRARY_PATH:
-    try:
-        from osgeo import gdal
-        GDAL_LIBRARY_PATH = gdal.GetConfigOption('GDAL')
-    except:
-        pass
-
-# Add GDAL_LIBRARY_PATH to your Django settings
-if GDAL_LIBRARY_PATH:
-    os.environ['GDAL_LIBRARY_PATH'] = GDAL_LIBRARY_PATH
     
 # ArcGIS API configuration
 GIS_URL = 'https://www.arcgis.com'
