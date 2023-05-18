@@ -527,6 +527,7 @@
             "esri/smartMapping/statistics/histogram",
             "esri/widgets/smartMapping/ClassedColorSlider",
             "esri/layers/MapImageLayer",
+            "esri/layers/ImageryLayer",
             "esri/widgets/LayerList",
             "esri/widgets/Print",
             "esri/layers/GeoJSONLayer",
@@ -551,7 +552,8 @@
             "bootstrap/Dropdown",
             "bootstrap/Tab",
             // Can use @dojo shim for Array.from for IE11
-            "@dojo/framework/shim/array"
+            "@dojo/framework/shim/array",
+            
         ], function (
             esriConfig,
             Map,
@@ -576,6 +578,7 @@
             histogram,
             ClassedColorSlider,
             MapImageLayer,
+            ImageryLayer,
             LayerList,
             Print,
             GeoJSONLayer,
@@ -588,7 +591,7 @@
             domClass, dom, on,
             rendererJsonUtils,
             CalciteMaps,
-            CalciteMapsArcGIS
+            CalciteMapsArcGIS,
         ) {
             _prevExtent = false;
             _preExtent = null;
@@ -1003,11 +1006,28 @@
                 title: "Landslide Susceptibility (2050s- 30yr RP Rainfall)",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
                 url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_2050s_30yr_RP_Rainfall/MapServer",
+                //url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_2050s_30yr_RP_Rainfall/ImageServer",
                 //popupTemplate: tempDivison,
+                legendEnabled: true,
                 visible: false,
                 outFields: ["*"],
+                popupTemplate: {
+                    title: "Rainfall",
+                    content: [{
+                        type: "fields",
+                        fieldInfos: [
+                        {
+                            fieldName: "SUSCEPTIBILITY",
+                            label: "SUSCEPTIBILITY (km):",
+                            visible: true
+                        },                                                                                                
+                        ]
+                    }
+                    ]
+                },
                 copyright: "CEGIS"
             });
+            //https://www.arcgisbd.com/server/rest/services/ADB005RasterElevation/ImageServer
 
             var groupBandarbanHazardScenario = new GroupLayer({
                 title: "Probabilistic Landslide Hazard Scenario",
@@ -1015,7 +1035,7 @@
                 layers: [layerBandarbanRainfall30yr,layerBandarbanRainfall10yr]
             });
 
-
+            
 
 
             var layerBandarbanRainfallmmBase10yr = new TileLayer({
