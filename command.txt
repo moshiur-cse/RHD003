@@ -1,1 +1,7 @@
+Pip-> python.exe -m pip install --upgrade pip
+
+create virtual env-> virtualenv rhd_env
+activation-> F:\RHD003\rhd_env\Scripts\activate
+
 pip freeze > requirements.txt
+pip install -r /path/to/requirements.txt
