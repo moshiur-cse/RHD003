@@ -8,8 +8,7 @@ from pprint import pprint
 from django.shortcuts import redirect, render
 
 from django.shortcuts import render
-from django.contrib.gis.gdal import DataSource
-from django.contrib.gis.geos import Point
+
 # import geopandas as gpd
 # import json
 # from django.http import JsonResponse
