@@ -995,7 +995,7 @@
             var layerBandarbanRainfall10yr = new TileLayer({
                 title: "Landslide Susceptibility (Base-10 yr RP Rainfall)",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Base_10_yr_RP_Rainfall/MapServer",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Rainfall_10_YRP_Base_LULC/MapServer",
                 //popupTemplate: tempDivison,
                 visible: false,
                 outFields: ["*"],
@@ -1006,7 +1006,7 @@
             var layerBandarbanRainfall30yr = new TileLayer({
                 title: "Landslide Susceptibility (2050s- 30yr RP Rainfall)",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_2050s_30yr_RP_Rainfall/MapServer",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_Rainfall_30_YRP_2050_LULC/MapServer",
                 //url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_2050s_30yr_RP_Rainfall/ImageServer",
                 //popupTemplate: tempDivison,
                 legendEnabled: true,
@@ -1060,15 +1060,27 @@
         
 
             var layerBandarbanLULC = new TileLayer({
-                title: "LULC",
+                title: "LULC (Base)",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_LULC/MapServer/",             
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_LULC_Base/MapServer/",             
                 outFields: ["*"],
                 visible: false,
                 copyright: "CEGIS"
                 
             });
             
+
+            var layerBandarbanLULCProductive = new TileLayer({
+                title: "LULC (Productive 2050)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Bandarban_LULC_Productive/MapServer/",             
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"
+                
+            });
+
+
             var layerBandarbanAspect = new TileLayer({
                 title: "Aspect",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
@@ -1117,7 +1129,7 @@
             var groupBandarbanCausalFactors = new GroupLayer({
                 title: "Preconditioning and Preparatory Causal Factors",
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerBandarbanAspect,layerBandarbanDistanceRoad,layerBandarbanDistanceDrainage,layerBandarbanSlope,layerBandarbanLithology,layerBandarbanLULC]
+                layers: [layerBandarbanAspect,layerBandarbanDistanceRoad,layerBandarbanDistanceDrainage,layerBandarbanSlope,layerBandarbanLithology,layerBandarbanLULCProductive,layerBandarbanLULC]
             });
 
             
@@ -1314,13 +1326,11 @@
             var layerRangamatiLULCProductive = new TileLayer({
                 title: "LULC (Productive 2050)",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_LULC _Base/MapServer",            
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_LULC__Productive_2050/MapServer",            
                 outFields: ["*"],
                 visible: false,
                 copyright: "CEGIS"              
             });
-
-
 
 
             var layerRangamatiAspect = new TileLayer({
@@ -1371,7 +1381,7 @@
             var groupRangamatiCausalFactors = new GroupLayer({
                 title: "Preconditioning and Preparatory Causal Factors",
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [layerRangamatiAspect,layerRangamatiDistanceRoad,layerRangamatiDistanceDrainage,layerRangamatiSlope,layerRangamatiLithology,layerRangamatiLULC]
+                layers: [layerRangamatiAspect,layerRangamatiDistanceRoad,layerRangamatiDistanceDrainage,layerRangamatiSlope,layerRangamatiLithology,layerRangamatiLULCProductive,layerRangamatiLULC]
             });
 
 
