@@ -1002,6 +1002,7 @@
                 copyright: "CEGIS"
             });
 
+
             var layerBandarbanRainfall30yr = new TileLayer({
                 title: "Landslide Susceptibility (2050s- 30yr RP Rainfall)",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
@@ -1012,21 +1013,13 @@
                 visible: false,
                 outFields: ["*"],
                 popupTemplate: {
-                    title: "Rainfall",
-                    content: [{
-                        type: "fields",
-                        fieldInfos: [
-                        {
-                            fieldName: "SUSCEPTIBILITY",
-                            label: "SUSCEPTIBILITY (km):",
-                            visible: true
-                        },                                                                                                
-                        ]
-                    }
-                    ]
-                },
+                    title: "Elevation",
+                    content: "{Raster.ItemPixelValue}"
+                }
+               ,
                 copyright: "CEGIS"
             });
+
             //https://www.arcgisbd.com/server/rest/services/ADB005RasterElevation/ImageServer
 
             var groupBandarbanHazardScenario = new GroupLayer({
@@ -1036,8 +1029,6 @@
             });
 
             
-
-
             var layerBandarbanRainfallmmBase10yr = new TileLayer({
                 title: "Rainfall in mm (Base- 10yr RP)",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
@@ -1154,18 +1145,13 @@
             };
 
             var layerKaptaiLake = new FeatureLayer({
-                title: "Kaptai lake",
+                title: "Kaptai Lake",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
                 url: "https://www.arcgisbd.com/server/rest/services/Hosted/Base_Layer_Rangamati/FeatureServer/1",
                 popupTemplate: tempKaptaiLake,
                 outFields: ["*"],
                 copyright: "CEGIS"
             });
-
-
-
-
-           
 
 
             var layerRangamati = new FeatureLayer({
@@ -1318,9 +1304,17 @@
 
 
             var layerRangamatiLULC = new TileLayer({
-                title: "LULC",
+                title: "LULC (Base)",
                 //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
-                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_LULC/MapServer",            
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_LULC__Base/MapServer",            
+                outFields: ["*"],
+                visible: false,
+                copyright: "CEGIS"              
+            });
+            var layerRangamatiLULCProductive = new TileLayer({
+                title: "LULC (Productive 2050)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/Rangamati_LULC _Base/MapServer",            
                 outFields: ["*"],
                 visible: false,
                 copyright: "CEGIS"              
@@ -1437,12 +1431,42 @@
             });
             
 
+            var layerRangamatiRainfallAndLULCBase = new TileLayer({
+                title: "Landslide Susceptibility (Rainfall 10 YRP Base and LULC Base)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/RangamatiRainfall10YRPBaseAndLULCBase/MapServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+
+
+            var layerRangamatiRainfallAndLUL30yr = new TileLayer({
+                title: "Landslide Susceptibility (Rainfall 30 YRP 2050s and LULC 2050s)",
+                //url: "https://mapgis.lged.gov.bd/arcgis/rest/services/GSIMS/GsimsBaseMap/MapServer/14",
+                url: "https://www.arcgisbd.com/server/rest/services/Hosted/RangamatiRainfall30YRPRainfallAndLULC2050/MapServer",
+                //popupTemplate: tempDivison,
+                visible: false,
+                outFields: ["*"],
+                copyright: "CEGIS"
+            });
+
+            var groupRangamatiLandslideHazard = new GroupLayer({
+                title: "Probabilistic Landslide Hazard Scenario",
+                //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
+                layers: [layerRangamatiRainfallAndLUL30yr,layerRangamatiRainfallAndLULCBase]
+            });
+
+            
+
 
 
             var groupRangamati = new GroupLayer({
                 title: "Rangamati",
                 //layers: [layerDivision, layerDistrict, layerUpazila, layerUnion, layerCity, layerMunicipality]
-                layers: [groupRangamatiHazardScenario,groupRangamatiTriggeringFactor,groupRangamatiCausalFactors,groupBandarBaseLayer,layerRangamatiHistoricalLandslideLocation]
+                layers: [groupRangamatiLandslideHazard,groupRangamatiTriggeringFactor,groupRangamatiCausalFactors,groupBandarBaseLayer,layerRangamatiHistoricalLandslideLocation]
             });
 
            
@@ -2548,8 +2572,6 @@
                 });
 
             }
-
-
             //generateRenderer();
         }
 
